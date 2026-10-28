@@ -1,0 +1,39 @@
+{
+  "pages": [
+    "pages/graph/graph",
+    "pages/character/character",
+    "pages/historical/historical"
+  ],
+  "subPackages": [
+    {
+      "root": "packageEpisodes",
+      "name": "episodes",
+      "pages": [
+        "pages/episodes/episodes"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/graph/graph": {
+      "network": "all",
+      "packages": [
+        "episodes"
+      ]
+    }
+  },
+  "window": {
+    "navigationBarBackgroundColor": "#F5F1E8",
+    "navigationBarTitleText": "兰香如故 · 角色图谱",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F1E8",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false,
+    "navigationStyle": "custom"
+  },
+  "usingComponents": {
+    "navbar": "/components/navbar/navbar"
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "style": "v2"
+}

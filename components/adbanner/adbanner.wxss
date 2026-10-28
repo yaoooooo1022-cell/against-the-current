@@ -1,0 +1,80 @@
+/* ============================================================
+   广告位容器
+   ============================================================ */
+
+.adbox {
+  position: relative;
+  width: 100%;
+  background: #fffdf8;
+  border-top: 1rpx solid var(--line, #e5dccb);
+}
+
+/* 底部固定位：盖在内容之上，需要给页面留 padding-bottom */
+.adbox--dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 500;
+  box-shadow: 0 -4rpx 20rpx rgba(43, 43, 43, 0.08);
+}
+
+.adbox__unit {
+  display: block;
+  width: 100%;
+}
+
+/* 占位框：评审版式用，上线前把 utils/ads.js 的 placeholder 置 false 即消失 */
+.adbox__ph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 110rpx;
+  padding: 16rpx 80rpx 16rpx 24rpx;
+  background: #fbf7ef;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(176, 141, 87, 0.06) 0,
+    rgba(176, 141, 87, 0.06) 12rpx,
+    transparent 12rpx,
+    transparent 24rpx
+  );
+}
+
+.adbox__ph-t {
+  font-size: 24rpx;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+  color: #8a6a33;
+}
+
+.adbox__ph-s {
+  margin-top: 4rpx;
+  font-size: 19rpx;
+  line-height: 1.5;
+  color: var(--ink-3, #a39c90);
+  text-align: center;
+}
+
+/* 收起按钮 */
+.adbox__x {
+  position: absolute;
+  top: 8rpx;
+  right: 10rpx;
+  z-index: 2;
+  width: 44rpx;
+  height: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  line-height: 1;
+  color: var(--ink-3, #a39c90);
+  background: rgba(255, 253, 248, 0.86);
+  border: 1rpx solid var(--line, #e5dccb);
+  border-radius: 50%;
+}
+.adbox__x:active {
+  opacity: 0.6;
+}

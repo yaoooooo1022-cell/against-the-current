@@ -1,0 +1,93 @@
+.nb {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 900;
+  background-color: var(--paper, #f5f1e8);
+  overflow: hidden;
+}
+
+/* 底部发丝线（用伪元素而非 border，避免在某些机型上因 1rpx 四舍五入显隐不一） */
+.nb--line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1rpx;
+  background: var(--line, #e5dccb);
+}
+
+.nb__row {
+  display: flex;
+  align-items: center;
+}
+
+.nb__side {
+  flex: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 8rpx;
+}
+
+.nb__mid {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.nb__title {
+  max-width: 100%;
+  font-size: 32rpx;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 1rpx;
+  color: var(--ink, #2b2b2b);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nb__sub {
+  margin-top: 2rpx;
+  font-size: 19rpx;
+  color: var(--ink-3, #a39c90);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.nb__brand {
+  font-size: 24rpx;
+  letter-spacing: 3rpx;
+  color: var(--gold, #b08d57);
+  white-space: nowrap;
+}
+
+.nb__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 4rpx;
+  border-radius: 50%;
+  transition: background 0.15s;
+}
+.nb__back--hover {
+  background: rgba(176, 141, 87, 0.14);
+}
+
+.nb__back-i {
+  font-size: 48rpx;
+  line-height: 1;
+  color: var(--ink, #2b2b2b);
+  /* iOS 上部分字体的 ‹ 偏下，微调回视觉中线 */
+  margin-top: -4rpx;
+}

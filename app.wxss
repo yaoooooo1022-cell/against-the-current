@@ -1,0 +1,214 @@
+/* ============================================================
+   《兰香如故》角色图谱 · 全局样式
+   风格：明代江南世家 · 宣纸 + 墨 + 鎏金 + 绛红
+   ============================================================ */
+
+page {
+  /* ---- 设计变量（其他页面直接引用） ---- */
+  --paper: #f5f1e8;        /* 宣纸底 */
+  --paper-2: #efe9dc;      /* 次级底 */
+  --card: #fffdf8;         /* 卡片 */
+  --ink: #2b2b2b;          /* 主文字 */
+  --ink-2: #6b6459;        /* 次文字 */
+  --ink-3: #a39c90;        /* 弱文字 */
+  --line: #e5dccb;         /* 分割线 */
+  --gold: #b08d57;         /* 鎏金 */
+  --gold-soft: #f0e6d2;
+  --crimson: #8c2b2b;      /* 绛红（主色） */
+  --crimson-soft: #f7e7e4;
+
+  --radius-s: 8rpx;
+  --radius-m: 16rpx;
+  --radius-l: 24rpx;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 28rpx;
+  color: var(--ink);
+  background-color: var(--paper);
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+view,
+text,
+image,
+scroll-view,
+input {
+  box-sizing: border-box;
+}
+
+/* 标题用衬线体，更贴古装剧气质 */
+.serif {
+  font-family: 'Songti SC', 'STSong', 'SimSun', 'Noto Serif SC', serif;
+}
+
+/* ============================ 通用容器 ============================ */
+
+.page {
+  min-height: 100vh;
+  padding-bottom: 48rpx;
+  background-color: var(--paper);
+  /* 极淡的宣纸纹理，用渐变模拟，零图片依赖 */
+  background-image: radial-gradient(rgba(176, 141, 87, 0.07) 1rpx, transparent 1rpx);
+  background-size: 28rpx 28rpx;
+}
+
+.card {
+  background: var(--card);
+  border: 1rpx solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 28rpx;
+  margin: 0 24rpx 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(43, 43, 43, 0.04);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  margin: 0 24rpx 20rpx;
+}
+
+.section-title .bar {
+  width: 6rpx;
+  height: 30rpx;
+  background: var(--gold);
+  border-radius: 3rpx;
+  margin-right: 14rpx;
+}
+
+.section-title .txt {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 2rpx;
+}
+
+.section-title .extra {
+  margin-left: auto;
+  font-size: 24rpx;
+  color: var(--ink-3);
+}
+
+/* ============================ 标签 ============================ */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: 40rpx;
+  padding: 0 16rpx;
+  border-radius: 40rpx;
+  font-size: 22rpx;
+  line-height: 1;
+  background: var(--gold-soft);
+  color: #7a6033;
+  margin-right: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.tag.ghost {
+  background: transparent;
+  border: 1rpx solid var(--line);
+  color: var(--ink-2);
+}
+
+/* ============================ 按钮 / 交互 ============================ */
+
+.tap {
+  transition: opacity 0.15s;
+}
+.tap:active {
+  opacity: 0.65;
+}
+
+/* ============================ 分隔线（卷草纹） ============================ */
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 32rpx 24rpx;
+  color: var(--line);
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1rpx;
+  background: var(--line);
+}
+.divider .dot {
+  margin: 0 18rpx;
+  font-size: 20rpx;
+  color: var(--gold);
+  letter-spacing: 6rpx;
+}
+
+/* ============================ 空态 / 缺省 ============================ */
+
+.empty-tip {
+  padding: 32rpx 0;
+  text-align: center;
+  font-size: 26rpx;
+  color: var(--ink-3);
+  line-height: 1.8;
+}
+
+.pending {
+  display: inline-block;
+  font-size: 20rpx;
+  color: #b08d57;
+  border: 1rpx dashed rgba(176, 141, 87, 0.6);
+  border-radius: 6rpx;
+  padding: 2rpx 10rpx;
+  margin-left: 10rpx;
+  vertical-align: middle;
+}
+
+/* ============================ 安全区 ============================
+   iOS 全面屏：
+     · 顶部由 components/navbar 按实测 statusBarHeight 让位，这里只做兜底占位；
+     · 底部 Home 指示条：所有 fixed 到视口底部的元素，都要补 env(safe-area-inset-bottom)，
+       否则最后一排内容会被指示条压住。
+   ============================================================ */
+
+.safe-bottom {
+  height: constant(safe-area-inset-bottom);
+  height: env(safe-area-inset-bottom);
+}
+
+.safe-top {
+  height: constant(safe-area-inset-top);
+  height: env(safe-area-inset-top);
+}
+
+/* 底部有固定 Banner 广告时，给页面/长列表补一段等高占位，避免末尾内容被盖住 */
+.dock-space {
+  height: 140rpx;
+}
+.dock-space--tall {
+  height: 180rpx;
+}
+
+/* ============================ iOS 细节修补 ============================ */
+
+/* 横向滚动容器在 iOS 上开启惯性，滑动手感与系统一致 */
+scroll-view {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 长列表滚动容器（如自定义滚动区）同样开启惯性 */
+.scrolly {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+/* iOS 点击高亮统一关掉，避免出现灰色遮罩 */
+view,
+text {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* iOS 上 19rpx 以下的字会被系统强制放大/加粗渲染，统一要求不被 MaRquee 式缩放 */
+.mini {
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}

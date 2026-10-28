@@ -1,0 +1,313 @@
+<navbar title="角色图谱" left-text="兰香如故"></navbar>
+
+<view class="page" style="padding-top:{{nav.barH}}px;">
+
+  <!-- ============================ 剧集 Banner（紧凑版 · 整块可点进剧情介绍） ============================ -->
+  <view class="banner" bindtap="onBannerTap" hover-class="banner--hover" hover-stay-time="80">
+    <view class="banner__main">
+      <view class="banner__titlerow">
+        <text class="banner__title serif">{{drama.title}}</text>
+        <text class="banner__sub serif">{{drama.subTitle}}</text>
+      </view>
+
+      <view class="banner__tagline serif">
+        <text class="banner__q">「</text>{{drama.tagline}}<text class="banner__q">」</text>
+      </view>
+
+      <view class="banner__meta">
+        <text>{{drama.year}}</text><text class="dot">·</text>
+        <text>{{drama.genre}}</text><text class="dot">·</text>
+        <text>{{drama.episodes}}</text><text class="dot">·</text>
+        <text>{{drama.channel}}</text>
+      </view>
+
+      <view class="banner__stats">
+        <text class="banner__stat"><text class="stat__n">{{stats.charCount}}</text>角色</text>
+        <text class="banner__stat__dot">·</text>
+        <text class="banner__stat"><text class="stat__n">{{stats.familyCount}}</text>家族</text>
+        <text class="banner__stat__dot">·</text>
+        <text class="banner__stat"><text class="stat__n">{{stats.actorCount}}</text>演员</text>
+        <text class="banner__stat__dot">·</text>
+        <text class="banner__stat"><text class="stat__n">{{stats.ritualCount}}</text>礼学词条</text>
+      </view>
+    </view>
+
+    <view class="banner__more">
+      <view class="banner__more-t serif">剧情</view>
+      <view class="banner__more-a">›</view>
+    </view>
+  </view>
+
+  <!-- ============================ 搜索 ============================ -->
+  <view class="search">
+    <text class="search__icon">⌕</text>
+    <input
+      class="search__input"
+      value="{{keyword}}"
+      placeholder="搜角色 / 演员 / 身份，如「韩粱」「于谦」"
+      placeholder-class="search__ph"
+      confirm-type="search"
+      cursor-spacing="24"
+      adjust-position="{{true}}"
+      bindinput="onSearchInput"
+    />
+    <text wx:if="{{keyword}}" class="search__clear" bindtap="onClearSearch">✕</text>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view wx:if="{{searching}}" class="results">
+    <view class="results__head">
+      找到 <text class="hl">{{results.length}}</text> 条结果
+    </view>
+    <view
+      wx:for="{{results}}"
+      wx:key="id"
+      class="rrow tap"
+      data-id="{{item.id}}"
+      bindtap="onMemberTap"
+    >
+      <avatar src="{{item.avatar}}" fallback="{{item.fallback}}" name="{{item.name}}" color="{{item.familyColor}}" soft="{{item.familySoft}}" size="s" />
+      <view class="rrow__main">
+        <view class="rrow__name serif">
+          {{item.name}}
+          <text wx:if="{{item.alias}}" class="rrow__alias">（{{item.alias}}）</text>
+        </view>
+        <view class="rrow__sub">{{item.actor}} · {{item.familyName}}</view>
+      </view>
+      <text class="rrow__arrow" style="color:{{item.familyColor}}">›</text>
+    </view>
+    <view wx:if="{{results.length === 0}}" class="empty-tip">未找到相关角色，换个关键词试试</view>
+  </view>
+
+  <!-- ============================ 左右滑动手势区（Tab + chips + 内容） ============================ -->
+  <view wx:else class="swipearea" bindtouchstart="onSwipeStart" bindtouchend="onSwipeEnd">
+
+    <!-- 视图切换 + 支持榜排序 -->
+    <view class="tabs">
+      <view class="tab {{tab === 'tree' ? 'tab--on' : ''}}" data-tab="tree" bindtap="onTabChange">
+        <text class="tab__t serif">族谱</text>
+      </view>
+      <view class="tab {{tab === 'roster' ? 'tab--on' : ''}}" data-tab="roster" bindtap="onTabChange">
+        <text class="tab__t serif">全阵容</text>
+      </view>
+      <view
+        class="sortsw {{(tab === 'tree' ? treeSort : rosterSort) === 'likes' ? 'sortsw--on' : ''}}"
+        bindtap="onSortToggle"
+      >♥ 榜</view>
+    </view>
+
+    <!-- 支持榜说明（仅排序开启时出现，说明数据口径） -->
+    <view wx:if="{{(tab === 'tree' && treeSort === 'likes') || (tab === 'roster' && rosterSort === 'likes')}}" class="sortnote">
+      <text class="sortnote__t">{{likeMode === 'cloud' ? '全站支持榜' : '本地支持榜'}}</text>
+      <text class="sortnote__c">{{likeMode === 'cloud' ? '按全站用户的支持数排序' : '尚未接入云端，当前仅统计你本人的支持（每人每项计 1 票）'}}</text>
+    </view>
+
+    <!-- ============================ 族谱视图 ============================ -->
+    <block wx:if="{{tab === 'tree'}}">
+      <!-- 这里用 bind 而不是 catch：catch 会把触点事件整个吃掉，是手机上「点不动」的元凶。
+           改用 bind + 页面里的 _swipeLock 标记来阻止误触发「左右滑动切 Tab」。 -->
+      <scroll-view
+        class="chips"
+        scroll-x
+        enable-flex
+        scroll-with-animation
+        scroll-into-view="{{chipInto}}"
+        bindtouchstart="onChipTouchStart"
+        bindtouchend="onChipTouchEnd"
+        bindtouchcancel="onChipTouchEnd"
+      >
+        <view
+          wx:for="{{familyChips}}"
+          wx:key="id"
+          id="chip-{{item.id}}"
+          class="chip {{familyFilter === item.id ? 'chip--on' : ''}}"
+          style="{{familyFilter === item.id ? 'background:' + item.color + ';border-color:' + item.color + ';color:#fff;' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="onFamilyFilter"
+          hover-class="chip--tap"
+          hover-stay-time="80"
+        >{{item.name}}</view>
+      </scroll-view>
+
+      <view class="tree">
+        <view class="famcard" wx:for="{{tree}}" wx:for-item="node" wx:key="fid">
+          <view class="famcard__head" style="border-left-color:{{node.family.color}};background:{{node.family.soft}};">
+            <view class="famcard__id">
+              <view class="famcard__name serif" style="color:{{node.family.color}}">{{node.family.name}}</view>
+              <view class="famcard__tag">{{node.family.tag}}</view>
+            </view>
+            <view class="famcard__side">
+              <view class="famcard__motto" style="color:{{node.family.color}};border-color:{{node.family.color}};">{{node.family.motto}}</view>
+              <view
+                class="like {{node.liked ? 'like--on' : ''}}"
+                style="color:{{node.family.color}};border-color:{{node.family.color}};{{node.liked ? 'background:' + node.family.color + ';' : ''}}"
+                data-id="{{node.fid}}"
+                catchtap="onLikeFamily"
+                hover-class="like--hover"
+                hover-stay-time="60"
+              >
+                <text class="like__i">{{node.liked ? '♥' : '♡'}}</text>
+                <text class="like__n">{{node.likeCount}}</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="famcard__body">
+            <view class="gen" wx:for="{{node.generations}}" wx:for-item="g" wx:key="gen">
+              <view class="gen__label">
+                <text class="gen__line" style="background:{{node.family.color}};"></text>
+                <text class="gen__txt serif">{{g.label}}</text>
+              </view>
+
+              <view class="branch" wx:for="{{g.branches}}" wx:for-item="br" wx:key="branch">
+                <text wx:if="{{br.branch}}" class="branch__name serif" style="color:{{node.family.color}};">{{br.branch}}</text>
+                <view class="gen__row">
+                  <view
+                    class="member tap"
+                    wx:for="{{br.members}}"
+                    wx:for-item="m"
+                    wx:key="id"
+                    data-id="{{m.id}}"
+                    bindtap="onMemberTap"
+                  >
+                    <avatar
+                      src="{{m.avatar}}"
+                      fallback="{{m.fallback}}"
+                      name="{{m.name}}"
+                      color="{{m.familyColor}}"
+                      soft="{{m.familySoft}}"
+                      size="m"
+                    />
+                    <view class="member__name serif">{{m.name}}</view>
+                    <view class="member__actor">{{m.actor}}</view>
+                    <view wx:if="{{m.role === 'lead'}}" class="member__lead">领衔</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+
+            <view wx:if="{{node.servants.length}}" class="servants">
+              <view class="servants__label">
+                <text class="gen__line" style="background:{{node.family.color}};"></text>
+                <text class="gen__txt serif">府中仆从</text>
+              </view>
+              <view class="sgroup" wx:for="{{node.servants}}" wx:for-item="sg" wx:key="role">
+                <text class="sgroup__name">{{sg.role}} · {{sg.members.length}}人</text>
+                <view class="gen__row">
+                  <view
+                    class="member tap"
+                    wx:for="{{sg.members}}"
+                    wx:for-item="m"
+                    wx:key="id"
+                    data-id="{{m.id}}"
+                    bindtap="onMemberTap"
+                  >
+                    <avatar
+                      src="{{m.avatar}}"
+                      fallback="{{m.fallback}}"
+                      name="{{m.name}}"
+                      color="{{m.familyColor}}"
+                      soft="{{m.familySoft}}"
+                      size="m"
+                    />
+                    <view class="member__name serif">{{m.name}}</view>
+                    <view class="member__actor">{{m.title}}</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="note">
+        <text class="note__t">关于族谱</text>
+        <text class="note__c">仅展示可归入家族的角色，按公开资料推断的辈分分层；少年 / 青年 / 成年版本不重复计入。未归入家族的角色请在「全阵容」中查看。家族归属与辈分标注为推断项，以片方公示为准。</text>
+      </view>
+    </block>
+
+    <!-- ============================ 全阵容视图 ============================ -->
+    <block wx:else>
+      <view class="roster">
+        <view
+          class="rrow tap"
+          wx:for="{{roster}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onMemberTap"
+        >
+          <avatar src="{{item.avatar}}" fallback="{{item.fallback}}" name="{{item.name}}" color="{{item.familyColor}}" soft="{{item.familySoft}}" size="s" />
+          <view class="rrow__main">
+            <view class="rrow__name serif">
+              {{item.name}}
+              <text wx:if="{{item.alias}}" class="rrow__alias">（{{item.alias}}）</text>
+            </view>
+            <view class="rrow__sub">
+              <text class="rrow__fam" style="color:{{item.familyColor}};border-color:{{item.familyColor}};">{{item.familyName}}</text>
+              {{item.actor}}
+              <text wx:if="{{item.title}}"> · {{item.title}}</text>
+            </view>
+          </view>
+          <view
+            class="like {{item.liked ? 'like--on' : ''}}"
+            style="color:{{item.familyColor}};border-color:{{item.familyColor}};{{item.liked ? 'background:' + item.familyColor + ';' : ''}}"
+            data-id="{{item.id}}"
+            catchtap="onLikeChar"
+            hover-class="like--hover"
+            hover-stay-time="60"
+          >
+            <text class="like__i">{{item.liked ? '♥' : '♡'}}</text>
+            <text class="like__n">{{item.likeCount}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 左右滑动切换提示 -->
+    <view class="swipetip">← 左右滑动切换「族谱 / 全阵容」 →</view>
+  </view>
+
+  <view class="divider"><text class="dot">❖ ❖ ❖</text></view>
+
+  <view class="footer">
+    <text class="footer__c">{{drama.original}} ｜ {{drama.crew}}</text>
+    <text class="footer__c">数据来源：腾讯视频剧集页 / 猫眼专业版演员表 / 新浪娱乐公开报道</text>
+    <text class="footer__c">角色与演员对应关系以片方最终公示为准；历史人物关联为延伸阅读，非官方设定</text>
+    <text class="footer__c">⚠️ 本小程序内所有人物头像均为 AI 生成示意图，非真实剧照，不代表演员本人形象</text>
+    <text class="footer__c">本作品为剧集资料整理，非官方出品；剧照版权归原版权方所有</text>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>
+
+<!-- ============================ 广告位（已下线，待开通流量主后恢复） ============================
+     原本此处有底部固定 Banner、分享卡底部 Banner，以及进入时的插屏广告。
+     因尚未达到开通流量主的门槛，2026-10-10 起全部 UI 下线，页面不留占位。
+     恢复方式：见 utils/ads.js 顶部说明 + 小程序项目档案.md 第十八章。 -->
+
+<!-- ============================ 分享卡片弹层（点爱心支持成功后弹出） ============================ -->
+<view wx:if="{{shareCard}}" class="sharemask" bindtap="onShareCardClose" catchtouchmove="noop">
+  <view
+    class="sharecard"
+    style="width:{{card.w}}px;height:{{card.h}}px;"
+    catchtap="noop"
+  >
+    <image class="sharecard__bg" src="/images/share/bg.jpg" mode="aspectFill" />
+
+    <view class="sharecard__body">
+      <view class="sharecard__brand serif">兰香如故 · 角色图谱</view>
+      <view class="sharecard__lead serif">吾为</view>
+      <view class="sharecard__name serif">{{shareCard.name}}</view>
+      <view class="sharecard__lead serif">执灯</view>
+      <view wx:if="{{shareCard.sub}}" class="sharecard__sub">{{shareCard.sub}}</view>
+      <view class="sharecard__count"><text class="sharecard__heart">♥</text> 已有 {{shareCard.count}} 人支持</view>
+    </view>
+
+    <view class="sharecard__foot">
+      <button class="sharecard__btn sharecard__btn--main" open-type="share">分享给好友</button>
+      <view class="sharecard__btn sharecard__btn--ghost" catchtap="onShareCardClose">关闭</view>
+    </view>
+
+    <view class="sharecard__x" catchtap="onShareCardClose">✕</view>
+  </view>
+</view>

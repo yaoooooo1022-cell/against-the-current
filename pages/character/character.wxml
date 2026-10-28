@@ -1,0 +1,151 @@
+<navbar title="{{char ? char.name : '角色详情'}}" left-text="兰香如故"></navbar>
+
+<view class="page" wx:if="{{char}}" style="padding-top:{{nav.barH}}px;">
+
+  <!-- ============================ 头部 ============================ -->
+  <view class="hero" style="background:linear-gradient(160deg,{{char.familySoft}} 0%,#fffdf8 78%);">
+    <view class="hero__seal serif" style="color:{{char.familyColor}};border-color:{{char.familyColor}};">{{char.familyName}}</view>
+
+    <view class="hero__avatar" bindtap="onAvatarTap">
+      <avatar
+        src="{{char.avatar}}"
+        fallback="{{char.fallback}}"
+        name="{{char.name}}"
+        color="{{char.familyColor}}"
+        soft="#fffdf8"
+        size="l"
+      />
+    </view>
+
+    <view class="hero__name serif">{{char.name}}</view>
+    <view wx:if="{{char.alias}}" class="hero__alias">（{{char.alias}}）</view>
+    <view class="hero__actor">{{char.actor}} 饰</view>
+
+    <view class="hero__tags">
+      <text class="tag" style="background:{{char.familySoft}};color:{{char.familyColor}};">{{char.familyName}}</text>
+      <text class="tag ghost">{{char.genLabel}}</text>
+      <text wx:if="{{char.roleLabel}}" class="tag ghost">{{char.roleLabel}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{variantOfChar}}" class="variant" bindtap="onRelationTap" data-id="{{variantOfChar.id}}">
+    <text class="variant__t">该条目为「{{variantOfChar.name}}」的时期版本</text>
+    <text class="variant__go">查看本体 ›</text>
+  </view>
+
+  <!-- ============================ 身份 ============================ -->
+  <view wx:if="{{char.title}}" class="card">
+    <view class="kv">
+      <text class="kv__k">身份</text>
+      <text class="kv__v">{{char.title}}</text>
+    </view>
+  </view>
+
+  <!-- ============================ 角色介绍 ============================ -->
+  <!-- 无可靠公开资料时不显示整块，而非留「资料待补充」空态（2026-10-12 提审前调整） -->
+  <block wx:if="{{char.hasIntro}}">
+    <view class="section-title">
+      <view class="bar"></view>
+      <text class="txt serif">角色介绍</text>
+    </view>
+
+    <view class="card">
+      <view class="intro">{{char.intro}}</view>
+    </view>
+  </block>
+
+  <!-- ============================ 演员 ============================ -->
+  <view class="section-title">
+    <view class="bar"></view>
+    <text class="txt serif">演员</text>
+  </view>
+
+  <view class="card">
+    <view class="actor">
+      <view class="actor__av serif" style="background:{{char.familySoft}};color:{{char.familyColor}};">{{char.actor}}</view>
+      <view class="actor__main">
+        <view class="actor__name serif">{{char.actor}}</view>
+        <view class="actor__role">饰 {{char.name}}</view>
+      </view>
+    </view>
+    <view wx:if="{{actorWorks.length}}" class="actor__works">
+      <text class="actor__works-t">代表作</text>
+      <view class="actor__works-list">
+        <text wx:for="{{actorWorks}}" wx:key="*this" class="tag ghost">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============================ 人物关系 ============================ -->
+  <view wx:if="{{relations.length}}" class="section-title">
+    <view class="bar"></view>
+    <text class="txt serif">人物关系</text>
+    <text class="extra">点击可跳转</text>
+  </view>
+
+  <view wx:if="{{relations.length}}" class="card">
+    <view
+      class="rel tap"
+      wx:for="{{relations}}"
+      wx:key="label"
+      data-id="{{item.char.id}}"
+      bindtap="onRelationTap"
+    >
+      <avatar
+        src="{{item.char.avatar}}"
+        fallback="{{item.char.fallback}}"
+        name="{{item.char.name}}"
+        color="{{item.char.familyColor}}"
+        soft="{{item.char.familySoft}}"
+        size="s"
+      />
+      <view class="rel__main">
+        <view class="rel__name serif">{{item.char.name}}</view>
+        <view class="rel__actor">{{item.char.actor}}</view>
+      </view>
+      <view class="rel__label" style="color:{{item.char.familyColor}};border-color:{{item.char.familyColor}};">{{item.label}}</view>
+      <text class="rel__arrow">›</text>
+    </view>
+  </view>
+
+  <!-- ============================ 历史参考人物 ============================ -->
+  <block wx:if="{{historical}}">
+    <view class="section-title">
+      <view class="bar"></view>
+      <text class="txt serif">历史参考人物</text>
+      <text class="extra">延伸阅读</text>
+    </view>
+
+    <view class="hist tap" bindtap="onHistoricalTap">
+      <view class="hist__seal serif">{{historical.name}}</view>
+      <view class="hist__main">
+        <view class="hist__name serif">
+          {{historical.name}}
+          <text class="hist__dyn">{{historical.dynasty}}</text>
+        </view>
+        <view class="hist__meta">{{historical.title}} ｜ {{historical.lifespan}}</view>
+        <view class="hist__sum">{{historical.summary}}</view>
+      </view>
+      <text class="hist__arrow">›</text>
+    </view>
+  </block>
+
+  <view class="divider"><text class="dot">❖ ❖ ❖</text></view>
+
+  <view class="footer">
+    <text class="footer__c">角色与演员信息来源于公开报道，以片方公示为准</text>
+    <text class="footer__c">历史人物关联为观剧延伸阅读，非官方设定</text>
+    <text class="footer__c">⚠️ 头像为 AI 生成示意图，非真实剧照，不代表演员本人形象</text>
+    <view class="back" bindtap="onBackToGraph">返回角色图谱</view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>
+
+<!-- ============================ 未找到 ============================ -->
+<view class="page" wx:else style="padding-top:{{nav.barH}}px;">
+  <view class="empty-tip" style="padding-top:200rpx;">
+    未找到角色「{{id}}」
+    <view class="back" style="margin-top:40rpx;" bindtap="onBackToGraph">返回角色图谱</view>
+  </view>
+</view>

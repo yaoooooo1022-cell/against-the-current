@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>《兰香如故》角色图谱 · 上线发布清单</title>
+<style>
+  :root{
+    --paper:#f5f1e8; --card:#fffdf8; --ink:#2b2b2b; --ink2:#5a5348; --ink3:#8a8172;
+    --gold:#b08d57; --line:#d9cdb4; --red:#8c2b2b; --green:#4f7942;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;padding:0;background:var(--paper);color:var(--ink);
+    font-family:"PingFang SC","Microsoft YaHei","Songti SC",serif;line-height:1.75;
+    background-image:
+      repeating-linear-gradient(45deg,rgba(176,141,87,.035) 0,rgba(176,141,87,.035) 8px,transparent 8px,transparent 16px);}
+  .wrap{max-width:920px;margin:0 auto;padding:32px 20px 80px;}
+
+  header{text-align:center;padding:26px 18px 22px;background:var(--card);
+    border:1px solid var(--line);border-radius:8px;position:relative;}
+  header::before{content:"";position:absolute;inset:6px;border:1px solid rgba(176,141,87,.35);border-radius:5px;pointer-events:none;}
+  h1{margin:0;font-size:24px;letter-spacing:3px;font-weight:700;}
+  .sub{margin-top:8px;font-size:12.5px;color:var(--ink3);letter-spacing:1px;}
+  .seal{display:inline-block;margin-top:12px;padding:3px 12px;font-size:11px;letter-spacing:2px;
+    color:var(--paper);background:var(--red);border-radius:2px;}
+
+  .nextbox{margin:20px 0 0;padding:14px 18px;background:var(--card);border:1px solid var(--line);
+    border-left:4px solid var(--red);border-radius:6px;font-size:13px;color:var(--ink2);}
+  .nextbox >b{display:block;font-size:13.5px;letter-spacing:1px;color:var(--ink);margin-bottom:6px;}
+  .nextbox ol{margin:6px 0 0;padding-left:20px;line-height:1.95;}
+  .nextbox li b{color:var(--red);}
+  .nextbox .now{display:inline-block;font-size:10.5px;color:var(--paper);background:var(--green);
+    border-radius:8px;padding:0 7px;margin-right:6px;letter-spacing:1px;vertical-align:1px;}
+  .bar{margin:22px 0 6px;height:26px;border:1px solid var(--line);border-radius:13px;background:#efe8d9;overflow:hidden;position:relative;}
+  .bar >i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b08d57,#8c2b2b);transition:width .35s;}
+  .bar >span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11.5px;color:#544c3f;letter-spacing:1px;}
+
+  .reset{background:none;border:1px solid var(--line);border-radius:14px;padding:4px 14px;font-size:11.5px;
+    color:var(--ink2);cursor:pointer;font-family:inherit;}
+  .reset:hover{border-color:var(--gold);color:var(--gold);}
+
+  section{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px 20px;}
+  h2{margin:0 0 4px;font-size:16px;letter-spacing:2px;display:flex;align-items:center;gap:8px;}
+  h2 em{font-style:normal;font-size:11px;color:var(--paper);background:var(--gold);
+    border-radius:10px;padding:1px 9px;letter-spacing:1px;}
+  .hint{margin:0 0 14px;font-size:12.5px;color:var(--ink3);}
+
+  .step{display:flex;gap:11px;padding:9px 0;border-top:1px dashed var(--line);cursor:pointer;user-select:none;}
+  .step:first-of-type{border-top:none;}
+  .box{flex:none;width:18px;height:18px;margin-top:4px;border:1px solid var(--gold);border-radius:3px;
+    display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;background:#fff;}
+  .step.done .box{background:var(--red);border-color:var(--red);color:#fff;}
+  .step.done .t{color:var(--ink3);text-decoration:line-through;}
+  .body{flex:1;}
+  .t{font-size:14px;font-weight:600;letter-spacing:.5px;}
+  .d{margin-top:2px;font-size:12.5px;color:var(--ink2);}
+  .d code{background:#f0e9da;padding:1px 5px;border-radius:3px;font-size:11.5px;}
+  .k{color:var(--red);font-weight:700;}
+
+  .note{margin-top:14px;padding:11px 14px;background:#fbf6ea;border-left:3px solid var(--gold);
+    font-size:12.5px;color:var(--ink2);}
+  .warn{border-left-color:var(--red);background:#fbf1ee;}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px 16px;margin-top:6px;}
+  .chk{font-size:12.5px;color:var(--ink2);display:flex;gap:6px;align-items:flex-start;}
+  .chk b{font-style:normal;color:var(--green);font-weight:700;}
+
+  .copybox{margin-top:12px;}
+  pre{white-space:pre-wrap;background:#f7f2e6;border:1px solid var(--line);border-radius:6px;
+    padding:14px 16px;font-size:12.5px;line-height:1.85;color:#413a2e;font-family:inherit;margin:8px 0 0;}
+  .btn{margin-top:10px;background:var(--red);color:var(--paper);border:none;border-radius:18px;
+    padding:7px 18px;font-size:12.5px;cursor:pointer;font-family:inherit;letter-spacing:1px;}
+  .btn:active{opacity:.75;}
+  .btn-ghost{background:transparent;color:var(--gold);border:1px solid var(--line);}
+
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px;}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
+  th{background:#f0e9da;font-weight:600;letter-spacing:1px;}
+  td.c{text-align:center;}
+
+  footer{margin-top:26px;font-size:12px;color:var(--ink3);text-align:center;line-height:1.9;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>上线发布清单</h1>
+    <div class="sub">《兰香如故》角色图谱 · 微信小程序原生工程</div>
+    <div style="margin-top:10px;font-size:12px;color:var(--ink3);">v1.0.0 · 2026-10-10</div>
+    <div class="seal">AppID 已就位 · 认证进行中</div>
+  </header>
+
+  <div class="nextbox">
+    <b>现在（AppID 已填、认证进行中）接下来做什么</b>
+    <ol>
+      <li><span class="now">今天</span><b>导入 + 真机预览</b>：开发者工具导入本项目目录，AppID 已写进 <code>project.config.json</code>（若已打开过工程，到「详情 → 基本信息」里核对）。认证期间<b>可以预览、可以上传</b>，不影响开发。</li>
+      <li><span class="now">并行</span><b>名称 / 头像 / 简介 / 服务类目</b>：微信官方明确这些设置与微信认证<b>可并行</b>，别干等。简介文案已备好，见「<code>小程序介绍.md</code>」。</li>
+      <li><span class="now">最优先</span><b>提交 ICP 备案</b>：<span class="k">这是最容易被漏掉、也最慢的一环</span>（数日到数周）。后台一出现「去备案」入口就立刻提。</li>
+      <li><span class="now">最后</span><b>认证 + 备案都通过后</b>：上传代码 → 设为体验版自测 → 提交审核 → 发布。</li>
+    </ol>
+  </div>
+
+  <div class="bar"><i id="barFill"></i><span id="barText">0 / 0</span></div>
+  <div style="text-align:center;margin-top:8px;">
+    <button class="reset" id="btnReset">重置勾选</button>
+    <span style="margin-left:10px;font-size:11.5px;color:var(--ink3);">勾选状态自动存在本机浏览器里</span>
+  </div>
+
+  <!-- ============ 0 ============ -->
+  <section>
+    <h2>零 · 前置准备<em>今天就能做</em></h2>
+    <p class="hint"><b>状态更新</b>：<code>project.config.json</code> 里的 <code>appid</code> 已从游客号换成正式号 <code>wxd1fc57eebcbb90fc</code>，<span class="k">真机预览与上传通道已打开</span>。当前正在走主体验证 / 微信认证。</p>
+
+    <div class="step" data-k="s0-1">
+      <div class="box">✓</div><div class="body">
+        <div class="t">✅ 注册小程序账号，拿到 AppID —— 已完成</div>
+        <div class="d">AppID：<code>wxd1fc57eebcbb90fc</code>，已写入 <code>project.config.json</code>。<br/>
+        <b>下一步卡点：微信认证</b>。企业 / 个体工商户主体走「支付验证（小额打款回填）」或「法人扫码验证」，通常 1–3 个工作日出结果；结果会由后台消息通知。<br/>
+        <span class="k">认证费 300 元 / 年，受理后不退</span> —— 补料时务必一次改对：营业执照名称、法人姓名、身份证号要与注册信息逐字一致，开户行全称要精确到「XX 支行」。<br/>
+        <span class="k">好消息</span>：认证期间预览、上传、设置资讯均<span class="k">不受影响</span>，可以继续往下做。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s0-2">
+      <div class="box">✓</div><div class="body">
+        <div class="t">安装微信开发者工具（稳定版）</div>
+        <div class="d">developers.weixin.qq.com/miniprogram/dev/devtools/download.html → 选 Stable Build → Windows 64。已装可跳过。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s0-3">
+      <div class="box">✓</div><div class="body">
+        <div class="t">确定小程序名称</div>
+        <div class="d">名称唯一，容易被占用。备选：「兰香如故角色图谱」「兰香如故追剧图谱」「兰香如故人物志」。个人主体一年只能改 2 次名称。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 0.5 ============ -->
+  <section>
+    <h2>半 · ICP 备案<em>最关键路径 · 现在就查</em></h2>
+    <p class="hint">这是最容易被漏掉的一环：凡面向中国大陆用户的小程序，<b>上线前必须完成工信部 ICP 备案</b>。它和「微信认证」是<b>两码事</b>（认证归腾讯、备案归省通信管理局，官方免费），而且通常是整条链路里<b>最慢</b>的一段。</p>
+
+    <div class="step" data-k="s05-1">
+      <div class="box">✓</div><div class="body">
+        <div class="t">找到备案入口并提交</div>
+        <div class="d">登录 mp 后台，首页通常会出现醒目的<b>「去备案」</b>按钮；或走「设置 → 主体信息」里的备案模块。<br/>
+        <span class="k">若按钮还没出现</span>：多数情况是要等微信认证通过后才放开，先把下面两步的资料备齐。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s05-2">
+      <div class="box">✓</div><div class="body">
+        <div class="t">备齐资料并完成人脸核验</div>
+        <div class="d">主体证件（营业执照 / 身份证，须与认证主体一致）、负责人身份证正反面（四角完整、无反光）、负责人手机号与邮箱。<br/>
+        大部分字段会由系统从认证资料<b>自动预填</b>，逐一核对即可；最后用负责人微信扫码做<b>人脸核验</b>。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s05-3">
+      <div class="box">✓</div><div class="body">
+        <div class="t">盯住 12381 短信核验（高发踩坑点）</div>
+        <div class="d">流程：腾讯初审（约 1–2 个工作日）→ 负责人手机收到 <b>12381</b> 的工信部核验短信 → <span class="k">须在 24 小时内</span>按提示完成核验 → 省通信管理局终审。<br/>
+        <span class="k">超时未核验会被自动退回</span>，等于重排一次队。提交后请把负责人手机的短信拦截关掉。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s05-4">
+      <div class="box">✓</div><div class="body">
+        <div class="t">等管局终审，拿到备案号</div>
+        <div class="d">各省通信管理局效率不同，常见区间为<b>数个工作日到数周</b>。通过后后台备案页会显示「已备案」与<b>备案号</b>，此时才具备正式对外发布的资格。</div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>并行原则（微信官方文档明确）</b><br/>
+      名称、简称、头像、简介、类目设置与微信认证<b>可以并行</b>；「流程只影响发布，不影响开发」。<br/>
+      所以：<b>认证 → 备案</b>这条链路在跑的同时，下面的「本地跑通」「真机验证」「后台配置」完全可以同步推进。
+    </div>
+  </section>
+
+  <!-- ============ 1 ============ -->
+  <section>
+    <h2>一 · 本地跑通<em>5 分钟</em></h2>
+
+    <div class="step" data-k="s1-1">
+      <div class="box">✓</div><div class="body">
+        <div class="t">导入项目并填入 AppID</div>
+        <div class="d">开发者工具 → 「小程序」→ 导入项目 → 目录选 <code>C:/Users/sy.ye/WorkBuddy/小程序</code> → AppID 填上面拿到的正式号 → 导入。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s1-2">
+      <div class="box">✓</div><div class="body">
+        <div class="t">勾「不校验合法域名」</div>
+        <div class="d">右上角「详情 → 本地设置」勾选。本项目<span class="k">没有任何网络请求</span>，不需要配 request 合法域名，勾它只是让本地不报警。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s1-3">
+      <div class="box">✓</div><div class="body">
+        <div class="t">跑一遍上线体检脚本</div>
+        <div class="d">项目根目录执行 <code>node tools/check-release.js</code>。当前结果是 <span class="k">15 / 15 全通过</span>，改完代码随时可以再跑一次。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s1-4">
+      <div class="box">✓</div><div class="body">
+        <div class="t">模拟器里点一遍主流程</div>
+        <div class="d">首页家族 chips 筛选 → 点头像进角色详情 → 详情页跳历史人物 → 点顶部 Banner 进剧情介绍（分包首次加载稍慢）→ 左右切 Tab → 点爱心看「吾为 XX 执灯」分享卡。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section>
+    <h2>二 · 真机验证<em>必做</em></h2>
+
+    <div class="step" data-k="s2-1">
+      <div class="box">✓</div><div class="body">
+        <div class="t">「预览」扫码（自己手机先跑一遍）</div>
+        <div class="d">开发者工具点<b>「预览」</b>（快捷键 <code>ctrl+shift+P</code>）→ 用本人微信扫码。二维码约 5 分钟有效，过期重生成即可。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s2-2">
+      <div class="box">✓</div><div class="body">
+        <div class="t">iOS 重点复核：顶部导航 + 底部安全区</div>
+        <div class="d">刘海屏 / 灵动岛机型看自定义导航条是否被压住；底部要有 iPhone Home 指示条的留白；底部 Banner 广告位不能贴着指示条。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s2-3">
+      <div class="box">✓</div><div class="body">
+        <div class="t">Android 重点复核：返回键 + 吸顶</div>
+        <div class="d">导航条左侧返回键显隐是否正确；剧情页「Tab + chips」吸顶是否稳定；微信/Android 系统字体放大后版式是否崩。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s2-4">
+      <div class="box">✓</div><div class="body">
+        <div class="t">手势与插屏/关注点</div>
+        <div class="d">左右滑动切 Tab；横滑 chips 不能误切 Tab；点爱心后弹分享卡（当前广告 enabled=false，<span class="k">不会弹真实广告</span>，只会看到一个说明型占位条）。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s2-5">
+      <div class="box">✓</div><div class="body">
+        <div class="t">让朋友 / 团队看（可选）</div>
+        <div class="d">「上传」→ mp 后台「管理 → 版本管理 → 开发版本」把它<b>设为体验版</b> → 「成员管理」加体验成员 → 生成体验版二维码，长期有效。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section>
+    <h2>三 · 后台配置<em>提审前必做</em></h2>
+
+    <div class="step" data-k="s3-1">
+      <div class="box">✓</div><div class="body">
+        <div class="t">补齐基本信息：名称 / 头像 / 简介</div>
+        <div class="d">mp 后台「设置 → 基本设置」，<span class="k">无需等认证通过即可设置</span>。<br/>
+        名称建议 <code>兰香如故·角色图谱</code>；头像用 <code>app-icon/app-icon-144.png</code>；简介三版（100 / 90 / 37 字）见项目根目录 <code>小程序介绍.md</code>，直接复制即可。<br/>
+        <span class="k">简介别写「官方」「独家」「最全」等可能被判定夸大或误导的词。</span></div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s3-2">
+      <div class="box">✓</div><div class="body">
+        <div class="t">服务类目：选「文娱」相关</div>
+        <div class="d">建议：文娱 → 资讯 / 追剧辅助（具体类目名称以平台当前实际可选项为准）。<span class="k">个人主体可选类目有限</span>，若选不到合适类目，需要换企业主体。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s3-3">
+      <div class="box">✓</div><div class="body">
+        <div class="t">配置《用户隐私保护指引》</div>
+        <div class="d">「设置 → 用户隐私保护指引」→ 新增并 pull 至<b>生效</b>。本项目不使用任何隐私接口，但一份生效的指引仍是提审标配，按实际如实勾选即可。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s3-4">
+      <div class="box">✓</div><div class="body">
+        <div class="t">准备好提审备注</div>
+        <div class="d">说明内容是「观众向追剧资料整理」，所有头像/配图为 AI 生成（非演员真实肖像），并在备注里主动声明图片版权情况。下方有一段可直接复制。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section>
+    <h2>四 · 提交审核<em>等 1–7 天</em></h2>
+
+    <div class="step" data-k="s4-1">
+      <div class="box">✓</div><div class="body">
+        <div class="t">上传代码</div>
+        <div class="d"><b>方式 A · 微信开发者工具</b>：点<b>「上传」</b>（<code>ctrl+shift+U</code>）→ 版本号 <code>1.0.0</code> → 备注「首版：角色图谱 / 剧情介绍 / 礼学考究 / 支持榜」。<br/>
+        <b>方式 B · 命令行（不想开开发者工具就用这个）</b>：项目里已装好官方 <code>miniprogram-ci</code>，脚本是 <code>tools/ci-upload.js</code>。<br/>
+        &nbsp;&nbsp;① mp 后台「开发管理 → 开发设置 → 小程序代码上传密钥」→ <b>生成并下载那个 .key 文件本身</b><br/>
+        &nbsp;&nbsp;② 把 key 文件放进项目根目录，命名为 <code>.ci-private.key</code><br/>
+        &nbsp;&nbsp;③ 执行 <code>node tools/ci-upload.js</code>（加 <code>--dry</code> 只自检不真传）<br/>
+        <span class="k">注意</span>：密钥已加入打包忽略表与 <code>.gitignore</code>，<span class="k">切勿提交到仓库或发给他人</span>。<br/>
+        <b style="color:#4F7942;">✅ 2026-10-10 16:57 已完成首次上传：版本 1.0.0，代码包 1.75MB（方式 B 命令行，未开开发者工具）。</b></div>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <b>⚠ 千万别把 AppSecret 当成上传密钥（实测踩过）</b><br/>
+      这两个东西长得完全不像，却常常搞混：<br/>
+      <code>AppSecret</code> —— <b>32 位十六进制字符串</b>，用于服务端调用微信 API（如 <code>code2session</code>），<span class="k">不能用于上传</span>。<br/>
+      <code>代码上传密钥</code> —— 后台下载的一个 <b>PEM 私钥文件</b>，内容以 <code>-----BEGIN</code> 开头，文件名形如 <code>private.wx….key</code>。<br/>
+      拿错会报：<code>generate local signature fail … private key file is incorrect</code>。脚本现在会自动识别并提示，体检脚本也会校验格式。<br/>
+      <span class="k">安全</span>：AppSecret 属于最高敏感凭证，一旦外泄请立即在「开发设置 → AppSecret」点<b>重置</b>，旧密钥当场失效。
+    </div>
+
+    <div class="note warn">
+      <b>⚠ 第二个坑：IP 白名单（实测也踩过）</b><br/>
+      生成上传密钥时如果配了 <b>IP 白名单</b>，只有名单内的网络能上传，其余一律报 <code>errCode -10008 invalid ip: x.x.x.x</code>。<br/>
+      报错里那个 IP 就是微信看到的<b>当前出口 IP</b>，把它加进去即可：「开发管理 → 开发设置 → 小程序代码上传密钥 → IP 白名单」。<br/>
+      <b style="color:#8c2b2b;">实测教训（2026-10-10）：同一个网络，前后 40 分钟出口 IP 就变了 —— 124.77.206.127 → 124.77.168.97。</b><br/>
+      所以别单个 IP 一个个加：<b>首选直接清空白名单</b>（不限制来源）；次选加<b>整个网段</b>（如 <code>124.77.0.0/16</code>，格式以后台该处提示为准）。<br/>
+      命令行里加了 <code>--no-proxy</code> 可以绕开系统代理，用来确认「到底是本机 IP 还是代理出口 IP」。
+    </div>
+
+    <div class="step" data-k="s4-2">
+      <div class="box">✓</div><div class="body">
+        <div class="t">先设为体验版自己再扫一遍</div>
+        <div class="d">mp 后台「管理 → 版本管理」→ 开发版设为体验版 → 扫码跑一遍（这一步经常能发现线上才发现的问题）。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s4-3">
+      <div class="box">✓</div><div class="body">
+        <div class="t">提交审核</div>
+        <div class="d">「版本管理 → 开发版本 → 提交审核」→ 填类目、标签；<b>不需要测试账号</b>（无登录）；备注粘贴下面那段说明。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s4-4">
+      <div class="box">✓</div><div class="body">
+        <div class="t">审核通过 → 点「发布」</div>
+        <div class="d">发布后所有微信用户可搜到。<span class="k">被驳回不要慌</span>：把驳回意见原文带回来，逐条改完重提，驳回记录会写进项目档案。</div>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <b>为什么不能直接在 mp 后台网页上传？</b><br/>
+      微信公众平台后台<b>只管版本，不管传代码</b> —— 开发管理页面可以设体验版、提交审核、查看 AppID 与上传密钥，但代码包必须由<b>开发者工具</b>或<b>官方 CI 工具 <code>miniprogram-ci</code></b>推上去。<br/>
+      另外，后台每一步都需要<b>管理员微信扫码</b>，这部分没人能代劳。所以：<b>上传可以一条命令搞定，设为体验版 / 提交审核仍需你本人在后台点几下。</b>
+    </div>
+
+    <div class="copybox">
+      <div style="font-size:13px;font-weight:600;">提审备注模板（点按钮复制）</div>
+      <pre id="auditNote">【功能说明】
+本小程序是电视剧《兰香如故》的观众向资料整理工具，纯内容展示，无登录、无支付、无用户上传、无社交互动。
+主要功能：① 家族族谱与全阵容角色图谱；② 角色详情（身份、关系、饰演者）；③ 分集剧情与中式礼仪学整理；④ 角色支持榜。
+
+【数据来源】
+内容整理自公开播出剧集与史料典籍，礼仪条目均标注典籍出处；剧情与人物关系仅供参考，页面多处已明示免责声明。
+
+【图片说明】
+所有人物头像、礼仪配图、分享卡背景均由 AI 生成，非演员真实照片，每张图右上角均带「AI 生成」角标，页面底部亦有文字声明。如有肖像或版权问题请联系处理，我方将立即下线相关内容。
+
+【技术说明】
+纯前端，无服务器请求、无域名依赖、未获取任何用户隐私信息（不使用手机号、位置、相册等任何权限）。</pre>
+      <button class="btn" id="btnCopyNote">复制提审备注</button>
+    </div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section>
+    <h2>五 · 发布之后<em>循序渐进</em></h2>
+
+    <div class="step" data-k="s5-1">
+      <div class="box">✓</div><div class="body">
+        <div class="t">开通流量主 → 上真实广告</div>
+        <div class="d">累计访客达标后在 mp 后台「流量主」分别创建「插屏广告」「Banner 广告」→ 拿到 <code>adunit-xxxx</code> → 填进 <code>utils/ads.js</code> 的 <code>CONFIG.units</code> → <code>enabled: true</code>、<code>placeholder: false</code> → 重新上传发版。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s5-2">
+      <div class="box">✓</div><div class="body">
+        <div class="t">支持榜改成全站榜</div>
+        <div class="d">开通云开发 → 建 <code>likes</code> 集合 → 写云函数读写 → 把远端 adapter 注入 <code>utils/likes.js</code> 的 <code>useRemote()</code>。<span class="k">页面代码一行不用改</span>，注入点早就留好了。</div>
+      </div>
+    </div>
+
+    <div class="step" data-k="s5-3">
+      <div class="box">✓</div><div class="body">
+        <div class="t">追更数据与角色</div>
+        <div class="d">改完 <code>data/*.js</code> 后执行 <code>node tools/build-preview.js</code> 重新看版式，<code>node tools/check-release.js</code> 复检，再上传新版本。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 体检结果 ============ -->
+  <section>
+    <h2>附 · 当前代码体检结果<em>15 / 15 通过</em></h2>
+    <p class="hint">跑 <code>node tools/check-release.js</code> 可随时复现，改完代码建议再跑一次。</p>
+    <div class="grid">
+      <div class="chk"><b>✓</b><span>页面四件套齐全（4 个页面）</span></div>
+      <div class="chk"><b>✓</b><span>自定义组件完整（navbar / adbanner）</span></div>
+      <div class="chk"><b>✓</b><span>所有 JSON 可解析</span></div>
+      <div class="chk"><b>✓</b><span>未调用任何隐私接口</span></div>
+      <div class="chk"><b>✓</b><span>无网络请求 → 无需配域名</span></div>
+      <div class="chk"><b>✓</b><span>无支付 → 不受 iOS 虚拟支付限制</span></div>
+      <div class="chk"><b>✓</b><span>无 web-view / 无外链图片</span></div>
+      <div class="chk"><b>✓</b><span>无相册保存能力</span></div>
+      <div class="chk"><b>✓</b><span>47 张本地图片，引用全部命中</span></div>
+      <div class="chk"><b>✓</b><span>广告 enabled=false（不弹真广告）</span></div>
+      <div class="chk"><b>✓</b><span>主包 1.19 MB / 分包 0.59 MB</span></div>
+      <div class="chk"><b>✓</b><span>分包预载 + 按需注入已开</span></div>
+    </div>
+
+    <div class="note warn">
+      <b>提审最容易翻车的三点</b><br/>
+      ① <b>类目与主体</b>：个人主体可选类目有限，影视资讯类若被要求提供授权材料，需准备。<br/>
+      ② <b>AI 生成内容</b>：《人工智能生成合成内容标识办法》要求显性标识 —— 本项目图片已带角标、页面已写声明，提审时也在备注里说清，三重保险。<br/>
+      ③ <b>演员与剧集信息</b>：属公开资讯整理，建议保留页面免责声明、不要写「官方」「独家」字样。
+    </div>
+  </section>
+
+  <footer>
+    以上流程基于微信开发者工具与公众平台的通用发布链路整理，<b>具体界面、审核规则、类目与资质要求均以微信官方最新说明为准</b>。<br/>
+    生成时间 2026-10-10 · 项目《兰香如故》角色图谱 v1.0.0
+  </footer>
+</div>
+
+<script>
+(function () {
+  var KEY = 'lxrg_release_check_v1';
+  var steps = [].slice.call(document.querySelectorAll('.step'));
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function paint() {
+    var done = 0;
+    steps.forEach(function (el) {
+      var k = el.getAttribute('data-k');
+      if (state[k]) { el.classList.add('done'); done++; }
+      else { el.classList.remove('done'); }
+    });
+    var pct = steps.length ? Math.round(done / steps.length * 100) : 0;
+    document.getElementById('barFill').style.width = pct + '%';
+    document.getElementById('barText').textContent = '已完成 ' + done + ' / ' + steps.length + ' 步（' + pct + '%）';
+  }
+
+  steps.forEach(function (el) {
+    el.addEventListener('click', function () {
+      var k = el.getAttribute('data-k');
+      state[k] = !state[k];
+      save();
+      paint();
+    });
+  });
+
+  document.getElementById('btnReset').addEventListener('click', function () {
+    state = {};
+    save();
+    paint();
+  });
+
+  document.getElementById('btnCopyNote').addEventListener('click', function () {
+    var text = document.getElementById('auditNote').textContent;
+    var btn = document.getElementById('btnCopyNote');
+    function done(msg) {
+      var old = btn.textContent;
+      btn.textContent = msg;
+      setTimeout(function () { btn.textContent = old; }, 1600);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done('已复制 ✓'); }, function () { fallback(); });
+    } else { fallback(); }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done('已复制 ✓'); } catch (e) { done('请手动选中复制'); }
+      document.body.removeChild(ta);
+    }
+  });
+
+  paint();
+})();
+</script>
+</body>
+</html>

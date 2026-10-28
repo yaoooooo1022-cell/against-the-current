@@ -1,0 +1,101 @@
+<navbar title="历史参考人物" left-text="兰香如故"></navbar>
+
+<view class="page" wx:if="{{h}}" style="padding-top:{{nav.barH}}px;">
+
+  <!-- ============================ 头部 ============================ -->
+  <view class="hero">
+    <view class="hero__ink"></view>
+    <view class="hero__seal serif">{{h.name}}</view>
+    <view class="hero__name serif">{{h.name}}</view>
+    <view class="hero__alias">{{h.alias}}</view>
+    <view class="hero__meta">
+      <text class="hero__dyn">{{h.dynasty}}</text>
+      <text class="hero__life">{{h.lifespan}}</text>
+    </view>
+    <view class="hero__title">{{h.title}}</view>
+    <view class="hero__keywords">
+      <text wx:for="{{h.keywords}}" wx:key="*this" class="kwd">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- ============================ 一句话 ============================ -->
+  <view class="card">
+    <view class="sum">{{h.summary}}</view>
+  </view>
+
+  <!-- ============================ 生平 ============================ -->
+  <view class="section-title">
+    <view class="bar"></view>
+    <text class="txt serif">生平梗概</text>
+  </view>
+
+  <view class="card">
+    <view class="para" wx:for="{{h.intro}}" wx:key="*this">{{item}}</view>
+  </view>
+
+  <!-- ============================ 代表句 ============================ -->
+  <block wx:if="{{h.quotes.length}}">
+    <view class="section-title">
+      <view class="bar"></view>
+      <text class="txt serif">代表句</text>
+    </view>
+
+    <view class="card">
+      <view class="quote" wx:for="{{h.quotes}}" wx:key="text">
+        <view class="quote__mark serif">「</view>
+        <view class="quote__text serif">{{item.text}}</view>
+        <view class="quote__from">—— {{item.from}}</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- ============================ 与剧中角色的对应 ============================ -->
+  <view class="section-title">
+    <view class="bar"></view>
+    <text class="txt serif">与剧中角色的关联</text>
+  </view>
+
+  <view class="card">
+    <view class="linknote">{{h.linkNote}}</view>
+
+    <block wx:if="{{linkedChars.length}}">
+      <view class="link-t">关联角色</view>
+      <view
+        class="lrow tap"
+        wx:for="{{linkedChars}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onCharTap"
+      >
+        <view class="lrow__seal" style="background:{{item.familySoft}};color:{{item.familyColor}};">{{item.initial}}</view>
+        <view class="lrow__main">
+          <view class="lrow__name serif">{{item.name}}</view>
+          <view class="lrow__sub">{{item.actor}} 饰</view>
+        </view>
+        <text class="lrow__arrow">›</text>
+      </view>
+    </block>
+  </view>
+
+  <!-- ============================ 声明 ============================ -->
+  <view class="disc">
+    <text class="disc__t">说明</text>
+    <text class="disc__c">历史人物的生卒、官职与事迹取自通行史料，属公认史实；剧中角色与历史人物的对应关系为观剧延伸阅读，属创作母题类比，非片方官方设定，亦不代表对剧情或史实的论断。</text>
+  </view>
+
+  <view class="divider"><text class="dot">❖ ❖ ❖</text></view>
+
+  <view class="footer">
+    <view class="back" bindtap="onBack">返回角色详情</view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>
+
+<!-- ============================ 未找到 ============================ -->
+<view class="page" wx:else style="padding-top:{{nav.barH}}px;">
+  <view class="empty-tip" style="padding-top:200rpx;">
+    未找到历史人物「{{id}}」
+    <view class="back" style="margin-top:40rpx;" bindtap="onBack">返回</view>
+  </view>
+</view>

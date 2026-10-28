@@ -1,0 +1,164 @@
+<navbar title="剧情介绍 · 礼学考究" left-text="兰香如故"></navbar>
+
+<view class="page" style="padding-top:{{nav.barH}}px;">
+
+  <!-- ============================ 顶部：标题 + 说明（合并后的紧凑头） ============================ -->
+  <view class="ehero">
+    <view class="ehero__titlerow">
+      <text class="ehero__t serif">剧情介绍</text>
+      <text class="ehero__s serif">礼学考究</text>
+    </view>
+    <view class="ehero__meta">上部《兰香如故》31 集 ｜ 下部《香传》16 集 ｜ 共 47 集</view>
+    <view class="ehero__stats">
+      <text class="est"><text class="est__n">{{stats.episodeCount}}</text>集详介</text>
+      <text class="est__dot">·</text>
+      <text class="est"><text class="est__n">{{stats.ritualCount}}</text>条礼学</text>
+      <text class="est__dot">·</text>
+      <text class="est"><text class="est__n">{{stats.termCount}}</text>个词条</text>
+    </view>
+    <view class="ehero__note">第 1—47 集已全部补齐。剧情依据公开报道整理改写，集数以实际播出为准；考据引《礼记》《仪礼》《大明律》《大明会典》等典籍，属观剧延伸阅读，非片方官方解说。</view>
+  </view>
+
+  <!-- ============================ 吸顶栏：Tab + chips（冻结，方便随时切换） ============================ -->
+  <!-- 吸顶位置要给自定义导航条让位（iOS 上导航条是 fixed 的，顶不住会被盖住） -->
+  <view class="stickybar" style="top:{{nav.barH}}px;">
+    <view class="tabs">
+      <view class="tab {{tab === 'plot' ? 'tab--on' : ''}}" data-tab="plot" bindtap="onTab">
+        <text class="tab__t serif">分集剧情</text>
+      </view>
+      <view class="tab {{tab === 'ritual' ? 'tab--on' : ''}}" data-tab="ritual" bindtap="onTab">
+        <text class="tab__t serif">礼学整理</text>
+      </view>
+    </view>
+
+    <!-- 快捷跳转 chips（随 Tab 切换）
+         这里同样用 bind 而非 catch —— catch 会把触点事件吃掉，手机上就点不动了 -->
+    <scroll-view
+      class="chips"
+      scroll-x
+      enable-flex
+      scroll-with-animation
+      scroll-into-view="{{chipInto}}"
+      bindtouchstart="onChipTouchStart"
+      bindtouchend="onChipTouchEnd"
+      bindtouchcancel="onChipTouchEnd"
+    >
+      <block wx:if="{{tab === 'plot'}}">
+        <view
+          class="chip {{activeId === item.id ? 'chip--on' : ''}}"
+          wx:for="{{chips}}"
+          wx:key="id"
+          id="chip-{{item.id}}"
+          data-id="{{item.id}}"
+          bindtap="onJump"
+          hover-class="chip--tap"
+          hover-stay-time="80"
+        >{{item.label}}</view>
+        <view class="chip chip--ghost" bindtap="onJumpLatest" hover-class="chip--tap" hover-stay-time="80">最新一集</view>
+      </block>
+      <block wx:else>
+        <view
+          class="chip {{activeId === item.key ? 'chip--on' : ''}}"
+          wx:for="{{ritualGroups}}"
+          wx:key="key"
+          id="chip-{{item.key}}"
+          style="{{activeId === item.key ? 'background:' + item.color + ';border-color:' + item.color + ';color:#fff;' : ''}}"
+          data-id="{{item.key}}"
+          bindtap="onCatJump"
+          hover-class="chip--tap"
+          hover-stay-time="80"
+        >{{item.name}} {{item.list.length}}</view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <!-- ============================ Tab 1：分集剧情 ============================ -->
+  <view class="swipearea" bindtouchstart="onSwipeStart" bindtouchend="onSwipeEnd">
+  <block wx:if="{{tab === 'plot'}}">
+    <view class="eps">
+      <view class="ep" wx:for="{{episodes}}" wx:key="id" wx:for-item="ep" id="{{ep.id}}">
+        <view class="ep__head">
+          <view class="ep__top">
+            <view class="ep__no serif">{{ep.epLabel}}</view>
+            <view class="ep__part">{{ep.partLabel}}</view>
+            <view wx:if="{{ep.unit}}" class="ep__unit">剧情单元</view>
+          </view>
+          <view class="ep__title serif">{{ep.title}}</view>
+          <view class="ep__arc">{{ep.arc}}</view>
+          <view class="ep__kw">
+            <text class="kw" wx:for="{{ep.keywords}}" wx:for-item="k" wx:key="*this"># {{k}}</text>
+          </view>
+        </view>
+        <view class="ep__body">
+          <view class="para" wx:for="{{ep.summary}}" wx:for-item="p" wx:key="*this">{{p}}</view>
+        </view>
+        <view
+          wx:if="{{ep.ritualCount}}"
+          class="ep__ritcount"
+          data-ep="{{ep.id}}"
+          bindtap="onRitualTab"
+        >礼学考究 {{ep.ritualCount}} 条 · 去看 ›</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- ============================ Tab 2：礼学整理（按分类归组） ============================ -->
+  <block wx:else>
+    <view class="rgroups">
+      <view class="rgroup" wx:for="{{ritualGroups}}" wx:key="key" wx:for-item="g" id="cat-{{g.key}}">
+        <view class="rgroup__head">
+          <text class="rgroup__bar" style="background:{{g.color}};"></text>
+          <text class="rgroup__name serif" style="color:{{g.color}};">{{g.name}}</text>
+          <text class="rgroup__n">{{g.list.length}} 条</text>
+        </view>
+
+        <view class="rit" wx:for="{{g.list}}" wx:key="term" wx:for-item="r">
+          <view class="rit__top">
+            <text class="rit__term serif">{{r.term}}</text>
+            <text
+              class="rit__ep"
+              style="color:{{g.color}};border-color:{{g.color}};"
+              data-ep="{{r.epId}}"
+              bindtap="onRitualEpTap"
+            >{{r.epLabel}} ›</text>
+          </view>
+          <view wx:if="{{r.image}}" class="rit__fig">
+            <image
+              class="rit__img"
+              src="{{r.image}}"
+              mode="widthFix"
+              lazy-load="{{true}}"
+            />
+            <view class="rit__cap">AI 生成配图 · 仅作形制示意，非剧中道具</view>
+          </view>
+          <view wx:if="{{r.source}}" class="rit__src">典籍 · {{r.source}}</view>
+          <view class="rit__exp">{{r.explain}}</view>
+          <view class="rit__plot">
+            <text class="rit__plot-k">剧中</text>
+            <text class="rit__plot-c">{{r.inPlot}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+  </view>
+
+  <!-- ============================ 详细说明 / 免责 ============================ -->
+  <view class="disc">
+    <text class="disc__t">{{notes.title}}</text>
+    <text class="disc__c" wx:for="{{notes.parts}}" wx:key="*this">{{item}}</text>
+  </view>
+
+  <view class="disc disc--foot">
+    <text class="disc__t">免责</text>
+    <text class="disc__c">本页为《兰香如故》公开资料整理，非官方出品。分集剧情、集数与画面细节以上线平台实际播出版本为准；礼学解读属整理者分析，与片方立场无关，亦不代表对史实的论断。引述典籍均已标注出处，如需引用请复核原文。</text>
+  </view>
+
+  <view class="divider"><text class="dot">❖ ❖ ❖</text></view>
+
+  <view class="footer">
+    <view class="back" bindtap="onBack">返回角色图谱</view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

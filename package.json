@@ -1,0 +1,15 @@
+{
+  "name": "lanxiang-character-graph-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "《兰香如故》角色图谱小程序 · 仅本地使用的工具链（CI 上传 / 预览稿 / 上线体检），不进小程序代码包",
+  "scripts": {
+    "check": "node tools/check-release.js",
+    "preview": "node tools/build-preview.js",
+    "upload": "node tools/ci-upload.js",
+    "upload:dry": "node tools/ci-upload.js --dry"
+  },
+  "dependencies": {
+    "miniprogram-ci": "^2.1.31"
+  }
+}

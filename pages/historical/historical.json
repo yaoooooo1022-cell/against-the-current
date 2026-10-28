@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "历史参考人物",
+  "usingComponents": {
+    "navbar": "/components/navbar/navbar"
+  },
+  "navigationStyle": "custom"
+}

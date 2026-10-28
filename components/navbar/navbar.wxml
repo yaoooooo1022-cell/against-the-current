@@ -1,0 +1,32 @@
+<view
+  wx:if="{{L}}"
+  class="nb {{line ? 'nb--line' : ''}}"
+  style="height:{{L.barH}}px;{{bg ? 'background:' + bg + ';' : ''}}"
+>
+  <view class="nb__row" style="height:{{L.contentH}}px;margin-top:{{L.statusBarH}}px;">
+
+    <!-- 左侧：返回键 / 品牌小字 -->
+    <view class="nb__side" style="width:{{L.sideW}}px;">
+      <view
+        wx:if="{{showBack}}"
+        class="nb__back"
+        bindtap="onBack"
+        hover-class="nb__back--hover"
+        hover-stay-time="80"
+      >
+        <text class="nb__back-i">‹</text>
+      </view>
+      <text wx:elif="{{leftText}}" class="nb__brand serif">{{leftText}}</text>
+      <slot name="left"></slot>
+    </view>
+
+    <!-- 中间：标题（在整屏宽度上居中的前提是左右两侧等宽） -->
+    <view class="nb__mid">
+      <text class="nb__title serif">{{title}}</text>
+      <text wx:if="{{sub}}" class="nb__sub">{{sub}}</text>
+    </view>
+
+    <!-- 右侧：给胶囊按钮留位 -->
+    <view class="nb__side" style="width:{{L.sideW}}px;"></view>
+  </view>
+</view>

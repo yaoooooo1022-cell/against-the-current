@@ -1,0 +1,111 @@
+{
+  "description": "兰香如故 · 角色图谱（项目配置文件）",
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "tools"
+      },
+      {
+        "type": "folder",
+        "value": "node_modules"
+      },
+      {
+        "type": "folder",
+        "value": ".raw-avatars"
+      },
+      {
+        "type": "folder",
+        "value": ".raw-rituals"
+      },
+      {
+        "type": "folder",
+        "value": ".raw-share"
+      },
+      {
+        "type": "file",
+        "value": "preview.html"
+      },
+      {
+        "type": "file",
+        "value": "小程序项目档案.md"
+      },
+      {
+        "type": "file",
+        "value": "上线清单.html"
+      },
+      {
+        "type": "folder",
+        "value": ".raw-icon"
+      },
+      {
+        "type": "folder",
+        "value": "app-icon"
+      },
+      {
+        "type": "file",
+        "value": "小程序介绍.md"
+      },
+      {
+        "type": "file",
+        "value": "package.json"
+      },
+      {
+        "type": "file",
+        "value": "package-lock.json"
+      },
+      {
+        "type": "file",
+        "value": ".ci-private.key"
+      },
+      {
+        "type": "file",
+        "value": "private.key"
+      },
+      {
+        "type": "file",
+        "value": ".gitignore"
+      },
+      {
+        "type": "folder",
+        "value": ".raw-avatars-new"
+      },
+      {
+        "type": "folder",
+        "value": ".tmp"
+      }
+    ]
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": false,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": true,
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.5.5",
+  "appid": "wxd1fc57eebcbb90fc",
+  "projectname": "lanxiang-character-graph",
+  "condition": {}
+}

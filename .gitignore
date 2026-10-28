@@ -1,0 +1,28 @@
+# 依赖与构建产物
+node_modules/
+package-lock.json
+
+# 上传密钥（绝对不能进版本库）
+.ci-private.key
+private.key
+*.key
+
+# AI 生成素材原图（体积大，半成品）
+.raw-avatars/
+.raw-rituals/
+.raw-share/
+.raw-icon/
+
+# 交付物与物料（不进源码管理，可随时重新生成）
+app-icon/
+preview.html
+
+# Python 缓存
+__pycache__/
+*.pyc
+.raw-avatars-new/
+.tmp/
+
+# 内部记忆与本地个人配置（不入库）
+.workbuddy/
+project.private.config.json

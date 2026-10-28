@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>兰香如故 · 家族图谱</title>
+<style>
+  :root {
+    --paper: #F6F3EC;
+    --paper-2: #EFEAE0;
+    --card: #FFFFFF;
+    --ink: #2A2721;
+    --ink-2: #6E675C;
+    --ink-3: #A39B8C;
+    --line: #E7E1D4;
+    --line-2: #D6CEBC;
+    --cinnabar: #A63A2E;
+    --cinnabar-soft: #F8E9E6;
+    --serif: "Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",serif;
+    --sans: "PingFang SC","HarmonyOS Sans SC","MiSans","Microsoft YaHei","Hiragino Sans GB",sans-serif;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(42,39,33,.04), 0 10px 28px rgba(42,39,33,.05);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  input { font-family: inherit; }
+  ::selection { background: #EBD9D4; }
+
+  .page { max-width: 1140px; margin: 0 auto; padding: 0 24px 64px; }
+
+  /* ---------- 顶栏 ---------- */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 0 14px; border-bottom: 1px solid var(--line);
+  }
+  .brand { font-family: var(--serif); font-size: 17px; font-weight: 700; letter-spacing: .06em; }
+  .brand em { font-style: normal; color: var(--cinnabar); }
+  .brand .sep { color: var(--ink-3); font-weight: 400; margin: 0 2px; }
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+  .ver-chip {
+    font-size: 11px; color: var(--ink-2); border: 1px solid var(--line-2);
+    padding: 3px 10px; border-radius: 999px; letter-spacing: .04em; background: var(--card);
+  }
+  .copy-link {
+    font-size: 12px; color: var(--ink-2); border: 1px solid var(--line-2);
+    padding: 4px 12px; border-radius: 999px; background: var(--card); transition: all .15s;
+  }
+  .copy-link:hover { color: var(--cinnabar); border-color: var(--cinnabar); }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; padding: 52px 0 36px; border-bottom: 1px solid var(--line); }
+  .hero-kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--cinnabar); letter-spacing: .18em; font-weight: 600;
+  }
+  .hero-kicker::before { content: ""; width: 22px; height: 1px; background: var(--cinnabar); }
+  .hero h1 {
+    font-family: var(--serif); font-size: 36px; font-weight: 700;
+    letter-spacing: .02em; margin: 14px 0 12px; line-height: 1.3;
+  }
+  .hero-sub { max-width: 640px; color: var(--ink-2); font-size: 14px; }
+  .hero-sub b { color: var(--ink); font-weight: 600; }
+
+  .hero-seal {
+    position: absolute; top: 46px; right: 0;
+    width: 92px; height: 92px; border-radius: 12px;
+    background: var(--cinnabar); color: #FFF;
+    display: grid; grid-template-columns: 1fr 1fr; place-items: center;
+    font-family: var(--serif); font-size: 25px; font-weight: 700;
+    transform: rotate(-3deg); box-shadow: var(--shadow);
+    padding: 8px; line-height: 1;
+  }
+  .hero-seal span { display: block; }
+
+  .stat-row {
+    display: flex; flex-wrap: wrap; gap: 0; margin-top: 30px;
+    border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--card); overflow: hidden; box-shadow: var(--shadow);
+  }
+  .stat {
+    flex: 1 1 150px; padding: 16px 20px 14px;
+    border-right: 1px solid var(--line);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-family: var(--serif); font-size: 26px; font-weight: 700; }
+  .stat-num i { font-style: normal; font-size: 13px; color: var(--ink-3); margin-left: 2px; font-family: var(--sans); font-weight: 400; }
+  .stat-label { font-size: 12px; color: var(--ink-2); margin-top: 2px; letter-spacing: .04em; }
+
+  .search-wrap { position: relative; margin-top: 22px; max-width: 460px; }
+  .search-box {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--card); border: 1px solid var(--line-2); border-radius: 999px;
+    padding: 10px 18px; transition: border-color .15s;
+  }
+  .search-box:focus-within { border-color: var(--cinnabar); }
+  .search-box .icon { color: var(--ink-3); font-size: 14px; }
+  .search-box input { flex: 1; border: none; outline: none; font-size: 13.5px; background: transparent; color: var(--ink); }
+  .search-box input::placeholder { color: var(--ink-3); }
+  .search-box kbd {
+    font-family: var(--sans); font-size: 10px; color: var(--ink-3);
+    border: 1px solid var(--line-2); border-radius: 5px; padding: 1px 6px; background: var(--paper);
+  }
+  .search-drop {
+    position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 60;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); overflow: hidden; display: none;
+  }
+  .search-drop.open { display: block; }
+  .search-item {
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    padding: 10px 16px; text-align: left; transition: background .12s;
+  }
+  .search-item:hover { background: var(--paper); }
+  .search-item + .search-item { border-top: 1px solid var(--line); }
+  .search-item .s-seal {
+    width: 32px; height: 32px; border-radius: 8px; flex: none;
+    display: grid; place-items: center; font-family: var(--serif);
+    font-size: 15px; font-weight: 700; color: #FFF;
+  }
+  .search-item .s-name { font-family: var(--serif); font-weight: 600; font-size: 14px; }
+  .search-item .s-meta { font-size: 11.5px; color: var(--ink-2); margin-left: auto; text-align: right; }
+  .search-empty { padding: 14px 16px; font-size: 12.5px; color: var(--ink-3); }
+
+  /* ---------- 家族 Tab ---------- */
+  .fam-tabs {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding: 26px 0 6px; position: sticky; top: 0; z-index: 40;
+    background: linear-gradient(var(--paper) 88%, transparent);
+  }
+  .fam-tab {
+    display: inline-flex; align-items: center; gap: 7px;
+    border: 1px solid var(--line-2); background: var(--card);
+    border-radius: 999px; padding: 6px 14px; font-size: 13px;
+    color: var(--ink-2); transition: all .15s; letter-spacing: .02em;
+  }
+  .fam-tab .dot { width: 8px; height: 8px; border-radius: 3px; flex: none; }
+  .fam-tab .n { font-size: 11px; color: var(--ink-3); }
+  .fam-tab:hover { border-color: var(--ink-3); color: var(--ink); }
+  .fam-tab.active { font-weight: 600; }
+
+  /* ---------- 家族头 ---------- */
+  .fam-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 16px; padding: 30px 0 6px; flex-wrap: wrap;
+  }
+  .fam-head .f-name { font-family: var(--serif); font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+  .fam-head .f-tag { font-size: 12.5px; color: var(--ink-2); margin-top: 4px; letter-spacing: .04em; }
+  .fam-head .f-motto {
+    font-family: var(--serif); font-size: 13px; letter-spacing: .3em;
+    padding: 6px 14px; border-radius: 8px; border: 1px solid;
+  }
+  .fam-head .f-counts { font-size: 12px; color: var(--ink-3); }
+
+  /* ---------- 族谱 ---------- */
+  .tree { padding: 10px 0 8px; }
+  .gen-band { position: relative; padding: 22px 0 6px 26px; }
+  .gen-band::before {
+    content: ""; position: absolute; left: 6px; top: 34px; bottom: -6px;
+    width: 1px; background: var(--line-2);
+  }
+  .gen-band:last-child::before { display: none; }
+  .gen-band::after {
+    content: ""; position: absolute; left: 3px; top: 22px;
+    width: 7px; height: 7px; border-radius: 2px;
+  }
+  .gen-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+  .gen-label { font-family: var(--serif); font-size: 15px; font-weight: 700; letter-spacing: .08em; }
+  .gen-label small { font-family: var(--sans); font-size: 11px; font-weight: 400; color: var(--ink-3); margin-left: 8px; letter-spacing: .04em; }
+  .gen-line { flex: 1; height: 1px; background: var(--line); align-self: center; }
+
+  .branch-group { margin-bottom: 14px; }
+  .branch-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--ink-2); letter-spacing: .14em;
+    margin-bottom: 8px;
+  }
+  .branch-tag::before { content: ""; width: 14px; height: 1px; background: var(--line-2); }
+
+  .cards { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
+  .pair { display: flex; align-items: center; gap: 0; }
+  .pair .card { flex: 1 1 0; min-width: 0; }
+  .pair-join {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 0 10px; flex: none; align-self: stretch; justify-content: center;
+  }
+  .pair-join .j-label {
+    font-size: 10px; color: var(--cinnabar); letter-spacing: .06em;
+    border: 1px solid #E4C4BD; background: var(--cinnabar-soft);
+    padding: 1px 7px; border-radius: 999px; white-space: nowrap;
+  }
+  .pair-join .j-line { width: 26px; height: 1px; background: var(--line-2); position: relative; }
+  .pair-join .j-line::before, .pair-join .j-line::after {
+    content: ""; position: absolute; top: -2.5px; width: 6px; height: 6px;
+    border-radius: 50%; border: 1px solid var(--line-2); background: var(--paper);
+  }
+  .pair-join .j-line::before { left: -3px; }
+  .pair-join .j-line::after { right: -3px; }
+
+  /* ---------- 角色卡 ---------- */
+  .card {
+    --fam: #6B7280; --soft: #EDEFF2;
+    position: relative; display: flex; gap: 12px; align-items: flex-start;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 13px 14px; min-width: 232px; max-width: 300px; flex: 1 1 232px;
+    text-align: left; transition: transform .15s, box-shadow .15s, border-color .15s;
+    box-shadow: 0 1px 2px rgba(42,39,33,.03);
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--line-2); }
+  .card:focus-visible { outline: 2px solid var(--fam); outline-offset: 1px; }
+  .card.flash { animation: flash 1.6s ease; }
+  @keyframes flash {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(166,58,46,0); }
+    20% { box-shadow: 0 0 0 3px rgba(166,58,46,.28); }
+  }
+  .card-seal {
+    width: 46px; height: 46px; border-radius: 11px; flex: none;
+    display: grid; place-items: center;
+    font-family: var(--serif); font-size: 21px; font-weight: 700;
+    background: var(--soft); color: var(--fam);
+    box-shadow: inset 0 0 0 1px rgba(42,39,33,.06);
+  }
+  .card.rank-main .card-seal { background: var(--fam); color: #FFF; }
+  .card-main { flex: 1; min-width: 0; }
+  .card-name { font-family: var(--serif); font-size: 15.5px; font-weight: 700; line-height: 1.35; }
+  .card-name .alias { font-size: 11px; color: var(--ink-3); font-weight: 400; margin-left: 6px; }
+  .card-title {
+    font-size: 11.5px; color: var(--ink-2); margin-top: 2px; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .card-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+  .role-badge { font-size: 10px; padding: 1px 7px; border-radius: 999px; letter-spacing: .04em; line-height: 1.7; }
+  .role-badge.lead { background: var(--cinnabar); color: #FFF; }
+  .role-badge.support { color: var(--fam); border: 1px solid; }
+  .role-badge.minor { color: var(--ink-3); }
+  .actor-line { font-size: 11px; color: var(--ink-2); }
+  .actor-line b { font-weight: 600; color: var(--ink); }
+  .kin-chip {
+    font-size: 10px; color: var(--cinnabar); background: var(--cinnabar-soft);
+    border-radius: 999px; padding: 1px 8px; letter-spacing: .02em;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .kin-chip:hover { background: #F3DCD6; }
+  .inferred-flag {
+    position: absolute; top: 8px; right: 8px;
+    font-size: 9px; color: var(--ink-3); border: 1px dashed var(--line-2);
+    border-radius: 5px; padding: 0 4px; line-height: 1.6; letter-spacing: .02em;
+    background: var(--paper);
+  }
+
+  /* 仆从 */
+  .servant-band .cards .card { min-width: 190px; flex: 1 1 190px; background: #FCFBF8; }
+  .servant-band .card-seal { width: 36px; height: 36px; font-size: 16px; border-radius: 9px; }
+  .servant-band .card-name { font-size: 14px; }
+
+  /* ---------- 总览 ---------- */
+  .overview-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px; padding: 24px 0 8px;
+  }
+  .fam-card {
+    --fam: #6B7280; --soft: #EDEFF2;
+    position: relative; overflow: hidden;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 18px 18px 16px; text-align: left; transition: transform .15s, box-shadow .15s;
+    box-shadow: 0 1px 2px rgba(42,39,33,.03);
+  }
+  .fam-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .fam-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--fam); }
+  .fam-card .fc-name { font-family: var(--serif); font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .fam-card .fc-count { font-family: var(--sans); font-size: 11px; color: var(--ink-3); font-weight: 400; }
+  .fam-card .fc-tag { font-size: 12px; color: var(--ink-2); margin-top: 5px; }
+  .fam-card .fc-motto {
+    display: inline-block; margin-top: 12px; font-family: var(--serif);
+    font-size: 12px; letter-spacing: .22em; color: var(--fam);
+    background: var(--soft); border-radius: 6px; padding: 3px 10px;
+  }
+  .overview-note { padding: 8px 2px 0; font-size: 12px; color: var(--ink-3); }
+
+  /* ---------- 札记 ---------- */
+  .notes { margin-top: 64px; }
+  .notes-head { border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 22px; }
+  .notes-head h2 { font-family: var(--serif); font-size: 22px; font-weight: 700; display: flex; align-items: baseline; gap: 12px; }
+  .notes-head h2 small { font-size: 11px; color: var(--cinnabar); letter-spacing: .2em; font-family: var(--sans); font-weight: 600; }
+  .notes-head p { font-size: 12.5px; color: var(--ink-2); margin-top: 8px; max-width: 720px; }
+  .note-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+  .note-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 18px 20px; box-shadow: 0 1px 2px rgba(42,39,33,.03);
+  }
+  .note-card .nc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .note-card .nc-tag {
+    font-size: 10.5px; color: var(--cinnabar); background: var(--cinnabar-soft);
+    border-radius: 999px; padding: 2px 10px; letter-spacing: .08em;
+  }
+  .note-card .nc-no { font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--line-2); }
+  .note-card h3 { font-family: var(--serif); font-size: 15.5px; font-weight: 700; margin-bottom: 6px; }
+  .note-card p { font-size: 12.5px; color: var(--ink-2); }
+  .note-card p + p { margin-top: 6px; }
+  .note-card code {
+    font-family: "SF Mono","Consolas","Courier New",monospace; font-size: 11px;
+    background: var(--paper-2); border-radius: 5px; padding: 1px 5px; color: #8A4A3F;
+  }
+
+  /* ---------- 详情抽屉 ---------- */
+  .drawer-mask {
+    position: fixed; inset: 0; background: rgba(42,39,33,.32);
+    opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 80;
+  }
+  .drawer-mask.open { opacity: 1; pointer-events: auto; }
+  .drawer {
+    --fam: #6B7280; --soft: #EDEFF2;
+    position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100%);
+    background: var(--card); border-left: 1px solid var(--line);
+    transform: translateX(105%); transition: transform .25s ease; z-index: 90;
+    display: flex; flex-direction: column; box-shadow: -8px 0 32px rgba(42,39,33,.08);
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer-close {
+    position: absolute; top: 14px; right: 14px; width: 32px; height: 32px;
+    border-radius: 8px; display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-2); border: 1px solid var(--line); background: var(--card);
+  }
+  .drawer-close:hover { color: var(--cinnabar); border-color: var(--cinnabar); }
+  .drawer-body { overflow-y: auto; padding: 26px 26px 40px; }
+  .d-hero { display: flex; gap: 16px; align-items: center; }
+  .d-seal {
+    width: 64px; height: 64px; border-radius: 15px; flex: none;
+    display: grid; place-items: center; font-family: var(--serif);
+    font-size: 30px; font-weight: 700; background: var(--soft); color: var(--fam);
+    box-shadow: inset 0 0 0 1px rgba(42,39,33,.06);
+  }
+  .d-seal.solid { background: var(--fam); color: #FFF; }
+  .d-name { font-family: var(--serif); font-size: 22px; font-weight: 700; line-height: 1.3; }
+  .d-name .alias { font-size: 12px; color: var(--ink-3); font-weight: 400; margin-left: 8px; }
+  .d-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .d-badge {
+    font-size: 10.5px; border-radius: 999px; padding: 2px 9px; letter-spacing: .04em;
+    border: 1px solid var(--line-2); color: var(--ink-2); background: var(--paper);
+  }
+  .d-badge.fam { color: var(--fam); border-color: var(--fam); background: var(--soft); }
+  .d-badge.lead { background: var(--cinnabar); border-color: var(--cinnabar); color: #FFF; }
+  .d-badge.inferred { border-style: dashed; color: var(--ink-3); }
+  .d-title {
+    margin-top: 16px; font-size: 13px; color: var(--ink);
+    background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px;
+  }
+  .d-actor { margin-top: 10px; font-size: 12.5px; color: var(--ink-2); }
+  .d-actor b { color: var(--ink); font-weight: 600; }
+  .d-intro { margin-top: 16px; font-size: 13.5px; color: var(--ink); line-height: 1.9; }
+  .d-intro.empty { color: var(--ink-3); font-size: 12.5px; }
+  .d-sec { margin-top: 24px; }
+  .d-sec h4 {
+    font-family: var(--serif); font-size: 13px; font-weight: 700;
+    display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px;
+  }
+  .d-sec h4 small { font-size: 11px; color: var(--ink-3); font-weight: 400; }
+  .rel-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .rel-chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    border: 1px solid var(--line); background: var(--card); border-radius: 10px;
+    padding: 6px 11px 6px 7px; transition: all .13s; text-align: left;
+  }
+  .rel-chip:hover { border-color: var(--fam); background: var(--soft); }
+  .rel-chip .r-seal {
+    width: 22px; height: 22px; border-radius: 6px; flex: none;
+    display: grid; place-items: center; font-family: var(--serif);
+    font-size: 11px; font-weight: 700; color: #FFF;
+  }
+  .rel-chip .r-label { font-size: 10px; color: var(--ink-3); display: block; line-height: 1.4; }
+  .rel-chip .r-name { font-family: var(--serif); font-size: 13px; font-weight: 600; line-height: 1.3; }
+  .d-note {
+    margin-top: 14px; font-size: 12px; color: var(--ink-2);
+    border-left: 3px solid var(--line-2); padding: 4px 12px; background: var(--paper);
+    border-radius: 0 8px 8px 0;
+  }
+
+  /* ---------- 页脚 ---------- */
+  .footer { margin-top: 72px; border-top: 1px solid var(--line); padding-top: 26px; }
+  .footer .f-slogan {
+    font-family: var(--serif); font-size: 16px; font-weight: 700;
+    text-align: center; letter-spacing: .06em;
+  }
+  .footer .f-meta { margin-top: 14px; font-size: 11.5px; color: var(--ink-3); line-height: 2; text-align: center; }
+  .footer .f-meta b { color: var(--ink-2); font-weight: 400; }
+
+  /* ---------- Toast ---------- */
+  .toast {
+    position: fixed; left: 50%; bottom: 36px; transform: translate(-50%, 16px);
+    background: var(--ink); color: #F6F3EC; font-size: 12.5px;
+    border-radius: 999px; padding: 8px 20px; opacity: 0; pointer-events: none;
+    transition: all .25s; z-index: 120; letter-spacing: .04em;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width: 860px) {
+    .page { padding: 0 16px 48px; }
+    .hero { padding: 36px 0 28px; }
+    .hero h1 { font-size: 27px; }
+    .hero-seal { width: 64px; height: 64px; font-size: 17px; top: 34px; }
+    .stat { flex: 1 1 33%; padding: 12px 14px 10px; }
+    .stat-num { font-size: 21px; }
+    .fam-tabs { position: static; padding-top: 20px; }
+    .card { min-width: 100%; max-width: 100%; }
+    .pair { flex-direction: column; width: 100%; }
+    .pair .card { width: 100%; }
+    .pair-join { flex-direction: row; padding: 4px 0; }
+    .pair-join .j-line { width: 1px; height: 18px; }
+    .pair-join .j-line::before { left: -2.5px; top: -3px; }
+    .pair-join .j-line::after { left: -2.5px; top: auto; bottom: -3px; }
+    .drawer { width: 100%; top: auto; height: 88vh; border-left: none; border-top: 1px solid var(--line); border-radius: 18px 18px 0 0; transform: translateY(105%); }
+    .drawer.open { transform: translateY(0); }
+    .notes { margin-top: 48px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="topbar">
+    <div class="brand"><em>兰香如故</em><span class="sep">·</span>家族图谱</div>
+    <div class="topbar-right">
+      <button class="copy-link" id="copyLink">复制分享链接</button>
+      <span class="ver-chip">v1.0.5 · 社区分享版</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-seal" aria-hidden="true"><span>兰</span><span>香</span><span>如</span><span>故</span></div>
+    <div class="hero-kicker">《兰香如故》角色图谱 · 网页适配版</div>
+    <h1>一张族谱，看懂兰香如故。</h1>
+    <p class="hero-sub">改编自同名小程序的家族图谱数据：<b>10 大门第、154 位角色、160 条关系</b>，按辈分与房支排布，夫妻妾相邻、仆从单列。点开任意角色，可见小传、身份、饰演者与亲缘网络。</p>
+    <div class="stat-row" id="statRow"></div>
+    <div class="search-wrap">
+      <div class="search-box">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.5" stroke="#A39B8C" stroke-width="1.5"/><path d="M9.5 9.5L13 13" stroke="#A39B8C" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input id="searchInput" type="text" placeholder="搜索角色 / 别名 / 演员 / 身份，回车直达" autocomplete="off">
+        <kbd>ESC 关闭</kbd>
+      </div>
+      <div class="search-drop" id="searchDrop"></div>
+    </div>
+  </section>
+
+  <nav class="fam-tabs" id="famTabs"></nav>
+  <main id="mainArea"></main>
+
+  <section class="notes">
+    <div class="notes-head">
+      <h2>谱系订正札记 <small>DATA NOTES</small></h2>
+      <p>以下五条记录自小程序 v1.0.5 的数据治理过程。族谱不止于「好看」，更在于经得起核对——每条订正都可在角色详情中对照原文。</p>
+    </div>
+    <div class="note-grid">
+      <div class="note-card">
+        <div class="nc-top"><span class="nc-tag">角色考证</span><span class="nc-no">一</span></div>
+        <h3>赵晋本来就在数据里</h3>
+        <p>「赵阁老」其人此前只有一句「赵家成员。」——按他与赵星棠的祖孙关系与剧中尊称补全：<b>内阁首辅 · 从一品</b>，先帝从龙旧臣，曾主持编撰《文献大典》。推断项已标注。</p>
+      </div>
+      <div class="note-card">
+        <div class="nc-top"><span class="nc-tag">辈分修订</span><span class="nc-no">二</span></div>
+        <h3>皇长子不是太子</h3>
+        <p>旧数据把皇长子标为「即太子」、二皇子标为「即汉王」，实为误认。按谱系，二人皆是<b>太子之子</b>（同辈 gen 3）；太子、汉王、皇后随老皇帝一支归位。</p>
+      </div>
+      <div class="note-card">
+        <div class="nc-top"><span class="nc-tag">数据陷阱</span><span class="nc-no">三</span></div>
+        <h3>双逗号里的空洞</h3>
+        <p>relations 数组里有 3 处 <code>},,</code>，构成 JS <b>稀疏数组空洞</b>：序列化后显示为 null 像是缺陷，而 <code>forEach</code> 会直接跳过——所有基于遍历的检测全部漏判。已修复并补上空洞检测项。</p>
+      </div>
+      <div class="note-card">
+        <div class="nc-top"><span class="nc-tag">工程细节</span><span class="nc-no">四</span></div>
+        <h3>一个词换来的头像</h3>
+        <p>头像路径按 role 生成：新角色一旦写成 <code>support</code> 便触发「专属头像」要求；同类无演员角色（含老皇帝）均为 <code>minor</code>，走姓氏印章兜底。废帝已对齐为 minor。</p>
+      </div>
+      <div class="note-card">
+        <div class="nc-top"><span class="nc-tag">剧情钩沉</span><span class="nc-no">五</span></div>
+        <h3>戏班烧水的刘叔</h3>
+        <p>第 23 集明写「戏班烧水的『刘叔』正是朝廷搜捕的废太子」：废帝（inferred）新增入场，刘叔小传据第 23 / 36 集补全；刘五九与之无关，保持独立条目。</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="f-slogan">一张族谱，看懂兰香如故。</div>
+    <div class="f-meta">
+      <div>数据来源：腾讯视频剧集页 / 猫眼专业版演员表 / 新浪娱乐公开报道（2026-10 整理），演员与角色对应以片方最终公示为准。</div>
+      <div>本页为《兰香如故》角色图谱小程序的<b>网页适配分享版（v1.0.5）</b>，非官方页面；家族归属与辈分含公开信息推断项，卡片右上角「推」为标注。</div>
+      <div>单文件网页 · 可直接转发 · 链接自带定位（点角色后复制链接，打开即达该角色）</div>
+    </div>
+  </footer>
+</div>
+
+<div class="drawer-mask" id="drawerMask"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <button class="drawer-close" id="drawerClose" aria-label="关闭">&#215;</button>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+  var DATA = {"families":[{"id":"shen","name":"沈家","tag":"大学士府 · 显赫书香","color":"#3E5C76","soft":"#E4EBF2","motto":"满门风骨"},{"id":"lin","name":"林家","tag":"吏部尚书府 · 江南世家","color":"#9C3D3D","soft":"#F7E7E4","motto":"簪缨望族"},{"id":"zhao","name":"赵家","tag":"御前新贵 · 朝堂新宠","color":"#B0821F","soft":"#F7EED8","motto":"炙手可热"},{"id":"xu","name":"许家","tag":"林府家奴 · 一诺千金","color":"#8A6A4A","soft":"#F1E9DE","motto":"微末之义"},{"id":"han","name":"韩家","tag":"寒门书香 · 才名在外","color":"#4F7942","soft":"#E6EFE2","motto":"清直自守"},{"id":"du","name":"杜家","tag":"寒门孤女 · 步步为营","color":"#7B5E7B","soft":"#F0E8F0","motto":"困兽之争"},{"id":"yuan","name":"永昌侯府","tag":"武将勋爵 · 海疆殉节","color":"#4A7C7C","soft":"#E4F0F0","motto":"忠勇传家"},{"id":"zheng","name":"显国公府","tag":"权臣勋爵 · 卖主求荣","color":"#6B5D4A","soft":"#F0EBE5","motto":"权柄难持"},{"id":"lu","name":"鲁家","tag":"七品小官 · 附逆破家","color":"#8A7B5C","soft":"#F0EDE5","motto":"贪嗔痴慢"},{"id":"royal","name":"宗室","tag":"天家贵胄 · 皇权倾轧","color":"#A63A2E","soft":"#F8E6E1","motto":"雷霆天威"},{"id":"other","name":"剧中其他角色","tag":"演员表角色 · 家族归属待补充","color":"#6B7280","soft":"#EDEFF2","motto":"众生相"}],"characters":[{"id":"shen_jialan","name":"沈嘉兰","alias":"许兰香","actor":"谭松韵","family":"shen","gen":3,"title":"大学士府长孙女 · 后为林府三等丫鬟、当家主母","role":"lead","intro":"大学士府长孙女，与吏部尚书林家嫡长孙林锦岐订有婚约。祖父被判谋逆之罪，沈家惨遭灭门，母亲崔氏曾接济过的林家家奴许万全夫妇，用刚病亡的女儿许兰香顶替了她。她自此顶着许兰香的身份，成为林府一名三等丫鬟。在艰难的境遇中她没有向命运低头，凭理财查账、调香与处事智慧在林府底层存活，反抗一切不公与压迫，最终赢得林锦岐倾心与林家上下的信服尊重，成为林家的当家人，为沈家洗刷冤屈讨回公道。","relations":[{"id":"lin_jinqi","label":"婚约 · 夫妻"},{"id":"han_liang","label":"知己"},{"id":"cui_shi","label":"母女"},{"id":"xu_wanquan","label":"救命恩人"},{"id":"shen_qihan","label":"祖孙"},{"id":"shen_lao_furen","label":"祖孙"},{"id":"zhao_xingtang","label":"主母 / 原配"},{"id":"du_cuique","label":"府中纠葛"},{"id":"guo_ke_yu_role","label":"养母女"},{"id":"xu_lanxiang","label":"身份替换"},{"id":"shen_bohu","label":"沈家亲族"},{"id":"shen_jialan_young","label":"同一角色 · 少年版"},{"id":"shen_jialian","label":"堂姐妹"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"lin_jinqi","name":"林锦岐","alias":"","actor":"刘学义","family":"lin","gen":3,"title":"吏部尚书林家嫡长孙 · 正四品卫指挥佥事","role":"lead","intro":"吏部尚书林家的嫡长孙，正四品卫指挥佥事，能文能武、心思深沉。初期因家族自保的考量不得不与沈家退婚，改娶御前新贵赵家的赵星棠为妻。此后在朝夕相处中，逐渐被许兰香的善良与机智吸引，从防备到深情，甚至为了求娶她不惜请旨强婚。他也是当年为沈家收尸、并一直暗中为沈家翻案的人。","relations":[{"id":"shen_jialan","label":"夫妻"},{"id":"zhao_xingtang","label":"原配夫妻（后休）"},{"id":"du_cuique","label":"府中纠葛"},{"id":"lin_zhaoxiang","label":"祖孙"},{"id":"lin_lao_furen","label":"祖孙"},{"id":"lin_jinlan","label":"堂亲"},{"id":"han_liang","label":"情敌 · 朝堂异路"},{"id":"lin_xiuwan","label":"林家亲族"},{"id":"lin_xiushu","label":"林家亲族"},{"id":"lin_jinqi_young","label":"同一角色 · 青年版"},{"id":"lin_changmin","label":"林家亲族"},{"id":"lin_changzheng","label":"林家亲族"},{"id":"lin_jinqiao","label":"林锦岐同辈"},{"id":"lin_jincen","label":"林家亲族"},{"id":"lin_xiulai","label":"林家亲族"},{"id":"lin_xiuru","label":"林家亲族"},{"id":"yuan_shaohui","label":"挚友"},{"id":"lin_jinqi_child","label":"同一角色 · 童年版"}],"historicalId":null,"variantOf":null,"inferred":false,"branch":"大房"},{"id":"han_liang","name":"韩粱","alias":"（部分报道写作「韩梁」）","actor":"牛骏峰","family":"han","gen":3,"title":"寒门解元 · 后官至尚书","role":"lead","intro":"寒门出身，才华横溢，对许兰香很有好感，曾希望母亲请媒人向兰香提亲，却被林锦岐夺爱。他高中解元，官至尚书，为人清正刚直。皇权更迭时，他因触怒帝王，在大雪之夜被罚站宫门，活活冻死。许兰香与他仅有知己情谊，得知噩耗十分怅然。","relations":[{"id":"shen_jialan","label":"知己 · 提亲未成"},{"id":"lin_jinqi","label":"情敌"},{"id":"han_mu","label":"母子"},{"id":"huangdi","label":"君臣"},{"id":"han_dongqing","label":"韩家亲族"},{"id":"han_zhi","label":"姐弟"}],"historicalId":"yu_qian","variantOf":null,"inferred":false},{"id":"zhao_xingtang","name":"赵星棠","alias":"","actor":"李梦","family":"zhao","gen":3,"title":"林锦岐原配正妻","role":"lead","intro":"林锦岐的原配正妻，性格骄纵泼辣、心机深沉，经常拿府中丫鬟撒气。她与表哥钱少泽私通，并为了两人的将来，背着林府暗中经营生意赚钱。最终被林锦岐设局抓包，遭休妻后又被家族当成联姻的棋子改嫁。","relations":[{"id":"lin_jinqi","label":"夫妻（后休）"},{"id":"qian_shaozhe","label":"表兄妹"},{"id":"zhao_xuede","label":"赵家亲族"},{"id":"shen_jialan","label":"原配 / 主母"},{"id":"zhao_gang","label":"赵家亲族"},{"id":"zhao_xingluo","label":"堂姐妹"},{"id":"zhao_jin","label":"祖孙"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"du_cuique","name":"杜翠雀","alias":"","actor":"郑合惠子","family":"du","gen":3,"title":"寒门孤女","role":"lead","intro":"寒门孤女，兄长为林锦岐的救命恩人。表面温顺谦卑，内心狠辣清醒，为了摆脱出身命运步步为营、不择手段攀附豪门，想成为林锦岐的妾室。最终因下毒被识破，遭到流放。","relations":[{"id":"lin_jinqi","label":"图谋为妾"},{"id":"shen_jialan","label":"府中纠葛"},{"id":"du_zheng","label":"杜家亲族"},{"id":"du_dasong","label":"杜家亲族"},{"id":"ling_dang","label":"主仆"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"guo_ke_yu_role","name":"薛桂花","alias":"","actor":"郭柯宇","family":"xu","gen":2,"title":"许万全之妻 · 沈嘉兰养母","role":"support","intro":"许万全之妻，许兰香（真）之母，沈嘉兰的养母。与丈夫因女儿重病被主家扫地出门，求医无门时受沈家大夫人和沈嘉兰救助。沈家蒙冤灭门后，夫妇收留死里逃生的沈嘉兰，让她顶替病逝女儿许兰香的身份进入林府为三等丫鬟；又在教坊司用许兰香遗体换下沈嘉兰，冒杀头之罪将其带离。","relations":[{"id":"xu_wanquan","label":"夫妻"},{"id":"xu_lanxiang","label":"母女"},{"id":"shen_jialan","label":"养母女"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"xu_lanxiang","name":"许兰香","alias":"（沈嘉兰顶替身份）","actor":"薛雨霏","family":"xu","gen":3,"title":"许万全与薛桂花之女 · 已故","role":"minor","intro":"许万全与薛桂花之女，自幼体弱。沈家蒙难前夕病亡，父母用她的遗体替换了沈嘉兰——此后沈嘉兰顶着「许兰香」的名字活了下来，入林府为三等丫鬟，凭聪慧与坚韧从底层一步步成为林家当家人，为沈家洗刷冤屈。「许兰香」这个名字，承载了两段命运。","relations":[{"id":"xu_wanquan","label":"父女"},{"id":"guo_ke_yu_role","label":"母女"},{"id":"shen_jialan","label":"身份替换"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"xu_wanquan","name":"许万全","alias":"","actor":"陈创","family":"xu","gen":2,"title":"林家家奴","role":"support","intro":"林家家奴，薛桂花之夫。曾受过沈家的恩惠，在沈家蒙难时，与妻子用刚病亡的女儿许兰香顶替沈嘉兰去死，保下了沈家血脉。此后又冒险在教坊司用女儿遗体换下沈嘉兰，将其带离。","relations":[{"id":"shen_jialan","label":"救命恩人"},{"id":"guo_ke_yu_role","label":"夫妻"},{"id":"xu_lanxiang","label":"父女"},{"id":"xu_xiangsheng","label":"许家亲族"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"lin_zhaoxiang","name":"林昭祥","alias":"","actor":"侯长荣","family":"lin","gen":1,"title":"林家老太爷 · 吏部尚书","role":"support","intro":"林家老太爷，时任吏部尚书，与沈大学士为同榜同年挚友。沈家蒙难后，为保全整个林家主动上书自请致仕，写下退婚文书与沈家切割，又与新贵赵家联姻自保。他在大婚拜堂时便看破兰香真实身份，选择秘而不宣，暗中护佑亡友遗孤，以此弥补内心亏欠。","relations":[{"id":"lin_jinqi","label":"祖孙 / 亲族"},{"id":"lin_lao_furen","label":"林家长辈"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"lin_xiuwan","name":"林绣芄","alias":"","actor":"吴甜甜","family":"lin","gen":3,"title":"二房嫡出 · 林家二小姐","role":"support","intro":"林长敏与王凌霄之女，林家二小姐。原本个性任性，遭杜翠雀设计，将杜正误认为谢昭而喜欢上他。得知受骗后一度不愿接受，后被祖父林昭祥禁足一年，期间逐渐反省并变得成熟，最后与谢昭在一起。","relations":[{"id":"lin_jinqi","label":"林家亲族"}],"historicalId":null,"variantOf":null,"inferred":true,"branch":"二房"},{"id":"lin_xiushu","name":"林绣菽","alias":"","actor":"刘佳玺","family":"lin","gen":3,"title":"大房嫡出 · 林家四小姐","role":"support","intro":"林长政与秦舜华幼女，林家四小姐，林锦岐同母胞妹。对桃花粉过敏。后嫁杨淙。","relations":[{"id":"lin_jinqi","label":"林家亲族"},{"id":"lin_xiushu_adult","label":"同一角色 · 成年版"}],"historicalId":null,"variantOf":null,"inferred":true,"branch":"大房"},{"id":"yu_chan","name":"玉蝉","alias":"","actor":"叶青","family":"lin","gen":0,"title":"一等丫鬟 · 知春馆管事","role":"support","intro":"林府知春馆一等丫鬟。被赵星棠强行许配给米行柳掌柜的痴傻儿子，受尽磋磨。和离后回到林府，后嫁给因军功脱籍升正五品千户的九皋，成为千户夫人。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"一等丫鬟"},{"id":"lv_jier","name":"吕蕺儿","alias":"","actor":"刘美含","family":"lin","gen":0,"title":"三等丫鬟","role":"support","intro":"许兰香与林锦岐在京城多方出力营救的对象。","relations":[{"id":"lv_laoyezhi","label":"祖孙"}],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"三等丫鬟"},{"id":"gan_tang","name":"甘棠","alias":"","actor":"李嘉鑫","family":"lin","gen":0,"title":"三等丫鬟 → 后升二等","role":"support","intro":"林府家生丫鬟，与兰香、吕蕺儿、小莲一同为三等丫鬟。沉默寡言，行事谨慎，精于算计且观察力敏锐，擅长写字、算账与经营。后嫁杜大松，开甘记工坊，成为京城女掌柜。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"三等丫鬟"},{"id":"lu_xie","name":"陆燮","alias":"","actor":"苏可","family":"other","gen":3,"title":"","role":"support","intro":"陆家书画行老板。年少得志，曾有极高的功名与才华，后因家人牵涉先帝政争遭灭门，心灰意冷不再入仕。以经营书画行及编写戏文、词曲为生，终日酒壶不离手。因患严重手疾，将编写的戏文词曲交由韩粱及后来前来谋职的许兰香协助誊抄整理。认出兰香身份后暗中教导护佑。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"qin_shunhua","name":"秦舜华","alias":"","actor":"孔令美","family":"lin","gen":2,"title":"大房正妻 · 林锦岐之母","role":"support","intro":"林长政正妻，林府当家主母，林锦岐与林绣菽之母。行事端庄，掌中馈、明赏罚。腹部生恶疮，在孙女尚幼时病逝。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"branch":"大房"},{"id":"huangdi","name":"太子 / 皇帝","alias":"","actor":"孔连顺","family":"royal","gen":2,"title":"东宫 → 御极","role":"support","intro":"当朝太子，后继承大统。行事沉稳，心怀社稷，看不惯朝堂奸佞作祟。联合林锦岐等正直官员与汉王周旋，暗中搜集罪证。汉王叛乱时主持平叛，平定后励精图治整顿朝纲，沈家冤案得以重审昭雪。","relations":[{"id":"lao_huangdi","label":"父子"},{"id":"han_liang","label":"君臣"},{"id":"huang_zhangzi","label":"父子"},{"id":"er_huangzi","label":"父子"},{"id":"hanwang","label":"兄弟"},{"id":"huanghou","label":"母子"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"hanwang","name":"汉王","alias":"","actor":"李泓良","family":"royal","gen":2,"title":"宗室亲王","role":"support","intro":"皇帝之子、太子之弟，战功卓著的武将。因不甘太子之位旁落而暗中培植势力，拉拢郑百川、赵家等人，当年默许郑百川罗织罪名扳倒沈其翰。多年苦心经营后悍然起兵叛乱，被朝廷大军击溃，兵败被俘，打入天牢。其党羽遭到清算，间接促成沈家旧案重审。","relations":[{"id":"fang_yu","label":"幕僚"},{"id":"lao_huangdi","label":"父子"},{"id":"huangdi","label":"兄弟"},{"id":"huanghou","label":"母子"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"qian_shaozhe","name":"钱少泽","alias":"","actor":"马闻远","family":"zhao","gen":3,"title":"赵星棠表兄","role":"support","intro":"赵星棠的远房表哥及旧日相好，自幼在赵家长大，是个秀才。赵星棠嫁入林府后仍与其暗中往来；为掩人耳目曾男扮女装，以「钱小姐」身份进入林府私会。私情被林锦岐揭穿后携财逃离，在城外遭赵刚截杀身亡。","relations":[{"id":"zhao_xingtang","label":"表兄妹"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"shen_lao_furen","name":"沈老夫人","alias":"","actor":"严晓频","family":"shen","gen":1,"title":"大学士府老夫人","role":"support","intro":"沈家老夫人，沈其翰之妻，沈伯儒等人的母亲，沈嘉兰的祖母。沈家蒙难后与女眷一同赴死。","relations":[{"id":"shen_jialan","label":"祖孙"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"shen_qihan","name":"沈其翰","alias":"","actor":"章申","family":"shen","gen":1,"title":"大学士府长辈","role":"support","intro":"文渊阁大学士兼正二品礼部尚书，一代清流忠臣。因不肯屈从新帝，被罗织谋逆罪名，沈家满门抄斩。","relations":[{"id":"shen_jialan","label":"祖孙"},{"id":"shen_zhongli","label":"父子"},{"id":"shen_shuci","label":"父子"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"shen_bohu","name":"沈伯儒","alias":"","actor":"张铎","family":"shen","gen":2,"title":"沈家长辈","role":"minor","intro":"沈其翰长子，官任正五品大理寺左寺丞，崔氏之夫，沈嘉兰之父。沈家蒙难时一同罹难。","relations":[{"id":"shen_jialan","label":"沈家亲族"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"cui_shi","name":"崔氏","alias":"","actor":"柯蓝","family":"shen","gen":2,"title":"沈嘉兰之母","role":"support","intro":"沈嘉兰的母亲。曾接济过林家家奴许万全一家，这一份善缘在沈家蒙难时换回了女儿的一条命。","relations":[{"id":"shen_jialan","label":"母女"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"shen_er_furen","name":"沈二夫人","alias":"","actor":"周知","family":"shen","gen":2,"title":"","role":"minor","intro":"沈家二太太，沈仲礼之妻，沈嘉莲之母。沈家蒙难后与女眷一同赴死。","relations":[{"id":"shen_zhongli","label":"夫妻"},{"id":"shen_jialian","label":"母女"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"shen_san_furen","name":"沈三夫人","alias":"","actor":"奚望","family":"shen","gen":2,"title":"","role":"minor","intro":"沈家三太太，沈叔辞之妻。出身将门，性情洒脱坚毅。沈家蒙难后身陷囹圄，面对生死仍不改气节，最终随沈家一同赴死。","relations":[{"id":"shen_shuci","label":"夫妻"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"shen_jichu","name":"沈季初","alias":"","actor":"陈芊桦","family":"shen","gen":4,"title":"","role":"minor","intro":"沈家晚辈。","relations":[],"historicalId":null,"variantOf":null,"inferred":true},{"id":"shen_jialan_young","name":"少年沈嘉兰","alias":"","actor":"李熙媛","family":"shen","gen":3,"title":"沈嘉兰少年时期","role":"minor","intro":"沈嘉兰少年时期。沈家蒙难时年幼的她被许万全夫妇救下，顶替已故女儿许兰香的身份死里逃生。","relations":[{"id":"shen_jialan","label":"同一角色 · 少年版"}],"historicalId":null,"variantOf":"shen_jialan","inferred":false},{"id":"lin_jinqi_young","name":"青年林锦岐","alias":"","actor":"周翊涛","family":"lin","gen":3,"title":"林锦岐青年时期","role":"minor","intro":"林锦岐青年时期。","relations":[{"id":"lin_jinqi","label":"同一角色 · 青年版"}],"historicalId":null,"variantOf":"lin_jinqi","inferred":false},{"id":"lin_lao_furen","name":"林老夫人","alias":"","actor":"王亚军","family":"lin","gen":1,"title":"尚书府老夫人","role":"support","intro":"林家老夫人，林昭祥之妻。汉王之乱后林锦岐被封靖安侯时中风，不久离世。","relations":[{"id":"lin_jinqi","label":"祖孙"},{"id":"lin_zhaoxiang","label":"林家长辈"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"lin_changmin","name":"林长敏","alias":"","actor":"魏子昕","family":"lin","gen":2,"title":"二房老爷","role":"minor","intro":"林昭祥次子，王凌霄之夫，林锦峤、林绣芄、林锦岑之父。林家二房当家，与兄长林长政关系不睦，但妯娌之间有商有量。","relations":[{"id":"lin_jinqi","label":"林家亲族"}],"historicalId":null,"variantOf":null,"inferred":true,"branch":"二房"},{"id":"lin_changzheng","name":"林长政","alias":"","actor":"张衣","family":"lin","gen":2,"title":"大房老爷 · 大理寺左寺丞","role":"minor","intro":"林昭祥嫡长子，秦舜华之夫，林锦岐、林绣莱、林锦岚、林绣茹、林绣菽之父。官居正五品大理寺左寺丞（剧中为林家大房当家）。","relations":[{"id":"lin_jinqi","label":"林家亲族"},{"id":"qiao_hongdou","label":"妾室"},{"id":"bao_yiniang","label":"妾室"}],"historicalId":null,"variantOf":null,"inferred":true,"branch":"大房"},{"id":"lin_jinlan","name":"林锦岚","alias":"","actor":"郭迦南","family":"lin","gen":3,"title":"大房庶出 · 林家二少爷","role":"support","intro":"林长政与周姨娘之子，林家二少爷，谭氏之夫。自幼有心疾，身子偏弱。在儿子快百日时病逝于京城。","relations":[{"id":"lin_jinqi","label":"林锦岐同辈"}],"historicalId":null,"variantOf":null,"inferred":true,"branch":"大房"},{"id":"lin_jinqiao","name":"林锦峤","alias":"","actor":"王佳璇","family":"lin","gen":3,"title":"二房嫡出 · 林家三少爷","role":"minor","intro":"林长敏与王凌霄长子，林家三少爷，程凤仙之夫。","relations":[{"id":"lin_jinqi","label":"林锦岐同辈"}],"historicalId":null,"variantOf":null,"inferred":true,"branch":"二房"},{"id":"lin_jincen","name":"林锦岑","alias":"","actor":"单禹豪","family":"lin","gen":3,"title":"二房嫡出 · 林家四少爷","role":"minor","intro":"林长敏与王凌霄幼子，林家四少爷。性格耿直，看不惯内宅阴谋，多次暗中提醒林锦岐提防奸人。","relations":[{"id":"lin_jinqi","label":"林家亲族"}],"historicalId":null,"variantOf":null,"inferred":true,"branch":"二房"},{"id":"lin_xiulai","name":"林绣莱","alias":"","actor":"蒲萄","family":"lin","gen":3,"title":"大房庶出 · 林家大小姐","role":"minor","intro":"林长政与乔姨娘之女，林家大小姐。嫁鲁鉴为妻，因遭丈夫家暴，在兰香帮助下和离返回林家，后成为林家管事。子女鲁隽、鲁瑛芝。","relations":[{"id":"lin_jinqi","label":"林家亲族"},{"id":"qiao_hongdou","label":"母女"},{"id":"lu_jun","label":"母子"}],"historicalId":null,"variantOf":null,"inferred":true,"branch":"大房"},{"id":"lin_xiuru","name":"林绣茹","alias":"","actor":"马凡丁","family":"lin","gen":3,"title":"大房庶出 · 林家三小姐","role":"minor","intro":"林长政与秦姨娘之女，林家三小姐。心思细腻，懂得察言观色，是第一个发现杜翠雀有心机的人。后代替二姐林绣芄嫁永昌侯袁绍辉为第二任妻子，熬成侯夫人。婚后连生四女，面对纳妾风波以和离为筹码为女儿争家产。袁绍辉被杜翠雀害死后，她用琵琶砸向仇人替夫报仇。守寡后开私塾。","relations":[{"id":"lin_jinqi","label":"林家亲族"},{"id":"bao_yiniang","label":"母女"},{"id":"yuan_shaohui","label":"夫妻"}],"historicalId":null,"variantOf":null,"inferred":true,"branch":"大房"},{"id":"lin_xiushu_adult","name":"成年林绣菽","alias":"","actor":"陆文欣","family":"lin","gen":3,"title":"林绣菽成年时期","role":"minor","intro":"林绣菽成年时期。","relations":[{"id":"lin_xiushu","label":"同一角色 · 成年版"}],"historicalId":null,"variantOf":"lin_xiushu","inferred":false},{"id":"lin_zhangjun","name":"成年林章隽","alias":"","actor":"张续振","family":"lin","gen":4,"title":"","role":"minor","intro":"林锦岐与许兰香之子林章隽的成年时期。","relations":[],"historicalId":null,"variantOf":null,"inferred":true,"branch":"大房"},{"id":"lin_zhangcheng","name":"少女林章澂","alias":"","actor":"祁心蕊","family":"lin","gen":4,"title":"","role":"minor","intro":"林锦岐与许兰香之女林章澂的少女时期。","relations":[],"historicalId":null,"variantOf":null,"inferred":true,"branch":"大房"},{"id":"zhao_xuede","name":"赵学德","alias":"","actor":"王玉宁","family":"zhao","gen":2,"title":"赵家长辈","role":"minor","intro":"赵星棠之父，官任从六品布政司理问。御前新贵赵家的掌舵人，为攀附权势安排女儿赵星棠与林锦岐联姻；赵星棠与林锦岐和离后，又安排她改嫁京城戴家。","relations":[{"id":"zhao_xingtang","label":"赵家亲族"},{"id":"zhao_gang","label":"父子"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"zhao_gang","name":"赵刚","alias":"","actor":"孙仲秋","family":"zhao","gen":3,"title":"赵家长辈","role":"minor","intro":"赵学德之子，赵星棠之兄。赵星棠与钱少泽在藏书楼私会时，与父亲一同撞破二人私情。后截杀携财逃走的钱少泽。","relations":[{"id":"zhao_xingtang","label":"赵家亲族"},{"id":"zhao_xuede","label":"父子"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"zhao_jin","name":"赵晋","alias":"","actor":"屈刚","family":"zhao","gen":1,"title":"内阁首辅 · 从一品","role":"minor","intro":"内阁大学士、内阁首辅，从一品，剧中众人尊称「赵阁老」。先帝从龙旧臣，朝堂权倾朝野，曾主持编撰《文献大典》。其孙女为赵星棠。","relations":[{"id":"zhao_xingtang","label":"祖孙"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"xu_xiangsheng","name":"许翔生","alias":"","actor":"杨成志","family":"xu","gen":2,"title":"许家亲族","role":"minor","intro":"许家亲族。","relations":[{"id":"xu_wanquan","label":"许家亲族"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"han_mu","name":"韩母","alias":"","actor":"郑卫莉","family":"han","gen":2,"title":"韩粱之母","role":"minor","intro":"韩粱之母，家境清贫但为人通情达理。得知韩粱有意迎娶兰香后，并未因其出身与经历加以反对，而是首肯了两人的婚事。","relations":[{"id":"han_liang","label":"母子"},{"id":"han_zhi","label":"母女"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"han_dongqing","name":"韩冬青","alias":"","actor":"贾舒夷","family":"han","gen":3,"title":"","role":"minor","intro":"韩家成员。","relations":[{"id":"han_liang","label":"韩家亲族"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"du_zheng","name":"杜正","alias":"","actor":"叶筱玮","family":"du","gen":3,"title":"","role":"minor","intro":"杜翠雀之兄，金州卫小旗。幼年父母双亡后与妹妹相依为命。曾在战场上替林锦岐挡刀救其性命，因此被林家视为恩人。后因利益与妹妹一同背叛林家，冒充谢昭引诱林绣芄，并在行动败露后持刀袭击林锦岐，最终遭永昌侯重创而亡。","relations":[{"id":"du_cuique","label":"杜家亲族"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"du_dasong","name":"杜大松","alias":"","actor":"邵伟桐","family":"du","gen":3,"title":"","role":"minor","intro":"杜正、杜翠雀之兄，小莲之兄。踏实本分的普通人家男子，甘棠主动求兰香成全嫁与他。婚后甘棠以算账、管账本事帮其打理织坊生意。","relations":[{"id":"du_cuique","label":"杜家亲族"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"feidi","name":"废帝","alias":"","actor":"","family":"royal","gen":1,"title":"前朝皇帝 · 已被推翻","role":"minor","intro":"前朝皇帝，后被老皇帝起兵推翻，其子是第一集前朝东宫废太子（刘叔）。剧中未正式出场，仅见于背景设定。","relations":[{"id":"liu_shu","label":"父子"},{"id":"lao_huangdi","label":"取代 · 敌对"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"lao_huangdi","name":"老皇帝","alias":"","actor":"秦焰","family":"royal","gen":1,"title":"","role":"minor","intro":"当朝皇帝（先帝），太子的父亲。在位时沈家冤案铁板钉钉、不可翻动。驾崩后新君即位，沈家冤案才得以昭雪。","relations":[{"id":"huangdi","label":"父子"},{"id":"hanwang","label":"父子"},{"id":"huanghou","label":"夫妻"},{"id":"feidi","label":"取代 · 敌对"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"huanghou","name":"皇后","alias":"","actor":"张萍娟","family":"royal","gen":1,"title":"","role":"minor","intro":"当朝皇后，太子与汉王之母。","relations":[{"id":"huangdi","label":"母子"},{"id":"hanwang","label":"母子"},{"id":"lao_huangdi","label":"夫妻"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"huang_zhangzi","name":"皇长子","alias":"","actor":"杨凯程","family":"royal","gen":3,"title":"","role":"minor","intro":"太子之子，排行居长。","relations":[{"id":"huangdi","label":"父子"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"er_huangzi","name":"二皇子","alias":"","actor":"代云帆","family":"royal","gen":3,"title":"","role":"minor","intro":"太子之子，排行第二。","relations":[{"id":"huangdi","label":"父子"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"xiao_lian","name":"杜小莲","actor":"宋芳园","family":"lin","gen":0,"title":"三等丫鬟 → 后升二等","role":"support","intro":"林府丫鬟，与兰香、甘棠、吕蕺儿一同成为三等丫鬟。天性单纯赤诚，没有心机。汉王之乱途中被车夫扔在冰天雪地，幸得南客舍命相救。后嫁南客为妻，成为千户夫人。","relations":[{"id":"mai_lanzi","label":"外祖母"}],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"三等丫鬟"},{"id":"bao_gai","name":"宝盖","actor":"汤梦佳","family":"lin","gen":0,"title":"二等丫鬟 · 茶水房","role":"minor","intro":"林府丫鬟，负责管理茶水间，与兰香、甘棠、小莲为好友。为人低调，低头做事不踩低捧高。终身不嫁，从粗使丫鬟成长为管事大丫鬟，以未婚之身陪在兰香身侧直至最后。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"二等丫鬟"},{"id":"fu_rong","name":"芙蓉","actor":"关畅","family":"other","gen":0,"title":"","role":"minor","intro":"兰香的好友，在戏班唱戏。原名门千金，与兰香有相似遭遇——家族因不愿诋毁废帝、支持新帝而被灭门。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"wang_lingxiao","name":"王凌霄","actor":"赵秦","family":"lin","gen":2,"title":"二房正妻 · 林长敏之妻","role":"minor","intro":"林长敏正妻，林家二太太。性格精明，处事周全谨慎，将全部心思放在儿女前程上，极力借联姻抬高子女地位。府内纷争时心护子女、尽量避开宅斗漩涡，后选择明哲保身。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"branch":"二房"},{"id":"tan_shi","name":"谭氏","actor":"吴天琪","family":"lin","gen":3,"title":"林锦岚之妻","role":"minor","intro":"林锦岚之妻。林锦岚病逝后独自抚育幼子。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"branch":"大房"},{"id":"dong_qingzhu","name":"董清竹","actor":"董晴","family":"other","gen":0,"title":"","role":"minor","intro":"宛平县丞之女，宫中女官。其父在汉王叛乱中坚守节操殉难。后与韩粱结合。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"zheng_baichuan","name":"郑百川","actor":"沈泰","family":"zheng","gen":2,"title":"显国公 · 后军都督府都督","role":"support","intro":"朝中重臣，爵封显国公，官任后军都督府都督、金陵协同守备，手握金陵重兵，郑蔓宜之父。降臣出身，再次卖主求荣，参与汉王谋反。沈家冤案便是他权力博弈中的一环——当年罗织罪名扳倒沈其翰。","relations":[{"id":"zheng_manyi","label":"父女"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"xie_zhao","name":"谢昭","actor":"邬家楷","family":"other","gen":0,"title":"","role":"minor","intro":"学识出众的世家子弟，早年与林绣芄有婚约。赏花宴遭杜翠雀设计，林绣芄错认杜正为谢昭，婚约被迫作罢。遵从父母之命迎娶赵六娘（赵星棠堂妹），婚后夫妻不和，体面和离。游历归来后考中进士，不计前嫌登门求娶林绣芄。","relations":[{"id":"zhao_xingluo","label":"前夫妻"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"lu_jian","name":"鲁鉴","actor":"辛鹏","family":"lu","gen":3,"title":"鲁家大爷 · 举人","role":"minor","intro":"林家大女儿林绣莱之夫，身为举人。婚后暴露贪婪本性，侵占林绣莱嫁妆，长期对妻子施暴。林绣莱在许兰香支持下告官求离，鲁鉴被判杖刑七十、徒刑两年半、剥夺功名。最终因参与谋反落得身死下场。","relations":[{"id":"lu_jun","label":"父子"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"liu_xiaochuan","name":"刘晓川","actor":"姚一奇","family":"other","gen":0,"title":"","role":"minor","intro":"南城兵马司官员，擅长刑狱推勘。与林锦岐是故交，林锦岐被下狱时他是少数前去探望的人。参与审讯杜正、赵家叛党，协助推勘沈家旧案，只忠于证据，不受权贵人情干扰。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"sun_yong","name":"孙勇","actor":"赵梓冲","family":"other","gen":0,"title":"","role":"minor","intro":"锦衣卫总旗，负责缉拿叛党、保护关键人证，抓捕郑百川一众奸党。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"zhang_shuizai","name":"张水仔","actor":"辛浩江","family":"other","gen":0,"title":"","role":"minor","intro":"海盗头目，汉王叛乱的武力之一。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"liu_yue_niang","name":"柳月娘","actor":"王艺禅","family":"other","gen":0,"title":"","role":"minor","intro":"轻烟楼老板。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"gu_youzi","name":"谷莠子","actor":"杨凯淳","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"ding_peng","name":"丁鹏","actor":"刘邦豪","family":"other","gen":0,"title":"","role":"minor","intro":"袁绍辉的心腹。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"liu_wujiu","name":"刘五九","actor":"王晓龙","family":"other","gen":0,"title":"","role":"minor","intro":"刘家成员，胡荽儿之夫。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"yingguogong","name":"英国公","actor":"王铂清","family":"other","gen":0,"title":"勋贵","role":"minor","intro":"勋贵英国公。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"liu_fuzun","name":"刘府尊","actor":"王鲁","family":"other","gen":0,"title":"地方官","role":"minor","intro":"金陵府尹（府尊），地方官。兰香捧赐婚圣旨进公堂时面对的审官。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"qian_zhenfu","name":"钱镇抚","actor":"白海涛","family":"other","gen":0,"title":"武职","role":"minor","intro":"武职镇抚，参与汉王谋反。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"niu_fan","name":"牛蘩","actor":"厉蔺菲","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"da_shifu","name":"大师傅","actor":"刘旭","family":"other","gen":0,"title":"","role":"minor","intro":"林府作坊的大师傅。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"xu_guangyi","name":"徐光义","actor":"成国栋","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"lu_ju","name":"鲁钜","actor":"任学海","family":"lu","gen":2,"title":"鲁家老爷","role":"minor","intro":"鲁家老爷，鲁鉴之父。鲁家为汉王赵阁老一党，鲁鉴因参与谋反落得身死。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"sun_wujing","name":"孙芜菁","actor":"邬倩","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"qi_sihai","name":"齐四海","actor":"毕瀚文","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"li_zuoying","name":"李坐营","actor":"李晓磊","family":"other","gen":0,"title":"","role":"minor","intro":"军中坐营官。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"tu_wu","name":"涂五","actor":"陈旭明","family":"other","gen":0,"title":"","role":"minor","intro":"陆燮的老仆，长年服侍其日常起居。平日协助打理书画行杂务，后亦随陆燮处理芙蓉秀戏班事务，对陆燮十分忠心。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"zhou_guizhi","name":"周桂枝","actor":"马丁","family":"lin","gen":2,"title":"大房周姨娘 · 林锦岚之母","role":"minor","intro":"林长政的宠妾（周姨娘），林锦岚之母。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"branch":"大房"},{"id":"qiao_hongdou","name":"乔红豆","alias":"","actor":"谭丽芳","family":"lin","gen":2,"title":"大房乔姨娘 · 已故","role":"minor","intro":"林长政的妾室（乔姨娘），林绣莱之母。早逝。","relations":[{"id":"lin_changzheng","label":"妾室"},{"id":"lin_xiulai","label":"母女"}],"historicalId":null,"variantOf":null,"inferred":false,"branch":"大房"},{"id":"bao_yiniang","name":"包姨娘","alias":"","actor":"","family":"lin","gen":2,"title":"大房包姨娘 · 已故","role":"minor","intro":"林长政的妾室（包姨娘），林绣茹之母。早逝。","relations":[{"id":"lin_changzheng","label":"妾室"},{"id":"lin_xiuru","label":"母女"}],"historicalId":null,"variantOf":null,"inferred":true,"branch":"大房"},{"id":"yuan_shaohui","name":"袁绍辉","alias":"","actor":"贺鹏","family":"yuan","gen":3,"title":"永昌侯 · 武将","role":"support","intro":"爵封永昌侯，久经沙场的武将，与林锦岐交好。迎娶林绣茹为第二任妻子。婚后因侯府子嗣与家族传承面临纳妾压力，赴浙海剿匪时遭杜翠雀设计，士兵误饮有毒水、遇海盗偷袭，最终遭海盗头目割喉身亡。林绣茹用琵琶砸向杜翠雀替他报仇。","relations":[{"id":"lin_xiuru","label":"夫妻"},{"id":"lin_jinqi","label":"挚友"},{"id":"yuan_sanshu","label":"叔侄"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"yang_fu","name":"杨福","actor":"卫羽","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"hu_suier","name":"胡荽儿","actor":"王沚渊","family":"other","gen":0,"title":"","role":"minor","intro":"刘五九之妻，胡荽儿。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"yang_chong","name":"杨充","actor":"李子游","family":"other","gen":0,"title":"","role":"minor","intro":"参与汉王谋反的武人。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"cheng_fengxian","name":"程凤仙","actor":"方悦乔","family":"lin","gen":3,"title":"林锦峤之妻","role":"minor","intro":"林锦峤之妻。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"branch":"二房"},{"id":"wei_tianxuan","name":"韦田旋","actor":"杨淇","family":"zheng","gen":2,"title":"显国公夫人 · 郑蔓宜之母","role":"minor","intro":"郑百川之妻，郑蔓宜之母。","relations":[{"id":"zheng_manyi","label":"母女"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"wang_jinpan","name":"王金盘","actor":"茹天","family":"other","gen":0,"title":"","role":"minor","intro":"吕家成员，吕蕺儿之母。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"luo_changchun","name":"罗常春","actor":"俞思远","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"dai_rui","name":"戴芮","actor":"贺彬","family":"other","gen":0,"title":"","role":"minor","intro":"戴家长子（嫡长子）。戴庆与赵星棠（改嫁后）之子。戴蓉之兄。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"liu_jinchuan","name":"刘金钏","actor":"郝燕飞","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"luo_dalang","name":"罗大郎","actor":"高爽","family":"other","gen":0,"title":"","role":"minor","intro":"船帮首领，反贼。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"huang_youzhi","name":"黄有智","actor":"薛亦伦","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"wei_bao","name":"韦豹","actor":"樊驿宁","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"chen_cuizhu","name":"陈翠珠","actor":"彭赛","family":"du","gen":2,"title":"杜家母亲","role":"minor","intro":"杜正、杜翠雀、杜大松、小莲之母。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"an_moli","name":"安茉莉","actor":"谢承颖","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"shanshen_taizi","name":"山神太子","actor":"韩炎达","family":"other","gen":0,"title":"","role":"minor","intro":"前朝废太子刘叔（与当朝皇室不同）。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"lu_yingzhi_11","name":"11岁鲁瑛芝","actor":"彭朵尔","family":"other","gen":0,"title":"","role":"minor","intro":"鲁鉴与林绣莱之女鲁瑛芝的十一岁时期。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"hai_tao","name":"海滔","actor":"葛兴佳","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"yao_taiyi","name":"姚太医","actor":"喻庆辉","family":"other","gen":0,"title":"太医","role":"minor","intro":"太医院御医，为林府及朝中诊病。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"qing_xiang","name":"青葙","actor":"高榕","family":"lin","gen":0,"title":"二等丫鬟","role":"minor","intro":"林府丫鬟，早期立场摇摆，一度被利用做过对不起许兰香的事。后及时醒悟，兰香未赶尽杀绝，帮她脱了奴籍。她回到乡下嫁普通农户，安安静静过日子。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"二等丫鬟"},{"id":"yuan_jiarong","name":"袁嘉荣","actor":"都洛桐","family":"yuan","gen":3,"title":"","role":"minor","intro":"永昌侯府成员。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"xiao_pu","name":"小蒲","actor":"徐泠若","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"chen_qi","name":"陈锜","actor":"耿懿","family":"other","gen":0,"title":"","role":"minor","intro":"反贼，参与汉王叛乱。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"sun_baozhu","name":"孙宝珠","actor":"徐玉兰","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"wang_shiyu","name":"王世瑜","actor":"钟鸣","family":"other","gen":0,"title":"","role":"minor","intro":"科举榜眼。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"xiao_shunqing","name":"小顺卿","actor":"宫正晔","family":"other","gen":0,"title":"","role":"minor","intro":"芙蓉秀戏班成员。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"wang_cheng","name":"王诚","actor":"孟祥亮","family":"other","gen":0,"title":"","role":"minor","intro":"宫中内侍。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"chen_shaoxin","name":"陈少辛","actor":"金顺子","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"yang_zhong","name":"杨忠","actor":"丁正勇","family":"lin","gen":0,"title":"老管事","role":"minor","intro":"林府老管事。在赵星棠管家期间被边缘化，曾将玉蝉被许配给傻子之事禀报林锦岐。林锦岐回府重排知春馆后，杨忠等人回归。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"老管事"},{"id":"dai_qing","name":"戴庆","actor":"杨均柏","family":"other","gen":0,"title":"","role":"minor","intro":"戴家老爷，赵星棠和离后改嫁的对象。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"wang_tianfu","name":"王添福","actor":"周亚","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"yang_pu","name":"杨浦","actor":"袁帅","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"shen_qi","name":"申芪","actor":"星靖洋","family":"other","gen":0,"title":"","role":"minor","intro":"剧中人物（申芪）。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"lu_dalang","name":"卢大郎","actor":"杨森焕","family":"other","gen":0,"title":"","role":"minor","intro":"船帮首领，化名藤原，反贼。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"zheng_yun","name":"郑匀","actor":"潘胤蜚","family":"zheng","gen":3,"title":"","role":"minor","intro":"郑百川之子，郑蔓宜之兄。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"xie_feng","name":"谢葑","actor":"罗予甜","family":"other","gen":0,"title":"","role":"minor","intro":"谢家成员。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"zi_tong","name":"紫童","actor":"袁伊","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"feng_canger","name":"冯苍耳","actor":"石玉凤","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"mai_lanzi","name":"麦蓝子","actor":"刘蕙仪","family":"other","gen":1,"title":"杜小莲外祖母","role":"minor","intro":"杜小莲（小莲）的外祖母。","relations":[{"id":"xiao_lian","label":"外祖母"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"nan_ke","name":"南客","actor":"王泓鑫","family":"lin","gen":0,"title":"贴身侍卫","role":"minor","intro":"林锦岐贴身侍卫，后凭军功脱籍升从五品副千户。雪夜救小莲，后娶小莲为妻。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"贴身侍卫"},{"id":"zhang_liu","name":"章柳","actor":"于亚南","family":"other","gen":0,"title":"","role":"minor","intro":"陈锜之妻，章柳。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"dai_rong","name":"戴蓉","actor":"苏冬青","family":"other","gen":0,"title":"","role":"minor","intro":"戴家次子。通倭，参与叛乱。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"lv_laoyezhi","name":"吕老爷子","actor":"宫平祥","family":"other","gen":0,"title":"","role":"minor","intro":"吕家祖辈，吕蕺儿的祖父。","relations":[{"id":"lv_jier","label":"祖孙"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"wu_suaner","name":"吴蒜儿","actor":"红花","family":"lin","gen":0,"title":"管事嬷嬷","role":"minor","intro":"秦舜华的管事嬷嬷，为人善良，处事冷静。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"管事嬷嬷"},{"id":"yang_cong","name":"杨淙","actor":"张家硕","family":"other","gen":0,"title":"","role":"minor","intro":"杨淙，林绣菽之夫。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"yin_xian","name":"银线","actor":"许诺","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"tong_cao","name":"铜草","actor":"丁子恩","family":"yuan","gen":0,"title":"心腹丫鬟","role":"minor","intro":"林绣茹的心腹丫鬟。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"心腹丫鬟"},{"id":"di_er","name":"荻儿","actor":"李卿尔","family":"zheng","gen":0,"title":"丫鬟","role":"minor","intro":"郑家丫鬟。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"丫鬟"},{"id":"a_zhi","name":"阿枳","actor":"文晴","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"chen_qingdai","name":"陈青黛","actor":"王诗蒙","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"xu_sizi","name":"徐嗣子","actor":"李坤霖","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"geng_xie","name":"耿燮","actor":"何本军","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"qiu_kui","name":"秋葵","actor":"孟胥舟","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"jiu_gao","name":"九皋","actor":"潘毅鸿","family":"lin","gen":0,"title":"贴身侍卫","role":"minor","intro":"林锦岐贴身侍卫，后凭军功脱籍升正五品千户。从小看着玉蝉长大，默默喜欢她，不愿强迫她。最终玉蝉心甘情愿嫁他，成为千户夫人。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"贴身侍卫"},{"id":"xie_shilian","name":"谢士濂","actor":"任伟","family":"other","gen":0,"title":"","role":"minor","intro":"芙蓉秀戏班相关人物。","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"huang_mainiang","name":"黄麦娘","actor":"赵诗朦","family":"other","gen":0,"title":"","role":"minor","intro":"","relations":[],"historicalId":null,"variantOf":null,"inferred":false},{"id":"liu_shu","name":"刘叔","actor":"沈凯","family":"other","gen":2,"title":"前朝废太子 · 隐匿戏班","role":"minor","intro":"前朝废太子，废帝之子。剧中以戏班烧水师傅「刘叔」的身份隐匿行迹，为朝廷所搜捕。第 23 集中被林锦岐识破身份，借昆曲先生之名救出，并以假尸顶替，走水路远赴海外。第 36 集提及林锦岐当年私放废太子的密信。","relations":[{"id":"feidi","label":"父子"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"shen_zhongli","name":"沈仲礼","alias":"","actor":"","family":"shen","gen":2,"title":"沈家二子 · 沈嘉莲之父","role":"minor","intro":"沈其翰次子，徐莼（沈二夫人）之夫，沈嘉莲之父。沈家蒙难后与女眷一同赴死。","relations":[{"id":"shen_qihan","label":"父子"},{"id":"shen_er_furen","label":"夫妻"},{"id":"shen_jialian","label":"父女"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"shen_jialian","name":"沈嘉莲","alias":"","actor":"李祉默","family":"shen","gen":3,"title":"沈家二小姐 · 沈嘉兰堂妹","role":"minor","intro":"沈仲礼与徐莼之女，沈嘉兰的堂妹。沈家遭查抄后，年幼的她随祖母及沈家女眷一同赴死。","relations":[{"id":"shen_zhongli","label":"父女"},{"id":"shen_er_furen","label":"母女"},{"id":"shen_jialan","label":"堂姐妹"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"shen_shuci","name":"沈叔辞","alias":"","actor":"","family":"shen","gen":2,"title":"沈家三子 · 沈三夫人之夫","role":"minor","intro":"沈其翰三子，楚蘅（沈三夫人）之夫。沈家蒙难后与女眷一同赴死。","relations":[{"id":"shen_qihan","label":"父子"},{"id":"shen_san_furen","label":"夫妻"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"zheng_manyi","name":"郑蔓宜","alias":"","actor":"嘉泽","family":"zheng","gen":3,"title":"显国公之女","role":"support","intro":"显国公郑百川的小女儿，原为秦舜华替林锦岐选定的未婚妻。发现林锦岐以玉蝉名义送兰花给兰香后，对兰香心生怨恨，企图设局诬陷她与韩粱私通。计划未成后，其父将兰香打晕卖至扬州妓院。后郑家因谋反全家入狱，女眷被贬入教坊司，她不甘受辱在监狱门口自尽。","relations":[{"id":"zheng_baichuan","label":"父女"},{"id":"wei_tianxuan","label":"母女"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"han_zhi","name":"韩苢","alias":"","actor":"张欢欢","family":"han","gen":3,"title":"韩粱之姊","role":"minor","intro":"韩粱的姊姊。原已出嫁，丈夫去世后成为寡妇。亡夫家人为逃避赋役企图强行将她带回夫家守孝，韩粱出面阻止，将她接回韩家生活。","relations":[{"id":"han_liang","label":"姐弟"},{"id":"han_mu","label":"母女"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"yuan_sanshu","name":"袁三叔","alias":"","actor":"孙靖淳","family":"yuan","gen":2,"title":"永昌侯府三叔","role":"minor","intro":"袁家三叔，永昌侯府长辈。","relations":[{"id":"yuan_shaohui","label":"叔侄"}],"historicalId":null,"variantOf":null,"inferred":true},{"id":"lin_jinqi_child","name":"童年林锦岐","alias":"","actor":"杨云汉","family":"lin","gen":3,"title":"林锦岐童年时期","role":"minor","intro":"林锦岐童年时期。","relations":[{"id":"lin_jinqi","label":"同一角色 · 童年版"}],"historicalId":null,"variantOf":"lin_jinqi","inferred":false},{"id":"fang_yu","name":"方域","alias":"","actor":"吴晓东","family":"other","gen":0,"title":"汉王谋士","role":"minor","intro":"汉王帐下谋士，为汉王出谋划策、拉拢朝臣。汉王叛乱失败后随之覆灭。","relations":[{"id":"hanwang","label":"幕僚"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"ling_dang","name":"铃铛","alias":"","actor":"敖华晓","family":"du","gen":0,"title":"贴身丫鬟","role":"minor","intro":"杜翠雀的贴身丫鬟，听命于杜翠雀。趁茶水房仆人宝盖疏忽之际，暗中在兰香的洗澡水中投入南疆秘毒。下毒一事遭兰香识破后，最终被杜翠雀毒害身亡。","relations":[{"id":"du_cuique","label":"主仆"}],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"贴身丫鬟"},{"id":"hong_liao","name":"红蓼","alias":"","actor":"宁丽君","family":"lin","gen":0,"title":"丫鬟","role":"minor","intro":"林家丫鬟。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"丫鬟"},{"id":"jin_zhan","name":"金盏","alias":"","actor":"杨葵葵","family":"lin","gen":0,"title":"丫鬟","role":"minor","intro":"林家丫鬟。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"丫鬟"},{"id":"lu_ccao","name":"露草","alias":"","actor":"蔡含旭","family":"lin","gen":0,"title":"丫鬟","role":"minor","intro":"林家丫鬟。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"丫鬟"},{"id":"yin_hai","name":"银海","alias":"","actor":"江玲","family":"lin","gen":0,"title":"丫鬟","role":"minor","intro":"林家丫鬟。","relations":[],"historicalId":null,"variantOf":null,"inferred":false,"servantRole":"丫鬟"},{"id":"zhao_xingluo","name":"赵星萝","alias":"","actor":"方思畅","family":"zhao","gen":3,"title":"赵家六小姐 · 谢昭第一任妻子","role":"minor","intro":"赵星棠的堂妹，赵家六小姐。谢昭退婚后遵从父母之命娶她为妻，婚后夫妻不和，最终体面和离。谢昭后考中进士，不计前嫌登门求娶林绣芄。","relations":[{"id":"zhao_xingtang","label":"堂姐妹"},{"id":"xie_zhao","label":"前夫妻"}],"historicalId":null,"variantOf":null,"inferred":false},{"id":"lu_jun","name":"鲁隽","alias":"","actor":"","family":"lu","gen":4,"title":"鲁家幼子","role":"minor","intro":"鲁鉴与林绣莱之子。林绣莱与鲁鉴和离后随母回林家。","relations":[{"id":"lu_jian","label":"父子"},{"id":"lin_xiulai","label":"母子"}],"historicalId":null,"variantOf":null,"inferred":true}],"stats":{"charCount":154,"familyCount":10,"actorCount":150,"withIntro":128,"episodeCount":47,"ritualCount":89,"imageCount":16,"termCount":89}};
+
+  /* ---------------- 常量 ---------------- */
+  var FAMILIES = DATA.families;
+  var CHARS = DATA.characters;
+  var STATS = DATA.stats;
+  var BY_ID = {};
+  CHARS.forEach(function (c) { BY_ID[c.id] = c; });
+
+  var GEN_LABEL = { 1: "第一代", 2: "第二代", 3: "第三代", 4: "第四代" };
+  var GEN_SUB = { 1: "祖辈", 2: "父辈", 3: "主辈", 4: "晚辈" };
+  var ROLE_LABEL = { lead: "领衔主演", major: "主要演员", support: "主要配角", minor: "参演" };
+  var ROLE_RANK = { lead: 2, major: 2, support: 1, minor: 0 };
+  var SPOUSE_RE = /夫妻|妾|原配|婚约/;
+
+  var state = { fam: "overview", char: null };
+
+  function $(s) { return document.querySelector(s); }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (m) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m];
+    });
+  }
+  function famOf(id) { return FAMILIES.filter(function (f) { return f.id === id; })[0] || null; }
+  function famColorOf(c) { var f = famOf(c.family); return f ? f.color : "#6B7280"; }
+  function famSoftOf(c) { var f = famOf(c.family); return f ? f.soft : "#EDEFF2"; }
+  function famNameOf(c) { var f = famOf(c.family); return f ? f.name : "未归类"; }
+  function genLabelOf(c) {
+    if (c.gen === 0) return "未分辈";
+    return (GEN_LABEL[c.gen] || "未分辈") + (GEN_SUB[c.gen] ? " · " + GEN_SUB[c.gen] : "");
+  }
+  function isVariant(c) { return !!c.variantOf; }
+  function initial(name) { return (name || "?").charAt(0); }
+
+  /* ---------------- 派生数据 ---------------- */
+  function treeChars(fid) {
+    return CHARS.filter(function (c) { return c.family === fid && !isVariant(c); });
+  }
+  /* 婚配簇：同府同辈成员按「夫妻/妾/原配/婚约」关系构成无向图，连通分量即一组婚配
+     （多数为夫妻二人组，一夫多妻时为多人簇），渲染时整组出现、绝不遗漏或重复 */
+  function marriageClusters(members) {
+    var adj = {};
+    function link(a, b, label) {
+      if (!adj[a]) adj[a] = [];
+      if (!adj[b]) adj[b] = [];
+      if (!adj[a].some(function (x) { return x.id === b; })) adj[a].push({ id: b, label: label });
+      if (!adj[b].some(function (x) { return x.id === a; })) adj[b].push({ id: a, label: label });
+    }
+    members.forEach(function (c) {
+      (c.relations || []).forEach(function (r) {
+        if (!SPOUSE_RE.test(r.label)) return;
+        var t = BY_ID[r.id];
+        if (!t || isVariant(t) || t.family !== c.family || t.gen !== c.gen) return;
+        link(c.id, r.id, r.label);
+      });
+    });
+    var seen = {}, clusters = [];
+    members.forEach(function (c) {
+      if (seen[c.id] || !adj[c.id]) return;
+      var queue = [c.id], comp = [];
+      seen[c.id] = true;
+      while (queue.length) {
+        var cur = queue.shift();
+        comp.push(cur);
+        adj[cur].forEach(function (nb) {
+          if (!seen[nb.id]) { seen[nb.id] = true; queue.push(nb.id); }
+        });
+      }
+      if (comp.length > 1) clusters.push(comp);
+    });
+    return { adj: adj, clusters: clusters };
+  }
+  function crossSpouses(c) {
+    var out = [];
+    (c.relations || []).forEach(function (r) {
+      if (!SPOUSE_RE.test(r.label)) return;
+      var t = BY_ID[r.id];
+      if (!t || t.family === c.family) return;
+      if (out.indexOf(t) === -1) out.push(t);
+    });
+    return out;
+  }
+  function backlinksOf(id) {
+    return CHARS.filter(function (c) {
+      return !isVariant(c) && (c.relations || []).some(function (r) { return r.id === id; });
+    });
+  }
+
+  /* ---------------- 渲染：统计 ---------------- */
+  function renderStats() {
+    var relTotal = 0;
+    CHARS.forEach(function (c) { relTotal += (c.relations || []).length; });
+    var items = [
+      { n: STATS.charCount, u: "位", l: "角色全阵容" },
+      { n: STATS.familyCount, u: "门", l: "大门第" },
+      { n: relTotal, u: "条", l: "人物关系" },
+      { n: STATS.episodeCount, u: "集", l: "逐集剧情" },
+      { n: STATS.ritualCount, u: "条", l: "古礼考据" },
+      { n: STATS.imageCount, u: "张", l: "考据配图" }
+    ];
+    $("#statRow").innerHTML = items.map(function (it) {
+      return '<div class="stat"><div class="stat-num">' + it.n + "<i>" + it.u + '</i></div><div class="stat-label">' + it.l + "</div></div>";
+    }).join("");
+  }
+
+  /* ---------------- 渲染：Tab ---------------- */
+  function renderTabs() {
+    var tabs = ['<button class="fam-tab' + (state.fam === "overview" ? " active" : "") + '" data-fam="overview" style="color:#6E675C">总览</button>'];
+    FAMILIES.forEach(function (f) {
+      if (f.id === "other") return;
+      var n = treeChars(f.id).length;
+      if (!n) return;
+      var active = state.fam === f.id;
+      tabs.push(
+        '<button class="fam-tab' + (active ? " active" : "") + '" data-fam="' + f.id + '"' +
+        ' style="' + (active ? "color:" + f.color + ";border-color:" + f.color + ";background:" + f.soft : "") + '">' +
+        '<span class="dot" style="background:' + f.color + '"></span>' + esc(f.name) +
+        '<span class="n">' + n + "</span></button>"
+      );
+    });
+    var otherN = treeChars("other").length;
+    if (otherN) {
+      var active = state.fam === "other";
+      tabs.push(
+        '<button class="fam-tab' + (active ? " active" : "") + '" data-fam="other"' +
+        ' style="' + (active ? "color:#6B7280;border-color:#6B7280;background:#EDEFF2" : "") + '">' +
+        '<span class="dot" style="background:#6B7280"></span>其他角色<span class="n">' + otherN + "</span></button>"
+      );
+    }
+    $("#famTabs").innerHTML = tabs.join("");
+    $$("#famTabs .fam-tab").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        state.fam = btn.getAttribute("data-fam");
+        state.char = null;
+        renderAll();
+        var main = $("#mainArea");
+        if (main && main.scrollIntoView) main.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  }
+  function $$(s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); }
+
+  /* ---------------- 渲染：总览 ---------------- */
+  function renderOverview() {
+    var cards = FAMILIES.map(function (f) {
+      var members = treeChars(f.id).length;
+      if (f.id !== "other" && !members) return "";
+      var servants = CHARS.filter(function (c) { return c.family === f.id && c.gen === 0 && !isVariant(c); }).length;
+      var count = f.id === "other" ? members + " 位" : members + " 位成员" + (servants ? " · " + servants + " 仆从" : "");
+      return (
+        '<button class="fam-card" data-fam="' + f.id + '" style="--fam:' + f.color + ";--soft:" + f.soft + '">' +
+        '<div class="fc-name">' + esc(f.name) + '<span class="fc-count">' + count + "</span></div>" +
+        '<div class="fc-tag">' + esc(f.tag) + "</div>" +
+        '<span class="fc-motto">' + esc(f.motto) + "</span></button>"
+      );
+    }).join("");
+    $("#mainArea").innerHTML =
+      '<div class="fam-head"><div><div class="f-name">十门一谱</div>' +
+      '<div class="f-tag">点门第入谱 · 或直接在右上搜索角色</div></div>' +
+      '<div class="f-counts">' + STATS.familyCount + " 个门第收录族谱 · 另 " + treeChars("other").length + " 位其他角色</div></div>" +
+      '<div class="overview-grid">' + cards + "</div>" +
+      '<div class="overview-note">注：少年 / 青年版角色（' + CHARS.filter(isVariant).length + ' 条）不入户谱，避免重复；仆从（未分辈）在各门第谱尾单列。</div>';
+    $$("#mainArea .fam-card").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        state.fam = btn.getAttribute("data-fam");
+        renderAll();
+      });
+    });
+  }
+
+  /* ---------------- 渲染：其他角色 ---------------- */
+  function renderOther() {
+    var list = treeChars("other").slice().sort(function (a, b) {
+      var w = { lead: 0, support: 1, minor: 2, major: 1 };
+      return (w[a.role] || 9) - (w[b.role] || 9) || (a.gen - b.gen);
+    });
+    $("#mainArea").innerHTML =
+      '<div class="fam-head"><div><div class="f-name">剧中其他角色</div>' +
+      '<div class="f-tag">演员表角色 · 家族归属待补充</div></div>' +
+      '<div class="f-counts">' + list.length + " 位 · 点击卡片看详情</div></div>" +
+      '<div class="tree"><div class="gen-band"><div class="gen-head"><span class="gen-label">全阵容</span><span class="gen-line"></span></div>' +
+      '<div class="cards">' + list.map(cardHTML).join("") + "</div></div></div>";
+    bindCards();
+  }
+
+  /* ---------------- 渲染：族谱 ---------------- */
+  function cardHTML(c) {
+    var fam = famOf(c.family) || { color: "#6B7280", soft: "#EDEFF2" };
+    var rank = ROLE_RANK[c.role] || 0;
+    var xSpouses = crossSpouses(c);
+    var roleBadge =
+      c.role === "lead"
+        ? '<span class="role-badge lead">' + ROLE_LABEL.lead + "</span>"
+        : c.role === "support"
+        ? '<span class="role-badge support">' + ROLE_LABEL.support + "</span>"
+        : '<span class="role-badge minor">' + (ROLE_LABEL[c.role] || "参演") + "</span>";
+    var alias = c.alias ? '<span class="alias">' + esc(c.alias) + "</span>" : "";
+    var title = c.title ? '<div class="card-title">' + esc(c.title) + "</div>" : "";
+    var actor = c.actor ? '<span class="actor-line"><b>' + esc(c.actor) + "</b> 饰</span>" : "";
+    var kin = xSpouses.map(function (t) {
+      return '<button class="kin-chip" data-jump="' + t.id + '" title="跳转至 ' + esc(t.name) + '">姻亲 · ' + esc(t.name) + "</button>";
+    }).join("");
+    return (
+      '<article class="card' + (rank >= 2 ? " rank-main" : "") + '" data-id="' + c.id + '" tabindex="0" ' +
+      'style="--fam:' + fam.color + ";--soft:" + fam.soft + '">' +
+      (c.inferred ? '<span class="inferred-flag" title="家族 / 辈分为公开信息推断">推</span>' : "") +
+      '<div class="card-seal">' + esc(initial(c.name)) + "</div>" +
+      '<div class="card-main">' +
+      '<div class="card-name">' + esc(c.name) + alias + "</div>" + title +
+      '<div class="card-meta">' + roleBadge + actor + kin + "</div>" +
+      "</div></article>"
+    );
+  }
+  function clusterHTML(ids, adj) {
+    var parts = [];
+    ids.forEach(function (id, i) {
+      if (i > 0) {
+        var edge = (adj[ids[i - 1]] || []).filter(function (x) { return x.id === id; })[0];
+        parts.push(
+          '<div class="pair-join"><span class="j-label">' + esc(edge ? edge.label : "") + '</span><span class="j-line"></span></div>'
+        );
+      }
+      parts.push(cardHTML(BY_ID[id]));
+    });
+    return '<div class="pair">' + parts.join("") + "</div>";
+  }
+  function renderTree(fid) {
+    var fam = famOf(fid);
+    var all = treeChars(fid);
+    var members = all.filter(function (c) { return c.gen > 0; });
+    var servants = all.filter(function (c) { return c.gen === 0; });
+    var pm = marriageClusters(members);
+    var clusterOf = {};
+    pm.clusters.forEach(function (comp, i) { comp.forEach(function (id) { clusterOf[id] = i; }); });
+    var renderedCluster = {};
+
+    var html =
+      '<div class="fam-head"><div><div class="f-name" style="color:' + fam.color + '">' + esc(fam.name) + "</div>" +
+      '<div class="f-tag">' + esc(fam.tag) + "</div></div>" +
+      '<div class="f-motto" style="color:' + fam.color + ";border-color:" + fam.color + ";background:" + fam.soft + '">' + esc(fam.motto) + "</div>" +
+      '<div class="f-counts">' + members.length + " 位成员 · " + servants.length + " 位仆从</div></div>";
+
+    html += '<div class="tree">';
+    [1, 2, 3, 4].forEach(function (g) {
+      var genList = members.filter(function (c) { return c.gen === g; });
+      if (!genList.length) return;
+      var branchMap = {}, order = [];
+      genList.forEach(function (m) {
+        var b = m.branch || "";
+        if (!branchMap[b]) { branchMap[b] = []; order.push(b); }
+        branchMap[b].push(m);
+      });
+      html +=
+        '<section class="gen-band" style="--fam:' + fam.color + '">' +
+        '<div class="gen-head"><span class="gen-label" style="color:' + fam.color + '">' + GEN_LABEL[g] +
+        "<small>" + GEN_SUB[g] + " · " + genList.length + " 位</small></span><span class=\"gen-line\"></span></div>";
+      order.forEach(function (b) {
+        var units = [];
+        branchMap[b].forEach(function (m) {
+          var ci = clusterOf[m.id];
+          if (ci != null) {
+            if (renderedCluster[ci]) return;
+            renderedCluster[ci] = true;
+            units.push(clusterHTML(pm.clusters[ci], pm.adj));
+            return;
+          }
+          units.push(cardHTML(m));
+        });
+        html +=
+          '<div class="branch-group"><div class="branch-tag">' + (b ? esc(b) : "同辈并列") + "</div>" +
+          '<div class="cards">' + units.join("") + "</div></div>";
+      });
+      html += "</section>";
+    });
+    if (servants.length) {
+      var roleMap = {}, order = [];
+      servants.forEach(function (m) {
+        var r = m.servantRole || "仆从";
+        if (!roleMap[r]) { roleMap[r] = []; order.push(r); }
+        roleMap[r].push(m);
+      });
+      html +=
+        '<section class="gen-band servant-band"><div class="gen-head"><span class="gen-label">府中仆从' +
+        "<small>未分辈 · " + servants.length + " 位</small></span><span class=\"gen-line\"></span></div>";
+      order.forEach(function (r) {
+        html +=
+          '<div class="branch-group"><div class="branch-tag">' + esc(r) + "</div>" +
+          '<div class="cards">' + roleMap[r].map(cardHTML).join("") + "</div></div>";
+      });
+      html += "</section>";
+    }
+    html += "</div>";
+    $("#mainArea").innerHTML = html;
+    bindCards();
+  }
+
+  /* ---------------- 卡片交互 ---------------- */
+  function bindCards() {
+    $$("#mainArea .card").forEach(function (el) {
+      function open() { openDrawer(el.getAttribute("data-id")); }
+      el.addEventListener("click", function (e) {
+        var jump = e.target.closest("[data-jump]");
+        if (jump) { e.stopPropagation(); jumpTo(jump.getAttribute("data-jump")); return; }
+        open();
+      });
+      el.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
+      });
+    });
+  }
+
+  /* ---------------- 详情抽屉 ---------------- */
+  function relChipHTML(c, label) {
+    var col = famColorOf(c);
+    return (
+      '<button class="rel-chip" data-jump="' + c.id + '">' +
+      '<span class="r-seal" style="background:' + col + '">' + esc(initial(c.name)) + "</span>" +
+      "<span>" + (label ? '<span class="r-label">' + esc(label) + "</span>" : "") +
+      '<span class="r-name">' + esc(c.name) + "</span></span></button>"
+    );
+  }
+  function openDrawer(id) {
+    var c = BY_ID[id];
+    if (!c) return;
+    state.char = id;
+    var fam = famOf(c.family) || { color: "#6B7280", soft: "#EDEFF2" };
+    var rank = ROLE_RANK[c.role] || 0;
+    var rels = (c.relations || []).filter(function (r) { return BY_ID[r.id]; });
+    var relIds = {};
+    rels.forEach(function (r) { relIds[r.id] = true; });
+    var backs = backlinksOf(id).filter(function (b) { return !relIds[b.id]; });
+
+    var html =
+      '<div class="d-hero" style="--fam:' + fam.color + ";--soft:" + fam.soft + '">' +
+      '<div class="d-seal' + (rank >= 2 ? " solid" : "") + '">' + esc(initial(c.name)) + "</div>" +
+      "<div><div class=\"d-name\">" + esc(c.name) + (c.alias ? '<span class="alias">' + esc(c.alias) + "</span>" : "") + "</div>" +
+      '<div class="d-badges">' +
+      '<span class="d-badge fam">' + esc(famNameOf(c)) + "</span>" +
+      '<span class="d-badge">' + esc(genLabelOf(c)) + "</span>" +
+      (c.role === "lead" ? '<span class="d-badge lead">' + ROLE_LABEL.lead + "</span>"
+        : c.role === "support" ? '<span class="d-badge">' + ROLE_LABEL.support + "</span>"
+        : '<span class="d-badge">' + (ROLE_LABEL[c.role] || "参演") + "</span>") +
+      (c.inferred ? '<span class="d-badge inferred" title="家族 / 辈分为公开信息推断">推断项</span>' : "") +
+      "</div></div></div>";
+
+    if (c.title) html += '<div class="d-title">' + esc(c.title) + "</div>";
+    if (c.actor) html += '<div class="d-actor">饰演者 <b>' + esc(c.actor) + "</b></div>";
+    html += c.intro
+      ? '<div class="d-intro">' + esc(c.intro) + "</div>"
+      : '<div class="d-intro empty">该角色暂无公开资料支撑的小传，详情页已整块隐藏。</div>';
+
+    if (isVariant(c) && BY_ID[c.variantOf]) {
+      var base = BY_ID[c.variantOf];
+      html += '<div class="d-note">本条为「' + esc(c.name) + '」的少年 / 青年版，主体见 ' + relChipHTML(base, "") + "</div>";
+    }
+    if (rels.length) {
+      html +=
+        '<div class="d-sec"><h4>人物关系 <small>' + rels.length + " 条 · 点击跳转</small></h4>" +
+        '<div class="rel-chips">' + rels.map(function (r) { return relChipHTML(BY_ID[r.id], r.label); }).join("") + "</div></div>";
+    }
+    if (backs.length) {
+      html +=
+        '<div class="d-sec"><h4>被关联 <small>' + backs.length + " 位 · 谁的关系栏里有 TA</small></h4>" +
+        '<div class="rel-chips">' + backs.map(function (b) { return relChipHTML(b, ""); }).join("") + "</div></div>";
+    }
+
+    $("#drawerBody").innerHTML = html;
+    $$("#drawerBody [data-jump]").forEach(function (el) {
+      el.addEventListener("click", function () { jumpTo(el.getAttribute("data-jump")); });
+    });
+    $("#drawer").classList.add("open");
+    $("#drawer").setAttribute("aria-hidden", "false");
+    $("#drawerMask").classList.add("open");
+    updateHash();
+  }
+  function closeDrawer() {
+    state.char = null;
+    $("#drawer").classList.remove("open");
+    $("#drawer").setAttribute("aria-hidden", "true");
+    $("#drawerMask").classList.remove("open");
+    updateHash();
+  }
+
+  /* ---------------- 跳转 ---------------- */
+  function jumpTo(id) {
+    var c = BY_ID[id];
+    if (!c) return;
+    state.fam = c.family === "other" ? "other" : c.family;
+    renderTabs();
+    if (state.fam === "overview") renderOverview();
+    else if (state.fam === "other") renderOther();
+    else renderTree(state.fam);
+    openDrawer(id);
+    requestAnimationFrame(function () {
+      var el = document.querySelector('.card[data-id="' + id + '"]');
+      if (el) {
+        if (el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.classList.remove("flash");
+        void el.offsetWidth;
+        el.classList.add("flash");
+      }
+    });
+  }
+
+  /* ---------------- 搜索 ---------------- */
+  function search(kw) {
+    kw = kw.trim().toLowerCase();
+    if (!kw) return [];
+    var out = [];
+    for (var i = 0; i < CHARS.length && out.length < 10; i++) {
+      var c = CHARS[i];
+      if (
+        (c.name && c.name.toLowerCase().indexOf(kw) > -1) ||
+        (c.alias && c.alias.toLowerCase().indexOf(kw) > -1) ||
+        (c.actor && c.actor.toLowerCase().indexOf(kw) > -1) ||
+        (c.title && c.title.toLowerCase().indexOf(kw) > -1)
+      ) out.push(c);
+    }
+    return out;
+  }
+  function bindSearch() {
+    var input = $("#searchInput"), drop = $("#searchDrop");
+    function render() {
+      var kw = input.value;
+      if (!kw.trim()) { drop.classList.remove("open"); drop.innerHTML = ""; return; }
+      var res = search(kw);
+      drop.innerHTML = res.length
+        ? res.map(function (c) {
+            return (
+              '<button class="search-item" data-jump="' + c.id + '">' +
+              '<span class="s-seal" style="background:' + famColorOf(c) + '">' + esc(initial(c.name)) + "</span>" +
+              "<span><span class=\"s-name\">" + esc(c.name) + "</span>" +
+              (c.alias ? ' <span style="font-size:11px;color:#A39B8C">' + esc(c.alias) + "</span>" : "") + "</span>" +
+              '<span class="s-meta">' + esc(famNameOf(c)) + (c.actor ? "<br>" + esc(c.actor) + " 饰" : "") + "</span></button>"
+            );
+          }).join("")
+        : '<div class="search-empty">没有匹配的角色，换个关键词试试。</div>';
+      drop.classList.add("open");
+      $$(".search-item", drop).forEach(function (el) {
+        el.addEventListener("click", function () {
+          drop.classList.remove("open");
+          input.blur();
+          jumpTo(el.getAttribute("data-jump"));
+        });
+      });
+    }
+    input.addEventListener("input", render);
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        var res = search(input.value);
+        if (res.length) { drop.classList.remove("open"); jumpTo(res[0].id); }
+      }
+      if (e.key === "Escape") { drop.classList.remove("open"); input.blur(); }
+    });
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest(".search-wrap")) drop.classList.remove("open");
+    });
+  }
+
+  /* ---------------- hash 路由 ---------------- */
+  function updateHash() {
+    var h = "#f=" + state.fam + (state.char ? "&c=" + state.char : "");
+    if (location.hash !== h) history.replaceState(null, "", h);
+  }
+  function readHash() {
+    var m = /#f=([\w]+)(?:&c=([\w]+))?/.exec(location.hash || "");
+    if (!m) return;
+    if (m[1] && (m[1] === "overview" || m[1] === "other" || famOf(m[1]))) state.fam = m[1];
+    if (m[2] && BY_ID[m[2]]) state.char = m[2];
+  }
+
+  /* ---------------- 复制链接 ---------------- */
+  function bindCopy() {
+    $("#copyLink").addEventListener("click", function () {
+      var url = location.href;
+      function done() { toast("链接已复制，可直接粘贴分享"); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done, function () { fallback(); });
+      } else fallback();
+      function fallback() {
+        var ta = document.createElement("textarea");
+        ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); done(); }
+        catch (e) { toast("复制失败，请手动复制地址栏链接"); }
+        document.body.removeChild(ta);
+      }
+    });
+  }
+  var toastTimer = null;
+  function toast(msg) {
+    var t = $("#toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove("show"); }, 2200);
+  }
+
+  /* ---------------- 总装 ---------------- */
+  function renderAll() {
+    renderTabs();
+    if (state.fam === "overview") renderOverview();
+    else if (state.fam === "other") renderOther();
+    else renderTree(state.fam);
+    updateHash();
+  }
+
+  $("#drawerMask").addEventListener("click", closeDrawer);
+  $("#drawerClose").addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeDrawer();
+  });
+
+  renderStats();
+  bindSearch();
+  bindCopy();
+  readHash();
+  renderAll();
+  if (state.char && BY_ID[state.char]) {
+    requestAnimationFrame(function () {
+      var el = document.querySelector('.card[data-id="' + state.char + '"]');
+      if (el && el.scrollIntoView) el.scrollIntoView({ block: "center" });
+      openDrawer(state.char);
+    });
+  }
+})();
+</script>
+</body>
+</html>

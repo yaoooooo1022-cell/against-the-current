@@ -1,0 +1,432 @@
+/* ============================================================
+   剧情介绍 · 分集剧情 / 礼学整理
+   设计约束：顶部（标题头 + Tab + chips）合计不超过首屏高度的 1/3，
+   把主要纵向空间让给下方内容区。
+   ============================================================ */
+
+/* ---------------------------- 顶部标题头（合并「关于本页」） ---------------------------- */
+
+.ehero {
+  margin: 16rpx 20rpx 0;
+  padding: 20rpx 24rpx 18rpx;
+  border-radius: var(--radius-l);
+  background: linear-gradient(150deg, #fffdf8 0%, #f6efdf 62%, #efe3ca 100%);
+  border: 1rpx solid #e2d3b4;
+  box-shadow: 0 4rpx 16rpx rgba(140, 43, 43, 0.05);
+  overflow: hidden;
+  position: relative;
+}
+.ehero__titlerow {
+  display: flex;
+  align-items: baseline;
+}
+.ehero__t {
+  font-size: 34rpx;
+  font-weight: 700;
+  letter-spacing: 5rpx;
+  color: #2b2b2b;
+  line-height: 1.2;
+}
+.ehero__s {
+  margin-left: 14rpx;
+  font-size: 21rpx;
+  letter-spacing: 3rpx;
+  color: var(--gold);
+}
+.ehero__meta {
+  margin-top: 8rpx;
+  font-size: 20rpx;
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ehero__stats {
+  display: flex;
+  align-items: baseline;
+  margin-top: 8rpx;
+  font-size: 19rpx;
+  color: var(--ink-3);
+}
+.est {
+  white-space: nowrap;
+}
+.est__n {
+  font-family: 'Songti SC', 'STSong', serif;
+  font-size: 25rpx;
+  font-weight: 700;
+  color: #9c3d3d;
+  margin-right: 3rpx;
+}
+.est__dot {
+  margin: 0 12rpx;
+  color: #d8cdb6;
+}
+.ehero__note {
+  margin-top: 12rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx dashed #ded0b4;
+  font-size: 19rpx;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+/* ---------------------------- 吸顶栏（Tab + chips 冻结） ---------------------------- */
+/* 说明：position:sticky 依赖 WebView 渲染，需基础库支持；若个别低版本出现不吸顶，
+   可改用 position:fixed + 等高占位块，行为一致。以官方文档与真机实测为准。 */
+.stickybar {
+  /* top 由 WXML 内联给出（{{nav.barH}}px），因为要躲开自定义导航条 */
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  padding: 14rpx 0 8rpx;
+  background-color: var(--paper);
+  /* 与页面同款宣纸纹理，避免吸顶后露出一块纯色底 */
+  background-image: radial-gradient(rgba(176, 141, 87, 0.07) 1rpx, transparent 1rpx);
+  background-size: 28rpx 28rpx;
+  box-shadow: 0 10rpx 16rpx -12rpx rgba(43, 43, 43, 0.3);
+}
+
+/* ---------------------------- Tab ---------------------------- */
+
+.tabs {
+  display: flex;
+  margin: 0 20rpx;
+  padding: 6rpx;
+  background: #efe9dc;
+  border-radius: var(--radius-m);
+}
+.tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx 0;
+  border-radius: 12rpx;
+  transition: all 0.18s;
+}
+.tab--on {
+  background: #fffdf8;
+  box-shadow: 0 2rpx 10rpx rgba(43, 43, 43, 0.08);
+}
+.tab__t {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--ink-2);
+  letter-spacing: 3rpx;
+}
+.tab--on .tab__t {
+  color: #8c2b2b;
+}
+
+/* ---------------------------- 快捷跳转 chips ---------------------------- */
+
+.chips {
+  display: flex;
+  white-space: nowrap;
+  padding: 0 20rpx 6rpx;
+  margin-top: 12rpx;
+}
+/* 隐藏横向滚动条 */
+.chips::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+  display: none;
+}
+/* 同首页：高度固定 + 圆角 = 半高，字号略小（这里条目多、要塞得下） */
+.chip {
+  flex: none;
+  margin-right: 12rpx;
+  height: 52rpx;
+  min-width: 80rpx;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23rpx;
+  line-height: 1;
+  color: var(--ink-2);
+  background: #fffdf8;
+  border: 1rpx solid var(--line);
+  border-radius: 26rpx;
+  transition: all 0.15s;
+}
+.chip--ghost {
+  border-style: dashed;
+  color: var(--ink-3);
+}
+.chip--on {
+  font-weight: 600;
+  box-shadow: 0 2rpx 8rpx rgba(140, 43, 43, 0.18);
+}
+/* 按下反馈：手指按上去立刻有变化，避免「点了没反应」的错觉 */
+.chip--tap {
+  opacity: 0.6;
+  transform: scale(0.96);
+}
+
+/* ---------------------------- 分集剧情 ---------------------------- */
+
+.eps {
+  padding: 4rpx 20rpx 0;
+}
+
+.ep {
+  margin-bottom: 20rpx;
+  background: #fffdf8;
+  border: 1rpx solid var(--line);
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  box-shadow: 0 3rpx 14rpx rgba(43, 43, 43, 0.04);
+}
+
+/* 集头 */
+.ep__head {
+  padding: 20rpx 24rpx 16rpx;
+  background: linear-gradient(150deg, #fdf9f1 0%, #f5ecdb 100%);
+  border-bottom: 1rpx solid #ece0c9;
+}
+.ep__top {
+  display: flex;
+  align-items: center;
+}
+.ep__no {
+  font-size: 29rpx;
+  font-weight: 700;
+  letter-spacing: 3rpx;
+  color: #9c3d3d;
+}
+.ep__unit {
+  margin-left: 12rpx;
+  font-size: 17rpx;
+  line-height: 1;
+  padding: 4rpx 11rpx;
+  color: #7a6033;
+  background: var(--gold-soft);
+  border-radius: 20rpx;
+}
+.ep__part {
+  margin-left: auto;
+  font-size: 18rpx;
+  color: var(--ink-3);
+  letter-spacing: 1rpx;
+}
+.ep__title {
+  margin-top: 10rpx;
+  font-size: 34rpx;
+  font-weight: 700;
+  letter-spacing: 3rpx;
+  color: #2b2b2b;
+  line-height: 1.3;
+}
+.ep__arc {
+  margin-top: 6rpx;
+  font-size: 21rpx;
+  color: var(--ink-2);
+  letter-spacing: 1rpx;
+}
+.ep__kw {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10rpx;
+}
+.kw {
+  font-size: 18rpx;
+  color: #9a8f7c;
+  margin-right: 14rpx;
+  line-height: 1.5;
+}
+
+/* 剧情简介 */
+.ep__body {
+  padding: 20rpx 24rpx 4rpx;
+}
+.para {
+  font-size: 26rpx;
+  line-height: 1.9;
+  color: #3f3a33;
+  text-align: justify;
+  text-indent: 2em;
+  margin-bottom: 18rpx;
+}
+.para:last-child {
+  margin-bottom: 0;
+}
+
+/* 底部「礼学考究 N 条」引导（点击切到礼学整理） */
+.ep__ritcount {
+  margin: 6rpx 24rpx 0;
+  padding: 14rpx 0 18rpx;
+  border-top: 1rpx dashed #e6d9bf;
+  font-size: 21rpx;
+  color: var(--gold);
+}
+
+/* ---------------------------- 礼学整理（按分类归组） ---------------------------- */
+
+.rgroups {
+  padding: 4rpx 20rpx 0;
+}
+
+.rgroup {
+  margin-bottom: 26rpx;
+}
+.rgroup__head {
+  display: flex;
+  align-items: center;
+  padding: 4rpx 6rpx 12rpx;
+}
+.rgroup__bar {
+  width: 6rpx;
+  height: 28rpx;
+  border-radius: 3rpx;
+  margin-right: 12rpx;
+}
+.rgroup__name {
+  font-size: 30rpx;
+  font-weight: 700;
+  letter-spacing: 3rpx;
+}
+.rgroup__n {
+  margin-left: auto;
+  font-size: 20rpx;
+  color: var(--ink-3);
+}
+
+.rit {
+  background: #fffdf8;
+  border: 1rpx solid var(--line);
+  border-left: 6rpx solid #cbb287;
+  border-radius: var(--radius-s);
+  padding: 18rpx 20rpx;
+  margin-bottom: 14rpx;
+  box-shadow: 0 2rpx 10rpx rgba(43, 43, 43, 0.03);
+}
+.rit:last-child {
+  margin-bottom: 0;
+}
+.rit__top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.rit__term {
+  font-size: 28rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+  color: #2b2b2b;
+  line-height: 1.3;
+}
+/* 集数角标：点击回到该集 */
+.rit__ep {
+  margin-left: auto;
+  flex: none;
+  font-size: 18rpx;
+  line-height: 1;
+  padding: 6rpx 12rpx;
+  border: 1rpx solid;
+  border-radius: 20rpx;
+  opacity: 0.9;
+}
+/* 配图（AI 生成 · 形制示意）：只挂在部分条目上，无图则整块不渲染 */
+.rit__fig {
+  margin-top: 12rpx;
+}
+.rit__img {
+  display: block;
+  width: 100%;
+  border-radius: 10rpx;
+  background: #efe9dc;
+  border: 1rpx solid #e4d8bd;
+}
+.rit__cap {
+  margin-top: 8rpx;
+  font-size: 18rpx;
+  line-height: 1.5;
+  color: #a99b83;
+  letter-spacing: 0.5rpx;
+}
+
+.rit__src {
+  margin-top: 9rpx;
+  font-size: 19rpx;
+  color: #9a8f7c;
+  line-height: 1.6;
+}
+.rit__exp {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  line-height: 1.85;
+  color: #3f3a33;
+  text-align: justify;
+}
+.rit__plot {
+  margin-top: 12rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx dashed #e8dcc4;
+  display: flex;
+}
+.rit__plot-k {
+  flex: none;
+  font-size: 18rpx;
+  line-height: 1.6;
+  height: 32rpx;
+  padding: 0 11rpx;
+  margin-right: 13rpx;
+  color: #8c2b2b;
+  background: #f7e7e4;
+  border-radius: 6rpx;
+}
+.rit__plot-c {
+  flex: 1;
+  font-size: 23rpx;
+  line-height: 1.8;
+  color: #5a5348;
+  text-align: justify;
+}
+
+/* ---------------------------- 说明 / 免责 / 页脚 ---------------------------- */
+
+.disc {
+  margin: 8rpx 20rpx 0;
+  padding: 20rpx 22rpx;
+  background: #f7f3ea;
+  border: 1rpx dashed #ded0b4;
+  border-radius: var(--radius-m);
+}
+.disc--foot {
+  margin-top: 14rpx;
+}
+.disc__t {
+  display: block;
+  font-size: 23rpx;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 9rpx;
+}
+.disc__c {
+  display: block;
+  font-size: 21rpx;
+  line-height: 1.7;
+  color: var(--ink-3);
+  margin-bottom: 5rpx;
+}
+.disc__c:last-child {
+  margin-bottom: 0;
+}
+
+.footer {
+  padding: 0 32rpx;
+  text-align: center;
+}
+.back {
+  display: inline-block;
+  margin-top: 8rpx;
+  padding: 16rpx 52rpx;
+  font-size: 26rpx;
+  color: var(--gold);
+  border: 1rpx solid var(--gold);
+  border-radius: 60rpx;
+}

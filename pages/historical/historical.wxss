@@ -1,0 +1,243 @@
+/* ============================================================
+   历史参考人物详情页
+   ============================================================ */
+
+/* ---------------------------- 头部（墨色卷轴感） ---------------------------- */
+
+.hero {
+  position: relative;
+  margin: 24rpx;
+  padding: 52rpx 32rpx 38rpx;
+  border-radius: var(--radius-l);
+  background: linear-gradient(150deg, #3b3a36 0%, #4d473c 58%, #5d5647 100%);
+  box-shadow: 0 8rpx 28rpx rgba(59, 58, 54, 0.22);
+  overflow: hidden;
+  text-align: center;
+}
+.hero__ink {
+  position: absolute;
+  right: -60rpx;
+  top: -60rpx;
+  width: 240rpx;
+  height: 240rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(214, 196, 154, 0.16) 0%, rgba(214, 196, 154, 0) 70%);
+}
+.hero__seal {
+  position: absolute;
+  top: 28rpx;
+  right: 28rpx;
+  width: 86rpx;
+  height: 86rpx;
+  border-radius: 8rpx;
+  background: rgba(214, 196, 154, 0.12);
+  border: 1rpx solid rgba(214, 196, 154, 0.55);
+  color: #e8d9b5;
+  font-size: 26rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0;
+  transform: rotate(-4deg);
+}
+.hero__name {
+  font-size: 62rpx;
+  font-weight: 700;
+  letter-spacing: 10rpx;
+  color: #f7efdb;
+  line-height: 1.2;
+}
+.hero__alias {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #b9ab8c;
+  letter-spacing: 2rpx;
+}
+.hero__meta {
+  margin-top: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero__dyn {
+  font-size: 22rpx;
+  color: #e8d9b5;
+  border: 1rpx solid rgba(232, 217, 181, 0.55);
+  border-radius: 30rpx;
+  padding: 4rpx 20rpx;
+  letter-spacing: 2rpx;
+}
+.hero__life {
+  margin-left: 16rpx;
+  font-size: 24rpx;
+  color: #b9ab8c;
+  letter-spacing: 1rpx;
+}
+.hero__title {
+  margin-top: 18rpx;
+  font-size: 26rpx;
+  color: #ddd0b0;
+  letter-spacing: 2rpx;
+}
+.hero__keywords {
+  margin-top: 26rpx;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.kwd {
+  font-size: 20rpx;
+  color: #cbbf9f;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 30rpx;
+  padding: 6rpx 18rpx;
+  margin: 0 8rpx 10rpx;
+}
+
+/* ---------------------------- 一句话概括 ---------------------------- */
+
+.sum {
+  font-size: 28rpx;
+  line-height: 1.85;
+  color: #3f3a33;
+  text-align: justify;
+}
+
+/* ---------------------------- 生平 ---------------------------- */
+
+.para {
+  font-size: 28rpx;
+  line-height: 1.95;
+  color: #3f3a33;
+  text-align: justify;
+  text-indent: 2em;
+  margin-bottom: 22rpx;
+}
+.para:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------------------------- 代表句 ---------------------------- */
+
+.quote {
+  position: relative;
+  padding: 26rpx 26rpx 24rpx 34rpx;
+  background: #f9f5ec;
+  border-left: 6rpx solid var(--gold);
+  border-radius: 0 var(--radius-s) var(--radius-s) 0;
+  margin-bottom: 20rpx;
+}
+.quote:last-child {
+  margin-bottom: 0;
+}
+.quote__mark {
+  position: absolute;
+  left: 10rpx;
+  top: 2rpx;
+  font-size: 42rpx;
+  color: rgba(176, 141, 87, 0.35);
+}
+.quote__text {
+  font-size: 30rpx;
+  line-height: 1.7;
+  color: #35302a;
+  letter-spacing: 1rpx;
+}
+.quote__from {
+  margin-top: 14rpx;
+  font-size: 22rpx;
+  color: var(--ink-3);
+  text-align: right;
+}
+
+/* ---------------------------- 关联角色 ---------------------------- */
+
+.linknote {
+  font-size: 27rpx;
+  line-height: 1.9;
+  color: #3f3a33;
+  text-align: justify;
+}
+
+.link-t {
+  margin-top: 28rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx dashed var(--line);
+  font-size: 24rpx;
+  color: var(--ink-3);
+  margin-bottom: 16rpx;
+}
+
+.lrow {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 0;
+}
+.lrow__seal {
+  width: 84rpx;
+  height: 84rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Songti SC', 'STSong', serif;
+  font-size: 34rpx;
+  font-weight: 600;
+  border: 2rpx solid var(--gold);
+}
+.lrow__main {
+  flex: 1;
+  margin-left: 20rpx;
+}
+.lrow__name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+.lrow__sub {
+  margin-top: 4rpx;
+  font-size: 22rpx;
+  color: var(--ink-3);
+}
+.lrow__arrow {
+  font-size: 36rpx;
+  color: #d8cdb6;
+}
+
+/* ---------------------------- 声明 / 页脚 ---------------------------- */
+
+.disc {
+  margin: 0 24rpx;
+  padding: 22rpx 24rpx;
+  background: #f7f3ea;
+  border: 1rpx dashed #ded0b4;
+  border-radius: var(--radius-m);
+}
+.disc__t {
+  display: block;
+  font-size: 24rpx;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 8rpx;
+}
+.disc__c {
+  display: block;
+  font-size: 22rpx;
+  line-height: 1.7;
+  color: var(--ink-3);
+}
+
+.footer {
+  padding: 0 32rpx;
+  text-align: center;
+}
+
+.back {
+  display: inline-block;
+  margin-top: 8rpx;
+  padding: 16rpx 52rpx;
+  font-size: 26rpx;
+  color: var(--gold);
+  border: 1rpx solid var(--gold);
+  border-radius: 60rpx;
+}

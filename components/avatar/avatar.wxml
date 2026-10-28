@@ -1,0 +1,36 @@
+<view
+  class="avatar avatar--{{size}} tap"
+  style="border-color:{{color}};"
+  bindtap="onTap"
+>
+  <!-- 第 1 级：专属头像 -->
+  <image
+    wx:if="{{src && !srcFailed}}"
+    class="avatar__img"
+    src="{{src}}"
+    mode="aspectFill"
+    lazy-load
+    binderror="onSrcError"
+  />
+
+  <!-- 第 2 级：通用头像（按性别 / 年龄段区分） -->
+  <image
+    wx:elif="{{fallback && !fbFailed}}"
+    class="avatar__img"
+    src="{{fallback}}"
+    mode="aspectFill"
+    lazy-load
+    binderror="onFallbackError"
+  />
+
+  <!-- 第 3 级：姓氏印章 -->
+  <view
+    wx:else
+    class="avatar__seal"
+    style="border-color:{{color}};background:{{soft}};"
+  >
+    <text class="avatar__ch" style="color:{{fg}};">{{initial}}</text>
+  </view>
+
+  <view wx:if="{{badge}}" class="avatar__badge" style="background:{{color}};">{{badge}}</view>
+</view>

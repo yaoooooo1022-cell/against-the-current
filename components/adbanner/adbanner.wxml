@@ -1,0 +1,22 @@
+<view
+  wx:if="{{!closed && (unitId || showPh || failed)}}"
+  class="adbox {{dock ? 'adbox--dock' : ''}}"
+  style="{{dock && L ? 'padding-bottom:' + L.safeBottom + 'px;' : ''}}"
+>
+  <!-- 真实广告 -->
+  <ad
+    wx:if="{{unitId}}"
+    class="adbox__unit"
+    unit-id="{{unitId}}"
+    bindload="onAdLoad"
+    binderror="onAdError"
+  />
+
+  <!-- 占位 / 降级：未配置 adUnitId，或拉取失败 -->
+  <view wx:else class="adbox__ph">
+    <text class="adbox__ph-t">{{label}}</text>
+    <text class="adbox__ph-s">{{failed ? '广告拉取失败（未开通流量主 / 测试环境）' : '未配置 adUnitId，开通流量主后此处展示 Banner 广告'}}</text>
+  </view>
+
+  <view wx:if="{{closable}}" class="adbox__x" catchtap="onClose">×</view>
+</view>

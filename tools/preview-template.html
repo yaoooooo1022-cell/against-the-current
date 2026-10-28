@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>《兰香如故》角色图谱 · 效果预览</title>
+<style>
+  :root{
+    --paper:#f5f1e8; --paper-2:#efe9dc; --card:#fffdf8;
+    --ink:#2b2b2b; --ink2:#6b6459; --ink3:#a39c90;
+    --line:#e5dccb; --gold:#b08d57; --gold-soft:#f0e6d2; --crimson:#8c2b2b;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;height:100%;}
+  body{
+    background:#26241f;
+    background-image:radial-gradient(rgba(176,141,87,.09) 1px,transparent 1px);
+    background-size:26px 26px;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    padding:28px 20px;min-height:100vh;
+  }
+  .serif{font-family:"Songti SC","STSong","SimSun","Noto Serif SC",serif;}
+
+  .wrap{display:flex;gap:34px;align-items:center;flex-wrap:wrap;justify-content:center;}
+
+  .side{width:270px;color:#cfc6b2;font-size:13px;line-height:1.85;}
+  .side h1{font-size:20px;color:#f0e6d2;margin:0 0 4px;letter-spacing:2px;}
+  .side .muted{color:#8b8578;}
+  .side .k{color:#d9c9a3;}
+  .side ul{padding-left:16px;margin:10px 0;}
+  .side li{margin-bottom:6px;}
+  .side .note{margin-top:14px;padding:12px 14px;border:1px dashed #55503f;border-radius:8px;background:rgba(255,255,255,.03);}
+  .tip{margin-top:16px;font-size:12px;color:#7d7869;}
+
+  /* ---------------- 手机外壳 ---------------- */
+  .phone{
+    width:392px;height:812px;border-radius:44px;background:#111;
+    padding:11px;box-shadow:0 26px 70px rgba(0,0,0,.6),0 0 0 1px #3a372f;
+    position:relative;flex:none;
+  }
+  .notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:118px;height:26px;background:#111;border-radius:0 0 16px 16px;z-index:60;}
+  .screen{
+    width:100%;height:100%;border-radius:34px;overflow:hidden;background:var(--paper);
+    position:relative;display:flex;flex-direction:column;
+  }
+  /* iPhone 状态栏 + 小程序自定义导航条（与 utils/layout.js 的几何一致） */
+  .navbar{
+    flex:none;background:var(--paper);border-bottom:1px solid var(--line);
+    z-index:40;position:relative;
+  }
+  .navbar__status{
+    height:30px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 20px 0 26px;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--ink);
+  }
+  .navbar__status .stime{width:34px;text-align:left;}
+  .navbar__status .sicons{display:flex;align-items:center;gap:4px;font-size:10px;}
+  .navbar__status .sicons i{font-style:normal;}
+  .navbar__status .sicons .bat{
+    width:22px;height:11px;border:1px solid rgba(0,0,0,.35);border-radius:3px;position:relative;
+  }
+  .navbar__status .sicons .bat::before{
+    content:"";position:absolute;right:-3px;top:3px;width:2px;height:5px;background:rgba(0,0,0,.35);border-radius:0 1px 1px 0;
+  }
+  .navbar__status .sicons .bat b{position:absolute;left:1px;top:1px;bottom:1px;width:13px;background:var(--ink);border-radius:2px;}
+  .navbar__bar{
+    height:44px;display:flex;align-items:center;justify-content:center;position:relative;
+    font-size:15px;font-weight:600;letter-spacing:2px;
+  }
+  .navbar__brand{position:absolute;left:14px;font-size:11.5px;letter-spacing:2px;color:var(--gold);}
+  .navbar__capsule{
+    position:absolute;right:10px;width:86px;height:32px;border-radius:16px;
+    border:1px solid rgba(0,0,0,.1);background:rgba(0,0,0,.05);
+    display:flex;align-items:center;justify-content:center;gap:10px;color:#4b4539;font-size:12px;
+  }
+  .navbar__capsule .dots{letter-spacing:1px;font-weight:700;}
+  .navbar__capsule .circ{width:17px;height:17px;border:2px solid rgba(0,0,0,.35);border-radius:50%;display:inline-block;}
+  .scroller{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;
+    -webkit-overflow-scrolling:touch;}
+  .scroller::-webkit-scrollbar{width:0;}
+
+  /* ---------------- Banner（紧凑横向布局 · 整块可点进分集介绍） ---------------- */
+  .banner{
+    display:flex;align-items:center;cursor:pointer;
+    margin:12px 12px 12px;padding:10px 12px;border-radius:18px;
+    background:linear-gradient(150deg,#fffdf8 0%,#f6efdf 62%,#efe5cf 100%);
+    border:1px solid #e2d3b4;box-shadow:0 2px 12px rgba(140,43,43,.06);overflow:hidden;
+    transition:background .15s;
+  }
+  .banner:hover{background:linear-gradient(150deg,#faf5ea 0%,#f0e7d3 62%,#e9dcc2 100%);}
+  .banner__main{flex:1;min-width:0;}
+  .banner__titlerow{display:flex;align-items:baseline;flex-wrap:wrap;}
+  .banner__title{font-size:20px;font-weight:700;letter-spacing:2.5px;line-height:1.12;}
+  .banner__sub{margin-left:7px;font-size:11.5px;letter-spacing:1px;color:var(--gold);}
+  .banner__tagline{margin-top:4px;font-size:10.5px;line-height:1.45;color:#7a6b52;
+    overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;}
+  .banner__q{color:rgba(176,141,87,.62);}
+  .banner__meta{margin-top:5px;font-size:10.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .banner__meta .dot{margin:0 4px;color:var(--gold);}
+  .banner__stats{display:flex;align-items:baseline;margin-top:4px;padding-top:4px;
+    border-top:1px dashed #ded0b4;font-size:10px;color:var(--ink3);}
+  .banner__stat{white-space:nowrap;}
+  .banner__stat .n{font-family:"Songti SC","STSong",serif;font-size:13px;font-weight:700;color:#9c3d3d;margin-right:2px;}
+  .banner__stat__dot{margin:0 6px;color:#d8cdb6;}
+  .banner__more{
+    flex:none;margin-left:8px;padding:6px 7px;border-radius:6px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    border:1px solid rgba(156,61,61,.42);background:rgba(255,255,255,.72);
+  }
+  .banner__more-t{font-size:11px;line-height:1.3;letter-spacing:1px;color:#9c3d3d;}
+  .banner__more-a{margin-top:1px;font-size:12px;line-height:1;color:#9c3d3d;opacity:.7;}
+
+  .searchbar{flex:none;padding-top:10px;background:var(--paper);}
+
+  /* ---------------- 搜索 ---------------- */
+  .search{display:flex;align-items:center;margin:0 12px 10px;height:36px;padding:0 12px;
+    background:var(--card);border:1px solid var(--line);border-radius:40px;}
+  .search__icon{font-size:17px;color:var(--gold);margin-right:8px;}
+  .search input{flex:1;border:none;outline:none;background:transparent;font-size:13.5px;color:var(--ink);font-family:inherit;}
+  .search input::placeholder{color:#b8b0a2;font-size:12.5px;}
+  .search__clear{font-size:14px;color:#b8b0a2;padding:0 4px;cursor:pointer;display:none;}
+
+  /* ---------------- Tabs ---------------- */
+  .tabs{display:flex;align-items:center;margin:0 12px 10px;padding:3px;background:var(--paper-2);border-radius:14px;}
+  .tab{flex:1;padding:5px 0;border-radius:9px;text-align:center;cursor:pointer;transition:.18s;}
+  .tab--on{background:var(--card);box-shadow:0 1px 6px rgba(43,43,43,.08);}
+  .tab__t{display:block;font-size:14.5px;font-weight:600;color:var(--ink2);letter-spacing:1.5px;}
+  .tab--on .tab__t{color:var(--crimson);}
+
+  /* ---------------- 支持榜排序开关 ---------------- */
+  .sortsw{flex:none;padding:4px 10px;font-size:10.5px;line-height:1.2;color:var(--ink2);
+    background:#e3dac6;border-radius:16px;cursor:pointer;transition:.18s;white-space:nowrap;}
+  .sortsw--on{background:var(--crimson);color:#fffdf8;font-weight:600;}
+  .sortnote{display:flex;align-items:baseline;margin:-4px 12px 9px;padding:6px 10px;
+    background:rgba(176,141,87,.1);border-left:3px solid var(--gold);border-radius:5px;}
+  .sortnote__t{flex:none;margin-right:6px;font-size:10px;font-weight:600;color:#8a6a33;letter-spacing:.5px;}
+  .sortnote__c{font-size:9.5px;line-height:1.5;color:var(--ink3);}
+  .sortnote--demo{background:rgba(140,43,43,.08);border-left-color:var(--crimson);}
+  .sortnote--demo .sortnote__t{color:var(--crimson);}
+
+  /* ---------------- 爱心支持 ---------------- */
+  .like{flex:none;display:flex;align-items:baseline;padding:2px 8px;border:1px solid;border-radius:16px;
+    opacity:.72;cursor:pointer;transition:.16s;user-select:none;}
+  .like:hover{opacity:1;}
+  .like:active{transform:scale(.94);}
+  .like--on{opacity:1;}
+  .like--on .like__i,.like--on .like__n{color:#fffdf8;}
+  .like__i{font-size:10.5px;line-height:1;}
+  .like__n{margin-left:3px;font-size:10px;line-height:1;font-variant-numeric:tabular-nums;}
+  .famcard__side{flex:none;display:flex;flex-direction:column;align-items:flex-end;margin-left:8px;}
+  .famcard__side .like{margin-top:5px;}
+  .rrow .like{margin-left:8px;}
+
+  /* ---------------- 分享卡片弹层 ---------------- */
+  .sharemask{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;
+    padding:20px;background:rgba(43,43,43,.55);}
+  /* 宽高由 JS 按屏幕实测给出（5:7.5），余下的空间给底部按钮条 */
+  .sharecard{position:relative;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;
+    background:var(--card);box-shadow:0 10px 30px rgba(43,43,43,.4);}
+  .sharecard__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .sharecard__body{position:relative;flex:1;min-height:0;padding:28px 22px 20px;text-align:center;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .sharecard__brand{position:absolute;top:18px;left:0;right:0;font-size:11px;letter-spacing:2px;
+    color:#b08d57;opacity:.85;}
+  .sharecard__lead{font-size:17px;letter-spacing:4px;color:#5a5348;line-height:1.3;}
+  .sharecard__name{margin:7px 0;font-size:38px;font-weight:700;letter-spacing:3px;color:#8c2b2b;
+    line-height:1.15;word-break:break-all;}
+  .sharecard__sub{margin-top:13px;padding:0 6px;font-size:11.5px;line-height:1.7;color:#6b6255;max-width:88%;}
+  .sharecard__count{margin-top:18px;font-size:12px;letter-spacing:1px;color:#8a6a33;}
+  .sharecard__heart{color:#8c2b2b;margin-right:2px;}
+  .sharecard__foot{position:relative;flex:none;display:flex;gap:10px;padding:0 22px 14px;}
+  .sharecard__x{position:absolute;top:6px;right:6px;z-index:3;width:28px;height:28px;display:flex;
+    align-items:center;justify-content:center;font-size:15px;color:#6b6255;background:rgba(255,253,248,.9);
+    border:1px solid #d9cdb4;border-radius:50%;cursor:pointer;}
+  .sharecard__btn{flex:1;padding:11px 0;font-size:13.5px;letter-spacing:1.5px;border-radius:22px;
+    line-height:1.3;text-align:center;cursor:pointer;}
+  .sharecard__btn--main{background:var(--crimson);color:#fffdf8;font-weight:600;}
+  .sharecard__btn--ghost{background:rgba(255,253,248,.7);color:#6b6255;border:1px solid #d9cdb4;}
+  
+  /* ---------------- chips ---------------- */
+  .chips{display:flex;gap:7px;overflow-x:auto;padding:0 12px 5px;}
+  .chips::-webkit-scrollbar{height:0;}
+  /* 与小程序同步：高度固定 + 圆角=半高，min-width 保证单字 chip 不缩成小圆点 */
+  .chip{flex:none;height:28px;min-width:44px;padding:0 11px;box-sizing:border-box;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12.5px;line-height:1;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:14px;cursor:pointer;transition:.15s;white-space:nowrap;}
+  .chip--on{color:#fff;font-weight:600;box-shadow:0 1px 4px rgba(140,43,43,.18);}
+
+  /* ---------------- 族谱 ---------------- */
+  .famcard{margin:0 12px 12px;background:var(--card);border:1px solid var(--line);border-radius:18px;
+    overflow:hidden;box-shadow:0 2px 10px rgba(43,43,43,.04);}
+  .famcard__head{position:relative;display:flex;align-items:center;padding:10px 13px;border-left:4px solid #9c3d3d;}
+  .famcard__id{flex:1;min-width:0;}
+  .famcard__name{font-size:17px;font-weight:700;letter-spacing:2px;line-height:1.2;}
+  .famcard__tag{margin-top:2px;font-size:10.5px;color:var(--ink2);}
+  .famcard__motto{font-size:9.5px;letter-spacing:2px;
+    padding:3px 9px;border:1px solid;border-radius:20px;opacity:.85;white-space:nowrap;}
+  .famcard__body{padding:4px 5px 1px;}
+  .gen{padding:7px 5px 2px;}
+  .gen__label{display:flex;align-items:center;margin:0 4px 8px;}
+  .gen__line{width:2px;height:12px;border-radius:1px;margin-right:6px;}
+  .gen__txt{font-size:12.5px;font-weight:600;color:var(--ink2);letter-spacing:1px;}
+  .branch{margin-bottom:4px;}
+  .branch__name{display:block;margin:0 4px 2px;font-size:10.5px;font-weight:600;letter-spacing:1px;opacity:.8;}
+  .servants{margin-top:10px;padding:7px 5px 2px;border-top:1px dashed #d9cdb4;}
+  .servants__label{display:flex;align-items:center;margin:0 4px 8px;}
+  .sgroup{margin-bottom:4px;}
+  .sgroup__name{display:block;margin:0 4px 2px;font-size:10px;color:var(--ink3);letter-spacing:.5px;}
+  .gen__row{position:relative;display:flex;flex-wrap:wrap;justify-content:center;padding-top:11px;}
+  .gen__row::before{content:"";position:absolute;top:0;left:8%;right:8%;height:1px;
+    background:linear-gradient(to right,rgba(176,141,87,0),rgba(176,141,87,.55) 12%,rgba(176,141,87,.55) 88%,rgba(176,141,87,0));}
+  .member{position:relative;width:80px;margin:0 2px 13px;display:flex;flex-direction:column;align-items:center;cursor:pointer;}
+  .member::before{content:"";position:absolute;top:-11px;left:50%;width:1px;height:11px;background:rgba(176,141,87,.45);}
+  .member__name{margin-top:7px;font-size:12.5px;font-weight:600;text-align:center;line-height:1.25;}
+  .member__actor{margin-top:2px;font-size:10px;color:var(--ink3);text-align:center;}
+  .member__lead{margin-top:3px;font-size:8.5px;line-height:1;padding:2px 5px;color:#fff;background:var(--gold);border-radius:10px;}
+  .member:active{opacity:.65;}
+
+  /* ---------------- 头像 ---------------- */
+  .av{position:relative;border-radius:50%;padding:2px;border:1px solid var(--gold);flex:none;}
+  .av--s{width:46px;height:46px;}
+  .av--m{width:66px;height:66px;}
+  .av--l{width:104px;height:104px;}
+  .av__inner{position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;}
+  .av__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+  .av__seal{position:absolute;inset:0;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    border:1px solid;box-shadow:inset 0 0 0 2px rgba(255,255,255,.55);}
+  .av__ch{font-family:"Songti SC","STSong",serif;font-weight:600;line-height:1;}
+  .av--s .av__ch{font-size:20px;}
+  .av--m .av__ch{font-size:29px;}
+  .av--l .av__ch{font-size:48px;}
+
+  /* ---------------- 行走行 ---------------- */
+  .rrow{display:flex;align-items:center;padding:9px 11px;margin-bottom:8px;background:var(--card);
+    border:1px solid var(--line);border-radius:14px;cursor:pointer;}
+  .rrow:active{opacity:.7;}
+  .rrow__main{flex:1;min-width:0;margin-left:10px;}
+  .rrow__name{font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rrow__alias{font-size:11px;font-weight:400;color:var(--ink3);}
+  .rrow__sub{margin-top:3px;font-size:11.5px;line-height:1.7;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rrow__fam{display:inline-block;margin-right:4px;font-size:10px;line-height:1.5;
+    padding:0 6px;border:1px solid;border-radius:16px;opacity:.9;}
+  .rrow__arrow{font-size:20px;opacity:.5;margin-left:5px;}
+  .pending{display:inline-block;font-size:10px;color:var(--gold);border:1px dashed rgba(176,141,87,.6);
+    border-radius:3px;padding:1px 5px;margin-left:5px;vertical-align:middle;}
+  .roster{padding:0 12px;}
+  .results{padding:0 12px;}
+  .results__head{padding:2px 4px 9px;font-size:12px;color:var(--ink3);}
+  .results__head .hl{color:#9c3d3d;font-weight:700;}
+
+  /* ---------------- 说明 / 页脚 ---------------- */
+  .note{margin:2px 14px 0;padding:11px 12px;background:#f7f3ea;border:1px dashed #ded0b4;border-radius:14px;}
+  .note__t{display:block;font-size:12px;font-weight:600;color:var(--gold);margin-bottom:4px;}
+  .note__c{display:block;font-size:11px;line-height:1.7;color:var(--ink3);}
+  .footer{padding:14px 16px 20px;text-align:center;}
+  .footer span{display:block;font-size:10px;line-height:1.8;color:#b8b0a2;}
+  .divider{display:flex;align-items:center;margin:16px 14px;color:var(--gold);font-size:10px;letter-spacing:3px;}
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line);}
+  .divider span{margin:0 9px;}
+
+  /* ---------------- 详情层 ---------------- */
+  .sheet{position:absolute;inset:0;background:var(--paper);z-index:80;display:flex;flex-direction:column;
+    transform:translateX(100%);transition:transform .28s cubic-bezier(.3,.8,.4,1);}
+  .sheet--on{transform:translateX(0);}
+  .sheet__bar{flex:none;height:52px;display:flex;align-items:center;padding:0 14px;border-bottom:1px solid var(--line);background:var(--paper);}
+  .sheet__back{font-size:14px;color:var(--gold);cursor:pointer;padding:6px 4px;}
+  .sheet__title{flex:1;text-align:center;font-size:15px;font-weight:600;letter-spacing:2px;
+    margin-right:52px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+  .sheet__body{flex:1;overflow-y:auto;}
+  .sheet__body::-webkit-scrollbar{width:0;}
+
+  .hero{position:relative;padding:22px 16px 16px;text-align:center;border-bottom:1px solid var(--line);}
+  .hero__seal{position:absolute;top:14px;right:14px;font-size:11px;letter-spacing:1px;padding:4px 8px;border:1px solid;border-radius:4px;opacity:.8;}
+  .hero__name{margin-top:12px;font-size:24px;font-weight:700;letter-spacing:3px;line-height:1.2;}
+  .hero__alias{margin-top:4px;font-size:12.5px;color:var(--ink3);}
+  .hero__actor{margin-top:7px;font-size:13.5px;color:var(--gold);letter-spacing:1px;}
+  .hero__tags{margin-top:13px;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;}
+  .tag{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:20px;font-size:11px;background:var(--gold-soft);color:#7a6033;}
+  .tag.ghost{background:transparent;border:1px solid var(--line);color:var(--ink2);}
+
+  .sec{display:flex;align-items:center;margin:16px 14px 10px;}
+  .sec .bar{width:3px;height:15px;background:var(--gold);border-radius:2px;margin-right:7px;}
+  .sec .txt{font-size:16px;font-weight:600;letter-spacing:1px;}
+  .sec .extra{margin-left:auto;font-size:11px;color:var(--ink3);}
+  .cd{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 14px 12px;
+    box-shadow:0 1px 6px rgba(43,43,43,.04);}
+  .intro{font-size:14px;line-height:1.95;color:#3f3a33;text-align:justify;text-indent:2em;}
+  .kv{display:flex;}
+  .kv__k{flex:none;width:44px;font-size:12.5px;color:var(--ink3);padding-top:2px;}
+  .kv__v{flex:1;font-size:13.5px;line-height:1.65;}
+  .empty-tip{padding:14px 0;text-align:center;font-size:12.5px;color:var(--ink3);line-height:1.8;}
+
+  .actor{display:flex;align-items:center;}
+  .actor__av{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--gold);font-size:12.5px;font-weight:600;padding:3px;text-align:center;line-height:1.15;flex:none;}
+  .actor__main{margin-left:12px;}
+  .actor__name{font-size:17px;font-weight:600;letter-spacing:1px;}
+  .actor__role{margin-top:4px;font-size:12px;color:var(--ink3);}
+  .actor__works{margin-top:12px;padding-top:11px;border-top:1px dashed var(--line);}
+  .actor__works-t{display:block;font-size:12px;color:var(--ink3);margin-bottom:7px;}
+  .actor__works-list{display:flex;flex-wrap:wrap;gap:6px;}
+
+  .rel{display:flex;align-items:center;padding:9px 0;border-bottom:1px solid #f2ece0;cursor:pointer;}
+  .rel:last-child{border-bottom:none;padding-bottom:0;}
+  .rel__main{flex:1;min-width:0;margin-left:10px;}
+  .rel__name{font-size:15px;font-weight:600;}
+  .rel__actor{margin-top:2px;font-size:11px;color:var(--ink3);}
+  .rel__label{flex:none;font-size:10.5px;padding:3px 8px;border:1px solid;border-radius:16px;opacity:.9;max-width:120px;text-align:center;}
+  .rel__arrow{margin-left:6px;font-size:17px;color:#d8cdb6;}
+  .rel:active{opacity:.65;}
+
+  .hist{display:flex;align-items:center;margin:0 14px 12px;padding:14px;border-radius:14px;
+    background:linear-gradient(135deg,#3b3a36,#565044);box-shadow:0 4px 16px rgba(59,58,54,.2);cursor:pointer;}
+  .hist:active{opacity:.8;}
+  .hist__seal{flex:none;width:48px;height:48px;border-radius:5px;background:rgba(255,255,255,.08);
+    border:1px solid rgba(214,196,154,.5);color:#e8d9b5;font-size:12px;line-height:1.15;display:flex;
+    align-items:center;justify-content:center;text-align:center;padding:4px;}
+  .hist__main{flex:1;min-width:0;margin-left:12px;}
+  .hist__name{font-size:17px;font-weight:700;color:#f4ead2;letter-spacing:2px;}
+  .hist__dyn{font-size:10px;color:#cbb98d;border:1px solid rgba(203,185,141,.55);border-radius:10px;padding:1px 6px;margin-left:6px;vertical-align:middle;}
+  .hist__meta{margin-top:4px;font-size:11px;color:#bdb49c;}
+  .hist__sum{margin-top:5px;font-size:11px;line-height:1.55;color:#a9a08a;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;}
+  .hist__arrow{margin-left:7px;font-size:20px;color:rgba(244,234,210,.55);}
+
+  .hhero{position:relative;margin:14px;padding:26px 16px 19px;border-radius:20px;text-align:center;overflow:hidden;
+    background:linear-gradient(150deg,#3b3a36,#4d473c 58%,#5d5647);box-shadow:0 6px 22px rgba(59,58,54,.22);}
+  .hhero__seal{position:absolute;top:14px;right:14px;width:43px;height:43px;border-radius:5px;
+    background:rgba(214,196,154,.12);border:1px solid rgba(214,196,154,.55);color:#e8d9b5;font-size:13px;
+    display:flex;align-items:center;justify-content:center;transform:rotate(-4deg);}
+  .hhero__name{font-size:31px;font-weight:700;letter-spacing:5px;color:#f7efdb;line-height:1.2;}
+  .hhero__alias{margin-top:5px;font-size:12px;color:#b9ab8c;letter-spacing:1px;}
+  .hhero__meta{margin-top:11px;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .hhero__dyn{font-size:11px;color:#e8d9b5;border:1px solid rgba(232,217,181,.55);border-radius:15px;padding:2px 10px;letter-spacing:1px;}
+  .hhero__life{font-size:12px;color:#b9ab8c;}
+  .hhero__title{margin-top:9px;font-size:13px;color:#ddd0b0;letter-spacing:1px;}
+  .hhero__kws{margin-top:13px;display:flex;flex-wrap:wrap;justify-content:center;gap:5px;}
+  .kwd{font-size:10px;color:#cbbf9f;background:rgba(255,255,255,.07);border-radius:15px;padding:3px 9px;}
+  .para{font-size:14px;line-height:1.95;color:#3f3a33;text-align:justify;text-indent:2em;margin-bottom:11px;}
+  .para:last-child{margin-bottom:0;}
+  .quote{position:relative;padding:13px 13px 12px 17px;background:#f9f5ec;border-left:3px solid var(--gold);
+    border-radius:0 6px 6px 0;margin-bottom:10px;}
+  .quote:last-child{margin-bottom:0;}
+  .quote__mark{position:absolute;left:4px;top:0;font-size:21px;color:rgba(176,141,87,.35);}
+  .quote__text{font-size:15px;line-height:1.7;color:#35302a;}
+  .quote__from{margin-top:7px;font-size:11px;color:var(--ink3);text-align:right;}
+  .lrow{display:flex;align-items:center;padding:8px 0;cursor:pointer;}
+  .lrow:active{opacity:.7;}
+  .lrow__seal{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-family:"Songti SC",serif;font-size:17px;font-weight:600;border:1px solid var(--gold);flex:none;}
+  .lrow__main{flex:1;margin-left:10px;}
+  .lrow__name{font-size:15px;font-weight:600;}
+  .lrow__sub{margin-top:2px;font-size:11px;color:var(--ink3);}
+  .lrow__arrow{font-size:18px;color:#d8cdb6;}
+  .disc{margin:0 14px;padding:11px 12px;background:#f7f3ea;border:1px dashed #ded0b4;border-radius:14px;}
+  .disc__t{display:block;font-size:12px;font-weight:600;color:var(--gold);margin-bottom:4px;}
+  .disc__c{display:block;font-size:11px;line-height:1.7;color:var(--ink3);}
+  .back{display:inline-block;margin-top:6px;padding:8px 26px;font-size:13px;color:var(--gold);
+    border:1px solid var(--gold);border-radius:30px;cursor:pointer;}
+  .back:active{opacity:.7;}
+  .linknote{font-size:13.5px;line-height:1.9;color:#3f3a33;text-align:justify;}
+  .link-t{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:12px;color:var(--ink3);margin-bottom:8px;}
+
+  /* ---------------- 剧情介绍 / 礼学整理 ---------------- */
+  .epwrap .disc{margin:8px 10px 0;}
+  .epwrap .disc--foot{margin-top:10px;}
+  /* 合并后的紧凑标题头 */
+  .ehero{position:relative;margin:10px 10px 0;padding:10px 12px 9px;border-radius:16px;overflow:hidden;
+    background:linear-gradient(150deg,#fffdf8 0%,#f6efdf 62%,#efe3ca 100%);
+    border:1px solid #e2d3b4;box-shadow:0 2px 9px rgba(140,43,43,.05);}
+  .ehero__titlerow{display:flex;align-items:baseline;}
+  .ehero__t{font-size:17px;font-weight:700;letter-spacing:2.5px;line-height:1.2;}
+  .ehero__s{margin-left:7px;font-size:10.5px;letter-spacing:1.5px;color:var(--gold);}
+  .ehero__meta{margin-top:4px;font-size:10px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ehero__stats{display:flex;align-items:baseline;margin-top:4px;font-size:9.5px;color:var(--ink3);}
+  .est{white-space:nowrap;}
+  .est__n{font-family:"Songti SC","STSong",serif;font-size:12.5px;font-weight:700;color:#9c3d3d;margin-right:2px;}
+  .est__dot{margin:0 6px;color:#d8cdb6;}
+  .ehero__note{margin-top:6px;padding-top:6px;border-top:1px dashed #ded0b4;font-size:9.5px;line-height:1.6;color:var(--ink3);}
+  /* 剧情侧 / 礼学侧 Tab（吸顶：切 Tab 不用回到顶部） */
+  .efrozen{position:sticky;top:0;z-index:6;padding:7px 0 6px;background:var(--paper);
+    background-image:radial-gradient(rgba(176,141,87,.07) 1px,transparent 1px);background-size:14px 14px;
+    box-shadow:0 6px 10px -8px rgba(43,43,43,.34);}
+  .etabs{display:flex;margin:0 10px;padding:3px;background:var(--paper-2);border-radius:12px;}
+  .etab{flex:1;padding:6px 0;border-radius:8px;text-align:center;cursor:pointer;transition:.18s;}
+  .etab--on{background:var(--card);box-shadow:0 1px 6px rgba(43,43,43,.08);}
+  .etab__t{font-size:14px;font-weight:600;color:var(--ink2);letter-spacing:1.5px;}
+  .etab--on .etab__t{color:var(--crimson);}
+  .echips{display:flex;gap:6px;overflow-x:auto;padding:0 10px;margin-top:6px;}
+  .echips::-webkit-scrollbar{height:0;}
+  .echip{flex:none;padding:4px 11px;font-size:11px;color:var(--ink2);background:var(--card);
+    border:1px solid var(--line);border-radius:20px;cursor:pointer;white-space:nowrap;transition:.15s;}
+  .echip--on{color:#fff;background:#9c3d3d;border-color:#9c3d3d;font-weight:600;}
+  .echip--ghost{border-style:dashed;color:var(--ink3);}
+  /* 分集剧情 */
+  .eps{padding:2px 10px 0;}
+  .ep{margin-bottom:10px;background:var(--card);border:1px solid var(--line);border-radius:16px;
+    overflow:hidden;box-shadow:0 2px 9px rgba(43,43,43,.04);}
+  .ep__head{padding:10px 12px 8px;background:linear-gradient(150deg,#fdf9f1 0%,#f5ecdb 100%);border-bottom:1px solid #ece0c9;}
+  .ep__top{display:flex;align-items:center;}
+  .ep__no{font-size:14.5px;font-weight:700;letter-spacing:1.5px;color:#9c3d3d;}
+  .ep__unit{margin-left:6px;font-size:8.5px;line-height:1;padding:2px 6px;color:#7a6033;background:var(--gold-soft);border-radius:10px;}
+  .ep__part{margin-left:auto;font-size:9px;color:var(--ink3);letter-spacing:.5px;}
+  .ep__title{margin-top:5px;font-size:17px;font-weight:700;letter-spacing:1.5px;line-height:1.3;}
+  .ep__arc{margin-top:3px;font-size:10.5px;color:var(--ink2);letter-spacing:.5px;}
+  .ep__kw{display:flex;flex-wrap:wrap;margin-top:5px;}
+  .kw{font-size:9px;color:#9a8f7c;margin-right:7px;line-height:1.5;}
+  .ep__body{padding:10px 12px 2px;}
+  .ep .para{font-size:13px;line-height:1.9;color:#3f3a33;text-align:justify;text-indent:2em;margin:0 0 9px;}
+  .ep .para:last-child{margin-bottom:0;}
+  .ep__ritcount{margin:3px 12px 0;padding:7px 0 9px;border-top:1px dashed #e6d9bf;font-size:10.5px;color:var(--gold);cursor:pointer;}
+  /* 礼学整理（按分类归组） */
+  .rgroups{padding:2px 10px 0;}
+  .rgroup{margin-bottom:13px;}
+  .rgroup__head{display:flex;align-items:center;padding:2px 3px 6px;}
+  .rgroup__bar{width:3px;height:14px;border-radius:2px;margin-right:6px;}
+  .rgroup__name{font-size:15px;font-weight:700;letter-spacing:1.5px;}
+  .rgroup__n{margin-left:auto;font-size:10px;color:var(--ink3);}
+  .rit{background:var(--card);border:1px solid var(--line);border-left:3px solid #cbb287;
+    border-radius:7px;padding:9px 10px;margin-bottom:7px;box-shadow:0 1px 6px rgba(43,43,43,.03);}
+  .rit:last-child{margin-bottom:0;}
+  .rit__top{display:flex;align-items:center;flex-wrap:wrap;}
+  .rit__term{font-size:14px;font-weight:700;letter-spacing:1px;line-height:1.3;}
+  .rit__ep{margin-left:auto;flex:none;font-size:9px;line-height:1;padding:3px 6px;border:1px solid;border-radius:10px;cursor:pointer;}
+  .rit__fig{margin-top:6px;}
+  .rit__img{display:block;width:100%;border-radius:5px;background:var(--paper-2);border:1px solid #e4d8bd;}
+  .rit__cap{margin-top:4px;font-size:9px;line-height:1.5;color:#a99b83;letter-spacing:.3px;}
+  .rit__src{margin-top:4px;font-size:9.5px;color:#9a8f7c;line-height:1.6;}
+  .rit__exp{margin-top:5px;font-size:12px;line-height:1.85;color:#3f3a33;text-align:justify;}
+  .rit__plot{margin-top:6px;padding-top:6px;border-top:1px dashed #e8dcc4;display:flex;}
+  .rit__plot-k{flex:none;font-size:9px;line-height:1.6;height:16px;padding:0 5px;margin-right:6px;
+    color:#8c2b2b;background:#f7e7e4;border-radius:3px;}
+  .rit__plot-c{flex:1;font-size:11.5px;line-height:1.8;color:#5a5348;text-align:justify;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="side">
+      <h1>《兰香如故》角色图谱</h1>
+      <div class="muted" style="font-size:12px;letter-spacing:1px;">微信小程序 · 效果预览稿</div>
+      <p class="muted" style="margin-top:14px;">
+        这是用小程序同一份数据（<span class="k">data/*.js</span>）渲染出来的浏览器预览，用于快速确认视觉与交互。
+        <b style="color:#d9c9a3;">正式交付物是微信小程序工程</b>，用微信开发者工具导入本目录即可运行。
+      </p>
+      <ul>
+        <li><b style="color:#d9c9a3;">族谱</b>：家族 → 辈分分层，头像节点 + 连线，点击进详情</li>
+        <li><b style="color:#d9c9a3;">全阵容</b>：演员表全景 + 关键词搜索</li>
+        <li><b style="color:#d9c9a3;">角色详情</b>：介绍 / 演员 / 人物关系（可跳转）</li>
+        <li><b style="color:#d9c9a3;">历史参考</b>：韩粱 → 于谦，可互相跳转</li>
+        <li><b style="color:#d9c9a3;">剧情介绍</b>：点顶部 Banner 进入，左右 Tab 切换 —— <b style="color:#d9c9a3;">分集剧情</b>（逐集故事）｜ <b style="color:#d9c9a3;">礼学整理</b>（人胜 / 彩胜 / 及笄礼 / 和离 / 大明律…按分类归组）</li>
+      </ul>
+      <div class="note">
+        <b style="color:#d9c9a3;">头像说明</b><br/>
+        剧照尚未接入，当前显示的是自动降级的「古风姓氏印章头像」。把剧照按 <span class="k">{角色id}.jpg</span> 放进
+        <span class="k">images/characters/</span> 即可全部替换。
+      </div>
+      <div class="note" style="border-color:#6a5c3d;">
+        <b style="color:#d9c9a3;">本轮改动（v1.0.1）</b><br/>
+        <span class="k">广告下线</span>：流量主门槛未达成，三处广告 UI 全部移除，页面不留占位框（实现保留在 <code style="color:#c9b98d;">utils/ads.js</code>，达成条件后照注释恢复）<br/>
+        <span class="k">chips 修复</span>：家族 / 集数 / 分类 chips 原先用 catch 吃掉触控事件，导致手机上点不动；改成 bind + 手势锁，并补了按下反馈
+      </div>
+      <div class="tip">← 试试：点顶部 Banner 看剧情介绍（左右 Tab 切剧情 / 礼学），再点头像、搜索框、家族标签；在手机上左右拖动也能切 Tab</div>
+    </div>
+
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <!-- iPhone 状态栏 + 小程序自定义导航条（右侧为胶囊按钮） -->
+        <div class="navbar">
+          <div class="navbar__status">
+            <span class="stime">9:41</span>
+            <span class="sicons"><i>●●●</i><i>WiFi</i><span class="bat"><b></b></span></span>
+          </div>
+          <div class="navbar__bar">
+            <span class="navbar__brand serif">兰香如故</span>
+            <span class="serif">角色图谱</span>
+            <span class="navbar__capsule"><span class="dots">···</span><span class="circ"></span></span>
+          </div>
+        </div>
+        <div class="searchbar" id="searchbar"></div>
+        <div class="scroller" id="scroller"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ============ 数据（由 tools/build-preview.js 从 data/*.js 注入） ============ */
+const DATA = __DATA_JSON__;
+
+/* ============ 工具 ============ */
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+
+/* 头像三级兜底：印章永远垫底，图片盖在上面，加载失败就移除图片露出印章
+   图片本体存在 DATA.avatars / DATA.generics 里，角色数据里只存 key，避免重复内嵌 */
+function picOf(c){
+  if(c.avatar && c.avatar.indexOf("__AV__")===0) return DATA.avatars[c.avatar.slice(6)] || "";
+  if(c.fallback && c.fallback.indexOf("__GEN__")===0) return DATA.generics[c.fallback.slice(7)] || "";
+  return "";
+}
+function avatarHTML(c,size){
+  const sz = size || "m";
+  const seal = '<div class="av__seal" style="border-color:'+c.familyColor+';background:'+c.familySoft+';">'
+    + '<span class="av__ch" style="color:'+c.familyColor+';">'+esc(c.initial)+'</span></div>';
+  const pic = picOf(c);
+  const img = pic ? '<img class="av__img" src="'+pic+'" alt="" onerror="this.remove()">' : '';
+  return '<div class="av av--'+sz+'" style="border-color:'+c.familyColor+';">'
+    + '<div class="av__inner">'+seal+img+'</div></div>';
+}
+
+/* ============ 爱心支持 & 支持榜（预览稿版） ============ */
+/* 与小程序 utils/likes.js 同一套语义：本人票按目标去重、不伪造他人票数。
+   差异：预览稿为便于评审「榜单版式」，默认叠加一份确定性演示票数，
+        并在榜头显式标注「演示数据」；小程序内不存在这份数据。 */
+const LIKE_KEY = "lxrg_preview_likes_v1";
+const LIKE_DEMO = true;              // 置 false 则只看本人真实票数
+
+/* 演示票数：按 id 哈希取模，同一次打开结果稳定；给主角 / 大家族一点偏好，
+   好让榜单有层次可看。仅用于版式评审，非任何真实数据。 */
+const DEMO_BIAS = {
+  shen_jialan:486, lin_jinqi:452, zhao_xingtang:341, han_liang:302,
+  shen:968, lin:902, du:512, zhao:604, xu:287, han:265, royal:233
+};
+function demoCount(id){
+  var s = String(id), h = 7;
+  for(var i=0;i<s.length;i++) h = (h*131 + s.charCodeAt(i)) % 100003;
+  return 18 + (h % 154) + (DEMO_BIAS[id] || 0);
+}
+function likeMine(){
+  try{ return JSON.parse(localStorage.getItem(LIKE_KEY) || "{}"); }catch(e){ return {}; }
+}
+function likeSave(m){ try{ localStorage.setItem(LIKE_KEY, JSON.stringify(m)); }catch(e){} }
+function likeCount(id){
+  var mine = likeMine()[id] ? 1 : 0;
+  var demo = LIKE_DEMO ? demoCount(id) : 0;
+  return mine > demo ? mine : demo;
+}
+function likeOn(id){ return !!likeMine()[id]; }
+function toggleLike(id){
+  var m = likeMine();
+  var turningOn = !m[id];
+  if(m[id]) delete m[id]; else m[id] = 1;
+  likeSave(m);
+  renderContent();   // 只重画内容区，保持滚动位置
+  if(turningOn) openShareCard(id);   // 点爱心支持成功 → 弹出分享图
+}
+
+/* ============ 分享卡片（点爱心后弹出） ============ */
+/* 文案模板统一，差异仅在「吾为 XX 执灯」的 XX */
+var shareCard = null;   // { type:'family'|'char', name, sub, count }
+
+function openShareCard(id){
+  var name="", sub="", count=0, isFamily=false;
+  var node = DATA.tree.filter(function(n){ return n.fid===id; })[0];
+  if(node){
+    isFamily = true;
+    name = node.family.name; sub = node.family.tag || ""; count = likeCount(id);
+  }else{
+    var item = DATA.roster.filter(function(c){ return c.id===id; })[0];
+    if(!item) return;
+    name = item.name; sub = item.title || item.familyName || ""; count = likeCount(id);
+  }
+  shareCard = { type: isFamily?"family":"char", id:id, name:name, sub:sub, count:count };
+  showShareCard();
+}
+
+/* 卡片尺寸：与小程序的算法一致（5:7.5 且不出屏），这里按手机屏实测 */
+function shareCardSize(){
+  var screen = document.querySelector(".screen");
+  var availH = screen ? screen.clientHeight : 700;
+  var availW = screen ? screen.clientWidth : 370;
+  var w = Math.min(310, Math.max(240, availW - 40));
+  var h = Math.max(360, Math.min(w * 1.5, Math.max(300, availH - 48)));
+  return { w: Math.round(w), h: Math.round(h) };
+}
+
+function showShareCard(){
+  if(!shareCard) return;
+  var sz = shareCardSize();
+  var old = document.getElementById("sharemask");
+  if(old) old.remove();
+  var bg = DATA.shareBg || "";
+  var html = '<div class="sharemask" id="sharemask" onclick="closeShareCard()">'
+    + '<div class="sharecard" style="width:'+sz.w+'px;height:'+sz.h+'px;" onclick="event.stopPropagation()">'
+    + (bg ? '<img class="sharecard__bg" src="'+bg+'" alt="">' : "")
+    + '<div class="sharecard__body">'
+    + '<div class="sharecard__brand serif">兰香如故 · 角色图谱</div>'
+    + '<div class="sharecard__lead serif">吾为</div>'
+    + '<div class="sharecard__name serif">'+esc(shareCard.name)+'</div>'
+    + '<div class="sharecard__lead serif">执灯</div>'
+    + (shareCard.sub ? '<div class="sharecard__sub">'+esc(shareCard.sub)+'</div>' : "")
+    + '<div class="sharecard__count"><span class="sharecard__heart">♥</span> 已有 '+shareCard.count+' 人支持</div>'
+    + '</div>'
+    + '<div class="sharecard__foot">'
+    + '<div class="sharecard__btn sharecard__btn--main" onclick="fakeShare()">分享给好友</div>'
+    + '<div class="sharecard__btn sharecard__btn--ghost" onclick="closeShareCard()">关闭</div>'
+    + '</div>'
+    + '<div class="sharecard__x" onclick="closeShareCard()">✕</div>'
+    + '</div></div>';
+  document.body.insertAdjacentHTML("beforeend", html);
+}
+
+function closeShareCard(){
+  shareCard = null;
+  var el = document.getElementById("sharemask");
+  if(el) el.remove();
+}
+
+/* 预览稿里没有真的转发能力，给个提示模拟 */
+function fakeShare(){
+  if(!shareCard) return;
+  alert("已复制分享文案：\n\n吾为「"+shareCard.name+"」执灯 · 《兰香如故》角色图谱\n\n（小程序内会调起微信转发面板）");
+}
+function likeHTML(id, color, on, n){
+  return '<div class="like '+(on?"like--on":"")+'" style="color:'+color+';border-color:'+color+';'
+    + (on ? 'background:'+color+';' : '') + '"'
+    + ' onclick="event.stopPropagation();toggleLike(\''+id+'\')" title="点爱心支持">'
+    + '<span class="like__i">'+(on?"♥":"♡")+'</span><span class="like__n">'+n+'</span></div>';
+}
+/* 按支持数降序（稳定排序：同票保持原顺序） */
+function sortByLikes(list){
+  return list.map(function(x,i){return {x:x,i:i};})
+    .sort(function(a,b){
+      var d = (b.x.likeCount||0) - (a.x.likeCount||0);
+      return d!==0 ? d : a.i-b.i;
+    })
+    .map(function(p){return p.x;});
+}
+function sortNoteHTML(scope){
+  return '<div class="sortnote'+(LIKE_DEMO?" sortnote--demo":"")+'">'
+    + '<span class="sortnote__t">'+(LIKE_DEMO?"演示数据":"本地支持榜")+'</span>'
+    + '<span class="sortnote__c">'+(LIKE_DEMO
+        ? "预览稿内置的演示票数，仅用于评审榜单版式，非真实数据；小程序内不包含"
+        : "尚未接入云端，当前仅统计你本人的支持（每人每项计 1 票）")
+    + ' · '+(scope==="tree"?"按家族支持数":"按角色支持数")+'排序</span></div>';
+}
+
+
+/* ============ 左右滑动切 Tab ============ *
+   浏览器里用鼠标拖拽模拟，判定条件与小程序端一致：位移够大、且更像水平 */
+
+function bindSwipe(){
+  var sc = document.getElementById("scroller");
+  if(!sc || sc._swipeBound) return;
+  sc._swipeBound = true;
+  var start = null;
+  sc.addEventListener("mousedown", function(e){ start = { x:e.clientX, y:e.clientY, t:Date.now() }; });
+  sc.addEventListener("mouseup", function(e){
+    if(!start) return;
+    var dx = e.clientX - start.x, dy = e.clientY - start.y, dt = Date.now() - start.t;
+    start = null;
+    if(Math.abs(dx) < 56) return;
+    if(Math.abs(dx) < Math.abs(dy) * 1.4) return;
+    if(dt > 900) return;
+    if(state.keyword) return;                 // 搜索态不切 Tab
+    var want = dx < 0 ? "roster" : "tree";
+    if(want !== state.tab) setTab(want);
+  });
+  sc.addEventListener("mouseleave", function(){ start = null; });
+}
+
+/* ============ 状态 ============ */
+const state = { tab:"tree", family:"all", keyword:"", results:[], data:DATA,
+                treeSort:"default", rosterSort:"default" };
+
+/* ============ 主渲染 ============ */
+/* 注意：搜索框是独立固定区域，不参与重渲染，否则中文输入法候选词会被打断 */
+function render(){
+  const s = document.getElementById("scroller");
+  s.innerHTML = bannerHTML() + tabsHTML() + '<div id="content"></div>' + footerHTML();
+  renderContent();
+  s.scrollTop = 0;
+}
+
+function renderContent(){
+  const box = document.getElementById("content");
+  if(!box) return;
+  box.innerHTML = state.keyword
+    ? resultsHTML()
+    : (state.tab==="tree" ? treeHTML() : rosterHTML());
+}
+
+function renderSearchbar(){
+  document.getElementById("searchbar").innerHTML = searchHTML();
+}
+
+function bannerHTML(){
+  const d = DATA.drama, st = DATA.stats;
+  return '<div class="banner" onclick="openEpisodes()" title="查看分集介绍与礼学考究">'
+    + '<div class="banner__main">'
+    + '<div class="banner__titlerow"><span class="banner__title serif">'+esc(d.title)+'</span>'
+    + '<span class="banner__sub serif">'+esc(d.subTitle)+'</span></div>'
+    + '<div class="banner__tagline serif"><span class="banner__q">「</span>'+esc(d.tagline)
+    + '<span class="banner__q">」</span></div>'
+    + '<div class="banner__meta">'+esc(d.year)+'<span class="dot">·</span>'+esc(d.genre)
+    + '<span class="dot">·</span>'+esc(d.episodes)+'<span class="dot">·</span>'+esc(d.channel)+'</div>'
+    + '<div class="banner__stats">'
+    + statHTML(st.charCount,"角色")+'<span class="banner__stat__dot">·</span>'
+    + statHTML(st.familyCount,"家族")+'<span class="banner__stat__dot">·</span>'
+    + statHTML(st.actorCount,"演员")+'<span class="banner__stat__dot">·</span>'
+    + statHTML(st.ritualCount,"礼学词条")
+    + '</div></div>'
+    + '<div class="banner__more"><span class="banner__more-t serif">剧情</span>'
+    + '<span class="banner__more-a">›</span></div>'
+    + '</div>';
+}
+function statHTML(n,l){return '<span class="banner__stat"><span class="n">'+n+'</span>'+l+'</span>';}
+
+function searchHTML(){
+  return '<div class="search"><span class="search__icon">⌕</span>'
+    + '<input id="kw" placeholder="搜角色 / 演员 / 身份，如「韩粱」「于谦」" value="'+esc(state.keyword)+'"'
+    + ' oninput="onSearch(this.value)" />'
+    + '<span class="search__clear" style="display:'+(state.keyword?"block":"none")+';" onclick="clearSearch()">✕</span>'
+    + '</div>';
+}
+
+function tabsHTML(){
+  const tm = state.tab==="tree" ? state.treeSort : state.rosterSort;
+  return '<div class="tabs">'
+    + '<div class="tab '+(state.tab==="tree"?"tab--on":"")+'" onclick="setTab(\'tree\')">'
+    + '<span class="tab__t serif">族谱</span></div>'
+    + '<div class="tab '+(state.tab==="roster"?"tab--on":"")+'" onclick="setTab(\'roster\')">'
+    + '<span class="tab__t serif">全阵容</span></div>'
+    + '<div class="sortsw '+(tm==="likes"?"sortsw--on":"")+'" onclick="toggleSort()">♥ 榜</div>'
+    + '</div>';
+}
+
+/** 单按钮切换：默认序 ↔ 支持榜 */
+function toggleSort(){
+  if(state.tab==="tree"){
+    state.treeSort = state.treeSort==="likes" ? "default" : "likes";
+  }else{
+    state.rosterSort = state.rosterSort==="likes" ? "default" : "likes";
+  }
+  render();
+}
+
+function treeHTML(){
+  const chips = '<div class="chips" id="famchips">'
+    + DATA.familyChips.map(function(f){
+        const on = state.family===f.id;
+        const style = on ? 'background:'+f.color+';border-color:'+f.color+';' : '';
+        return '<div class="chip '+(on?"chip--on":"")+'" id="chip-'+f.id+'" style="'+style+'"'
+          + ' onclick="setFamily(\''+f.id+'\')">'+esc(f.name)+'</div>';
+      }).join("")
+    + '</div>';
+
+  let tree = DATA.tree.filter(function(n){ return state.family==="all" || n.fid===state.family; });
+  tree = tree.map(function(n){ return Object.assign({}, n, { likeCount: likeCount(n.fid) }); });
+  const byLikes = state.treeSort==="likes";
+  if(byLikes) tree = sortByLikes(tree);
+
+  const cards = tree.map(function(node){
+    const gens = node.generations.map(function(g){
+      const branches = g.branches.map(function(br){
+        const mem = br.members.map(function(m){
+          return '<div class="member" onclick="openChar(\''+m.id+'\')">'
+            + avatarHTML(m,"m")
+            + '<div class="member__name serif">'+esc(m.name)+'</div>'
+            + '<div class="member__actor">'+esc(m.actor)+'</div>'
+            + (m.role==="lead" ? '<div class="member__lead">领衔</div>' : "")
+            + '</div>';
+        }).join("");
+        return (br.branch ? '<div class="branch__name serif" style="color:'+node.family.color+';">'+esc(br.branch)+'</div>' : '')
+          + '<div class="gen__row">'+mem+'</div>';
+      }).join("");
+      return '<div class="gen">'
+        + '<div class="gen__label"><span class="gen__line" style="background:'+node.family.color+';"></span>'
+        + '<span class="gen__txt serif">'+esc(g.label)+'</span></div>'
+        + branches+'</div>';
+    }).join("");
+
+    const sgroups = (node.servants||[]).map(function(sg){
+      const mem = sg.members.map(function(m){
+        return '<div class="member" onclick="openChar(\''+m.id+'\')">'
+          + avatarHTML(m,"m")
+          + '<div class="member__name serif">'+esc(m.name)+'</div>'
+          + '<div class="member__actor">'+esc(m.title||'')+'</div>'
+          + '</div>';
+      }).join("");
+      return '<div class="sgroup"><span class="sgroup__name">'+esc(sg.role)+' · '+sg.members.length+'人</span>'
+        + '<div class="gen__row">'+mem+'</div></div>';
+    }).join("");
+    const servantsHTML = sgroups ? '<div class="servants">'
+      + '<div class="servants__label"><span class="gen__line" style="background:'+node.family.color+';"></span>'
+      + '<span class="gen__txt serif">府中仆从</span></div>'+sgroups+'</div>' : '';
+
+    return '<div class="famcard">'
+      + '<div class="famcard__head" style="border-left-color:'+node.family.color+';background:'+node.family.soft+';">'
+      + '<div class="famcard__id">'
+      + '<div class="famcard__name serif" style="color:'+node.family.color+';">'+esc(node.family.name)+'</div>'
+      + '<div class="famcard__tag">'+esc(node.family.tag)+'</div></div>'
+      + '<div class="famcard__side">'
+      + '<div class="famcard__motto" style="color:'+node.family.color+';border-color:'+node.family.color+';">'+esc(node.family.motto)+'</div>'
+      + likeHTML(node.fid, node.family.color, likeOn(node.fid), node.likeCount)
+      + '</div></div><div class="famcard__body">'+gens+servantsHTML+'</div></div>';
+  }).join("");
+
+  return chips + (byLikes ? sortNoteHTML("tree") : "") + cards
+    + '<div class="note"><span class="note__t">关于族谱</span><span class="note__c">'
+    + '仅展示可归入家族的角色，按公开资料推断的辈分分层；少年 / 青年 / 成年版本不重复计入。'
+    + '未归入家族的角色请在「全阵容」中查看。家族归属与辈分标注为推断项，以片方公示为准。</span></div>';
+}
+
+function rosterHTML(){
+  let list = DATA.roster.map(function(c){ return Object.assign({}, c, { likeCount: likeCount(c.id) }); });
+  const byLikes = state.rosterSort==="likes";
+  if(byLikes) list = sortByLikes(list);
+
+  return (byLikes ? sortNoteHTML("roster") : "")
+    + '<div class="roster">' + list.map(function(c){
+    return '<div class="rrow" onclick="openChar(\''+c.id+'\')">'
+      + avatarHTML(c,"s")
+      + '<div class="rrow__main">'
+      + '<div class="rrow__name serif">'+esc(c.name)
+      + (c.alias ? '<span class="rrow__alias">（'+esc(c.alias)+'）</span>' : "")
+      + '</div>'
+      + '<div class="rrow__sub">'
+      + '<span class="rrow__fam" style="color:'+c.familyColor+';border-color:'+c.familyColor+';">'+esc(c.familyName)+'</span>'
+      + esc(c.actor)+(c.title ? " · "+esc(c.title) : "")+'</div></div>'
+      + likeHTML(c.id, c.familyColor, likeOn(c.id), c.likeCount)
+      + '</div>';
+  }).join("") + '</div>';
+}
+
+function resultsHTML(){
+  const rows = state.results.map(function(c){
+    return '<div class="rrow" onclick="openChar(\''+c.id+'\')">'
+      + avatarHTML(c,"s")
+      + '<div class="rrow__main">'
+      + '<div class="rrow__name serif">'+esc(c.name)
+      + (c.alias ? '<span class="rrow__alias">（'+esc(c.alias)+'）</span>' : "")+'</div>'
+      + '<div class="rrow__sub">'+esc(c.actor)+" · "+esc(c.familyName)+'</div></div>'
+      + '<span class="rrow__arrow" style="color:'+c.familyColor+'">›</span></div>';
+  }).join("");
+  return '<div class="results"><div class="results__head">找到 <span class="hl">'+state.results.length+'</span> 条结果</div>'
+    + (state.results.length ? rows : '<div class="empty-tip">未找到相关角色，换个关键词试试</div>')
+    + '</div>';
+}
+
+function footerHTML(){
+  const d0 = DATA.drama;
+  return '<div class="divider"><span>❖ ❖ ❖</span></div>'
+    + '<div class="footer">'
+    + '<span>'+esc(d0.original)+' ｜ '+esc(d0.crew)+'</span>'
+    + '<span>数据来源：腾讯视频剧集页 / 猫眼专业版演员表 / 新浪娱乐公开报道</span>'
+    + '<span>角色与演员对应关系以片方最终公示为准；历史人物关联为延伸阅读，非官方设定</span>'
+    + '<span>本页面为效果预览稿 · 正式交付物为微信小程序工程</span>'
+    + '</div>';
+}
+
+/* ============ 交互 ============ */
+function setTab(t){ state.tab = t; render(); }
+function setFamily(id){
+  state.family = id;
+  renderContent();
+  chipIntoView('chip-' + id);
+}
+
+/* 把选中的 chip 滚进视野（横向 chips 很长时特别有用） */
+function chipIntoView(id){
+  const box = document.getElementById("famchips");
+  const el = document.getElementById(id);
+  if(!box || !el) return;
+  const target = el.offsetLeft - (box.clientWidth - el.offsetWidth) / 2;
+  box.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+}
+function onSearch(v){
+  state.keyword = v;
+  state.results = v.trim() ? DATA.characters.filter(function(c){
+    return (c.name&&c.name.indexOf(v)>-1)||(c.alias&&c.alias.indexOf(v)>-1)
+      ||(c.actor&&c.actor.indexOf(v)>-1)||(c.title&&c.title.indexOf(v)>-1);
+  }) : [];
+  const clearBtn = document.querySelector(".search__clear");
+  if(clearBtn) clearBtn.style.display = v ? "block" : "none";
+  renderContent();
+}
+function clearSearch(){
+  state.keyword=""; state.results=[];
+  const inp = document.getElementById("kw");
+  if(inp) inp.value = "";
+  const clearBtn = document.querySelector(".search__clear");
+  if(clearBtn) clearBtn.style.display = "none";
+  renderContent();
+}
+
+/* ============ 详情层 ============ */
+function openSheet(title, bodyHTML){
+  let sheet = document.getElementById("sheet");
+  if(!sheet){
+    sheet = document.createElement("div");
+    sheet.id = "sheet"; sheet.className = "sheet";
+    document.querySelector(".screen").appendChild(sheet);
+  }
+  sheet.innerHTML = '<div class="sheet__bar"><span class="sheet__back" onclick="closeSheet()">‹ 返回</span>'
+    + '<span class="sheet__title serif">'+esc(title)+'</span></div>'
+    + '<div class="sheet__body">'+bodyHTML+'</div>';
+  requestAnimationFrame(function(){ sheet.classList.add("sheet--on"); });
+}
+function closeSheet(){
+  const sheet = document.getElementById("sheet");
+  if(sheet) sheet.classList.remove("sheet--on");
+}
+
+function openChar(id){
+  const c = DATA.characters.filter(function(x){return x.id===id;})[0];
+  if(!c) return;
+  const rel = c.relations.map(function(r){
+    const t = DATA.characters.filter(function(x){return x.id===r.id;})[0];
+    if(!t) return "";
+    return '<div class="rel" onclick="openChar(\''+t.id+'\')">'
+      + avatarHTML(t,"s")
+      + '<div class="rel__main"><div class="rel__name serif">'+esc(t.name)+'</div>'
+      + '<div class="rel__actor">'+esc(t.actor)+'</div></div>'
+      + '<div class="rel__label" style="color:'+t.familyColor+';border-color:'+t.familyColor+';">'+esc(r.label)+'</div>'
+      + '<span class="rel__arrow">›</span></div>';
+  }).join("");
+
+  const actor = DATA.actorWorks[c.actor] || [];
+  const hist = c.historicalId ? DATA.historical.filter(function(h){return h.id===c.historicalId;})[0] : null;
+
+  let html = '<div class="hero" style="background:linear-gradient(160deg,'+c.familySoft+' 0%,#fffdf8 78%);">'
+    + '<div class="hero__seal serif" style="color:'+c.familyColor+';border-color:'+c.familyColor+';">'+esc(c.familyName)+'</div>'
+    + '<div style="display:flex;justify-content:center;">'+avatarHTML(c,"l")+'</div>'
+    + '<div class="hero__name serif">'+esc(c.name)+'</div>'
+    + (c.alias ? '<div class="hero__alias">（'+esc(c.alias)+'）</div>' : "")
+    + '<div class="hero__actor">'+esc(c.actor)+' 饰</div>'
+    + '<div class="hero__tags">'
+    + '<span class="tag" style="background:'+c.familySoft+';color:'+c.familyColor+';">'+esc(c.familyName)+'</span>'
+    + '<span class="tag ghost">'+esc(c.genLabel)+'</span>'
+    + (c.roleLabel ? '<span class="tag ghost">'+esc(c.roleLabel)+'</span>' : "")
+    + '</div></div>';
+
+  if(c.title){
+    html += '<div class="sec"><span class="bar"></span><span class="txt serif">身份</span></div>'
+      + '<div class="cd"><div class="kv"><span class="kv__k">身份</span><span class="kv__v">'+esc(c.title)+'</span></div></div>';
+  }
+
+  /* 无可靠公开资料时整块隐藏，不留「资料待补充」空态（与小程序一致，2026-10-12） */
+  if(c.hasIntro){
+    html += '<div class="sec"><span class="bar"></span><span class="txt serif">角色介绍</span></div><div class="cd">'
+      + '<div class="intro">'+esc(c.intro)+'</div>' + '</div>';
+  }
+
+  html += '<div class="sec"><span class="bar"></span><span class="txt serif">演员</span></div><div class="cd">'
+    + '<div class="actor"><div class="actor__av serif" style="background:'+c.familySoft+';color:'+c.familyColor+';">'+esc(c.actor)+'</div>'
+    + '<div class="actor__main"><div class="actor__name serif">'+esc(c.actor)+'</div>'
+    + '<div class="actor__role">饰 '+esc(c.name)+'</div></div></div>'
+    + (actor.length
+        ? '<div class="actor__works"><span class="actor__works-t">代表作</span><div class="actor__works-list">'
+          + actor.map(function(w){return '<span class="tag ghost">'+esc(w)+'</span>';}).join("") + '</div></div>'
+        : '')
+    + '</div>';
+
+  if(rel){
+    html += '<div class="sec"><span class="bar"></span><span class="txt serif">人物关系</span><span class="extra">点击可跳转</span></div>'
+      + '<div class="cd">'+rel+'</div>';
+  }
+
+  if(hist){
+    html += '<div class="sec"><span class="bar"></span><span class="txt serif">历史参考人物</span><span class="extra">延伸阅读</span></div>'
+      + '<div class="hist" onclick="openHist(\''+hist.id+'\')">'
+      + '<div class="hist__seal serif">'+esc(hist.name)+'</div>'
+      + '<div class="hist__main"><div class="hist__name serif">'+esc(hist.name)
+      + '<span class="hist__dyn">'+esc(hist.dynasty)+'</span></div>'
+      + '<div class="hist__meta">'+esc(hist.title)+' ｜ '+esc(hist.lifespan)+'</div>'
+      + '<div class="hist__sum">'+esc(hist.summary)+'</div></div>'
+      + '<span class="hist__arrow">›</span></div>';
+  }
+
+  html += '<div class="divider"><span>❖ ❖ ❖</span></div><div class="footer">'
+    + '<span>角色与演员信息来源于公开报道，以片方公示为准</span>'
+    + '<span>历史人物关联为观剧延伸阅读，非官方设定</span>'
+    + '<div class="back" onclick="closeSheet()">返回角色图谱</div></div>';
+
+  openSheet(c.name, html);
+}
+
+function openHist(id){
+  const h = DATA.historical.filter(function(x){return x.id===id;})[0];
+  if(!h) return;
+  const linked = DATA.characters.filter(function(c){return c.historicalId===id;});
+
+  let html = '<div class="hhero">'
+    + '<div class="hhero__seal serif">'+esc(h.name)+'</div>'
+    + '<div class="hhero__name serif">'+esc(h.name)+'</div>'
+    + '<div class="hhero__alias">'+esc(h.alias)+'</div>'
+    + '<div class="hhero__meta"><span class="hhero__dyn">'+esc(h.dynasty)+'</span>'
+    + '<span class="hhero__life">'+esc(h.lifespan)+'</span></div>'
+    + '<div class="hhero__title">'+esc(h.title)+'</div>'
+    + '<div class="hhero__kws">'+h.keywords.map(function(k){return '<span class="kwd">'+esc(k)+'</span>';}).join("")+'</div>'
+    + '</div>';
+
+  html += '<div class="cd"><div class="intro" style="text-indent:0;">'+esc(h.summary)+'</div></div>';
+
+  html += '<div class="sec"><span class="bar"></span><span class="txt serif">生平梗概</span></div><div class="cd">'
+    + h.intro.map(function(p){return '<div class="para">'+esc(p)+'</div>';}).join("") + '</div>';
+
+  if(h.quotes && h.quotes.length){
+    html += '<div class="sec"><span class="bar"></span><span class="txt serif">代表句</span></div><div class="cd">'
+      + h.quotes.map(function(q){
+          return '<div class="quote"><span class="quote__mark serif">「</span>'
+            + '<div class="quote__text serif">'+esc(q.text)+'</div>'
+            + '<div class="quote__from">—— '+esc(q.from)+'</div></div>';
+        }).join("")
+      + '</div>';
+  }
+
+  html += '<div class="sec"><span class="bar"></span><span class="txt serif">与剧中角色的关联</span></div><div class="cd">'
+    + '<div class="linknote">'+esc(h.linkNote)+'</div>'
+    + (linked.length
+        ? '<div class="link-t">关联角色</div>' + linked.map(function(c){
+            return '<div class="lrow" onclick="openChar(\''+c.id+'\')">'
+              + '<div class="lrow__seal" style="background:'+c.familySoft+';color:'+c.familyColor+';">'+esc(c.initial)+'</div>'
+              + '<div class="lrow__main"><div class="lrow__name serif">'+esc(c.name)+'</div>'
+              + '<div class="lrow__sub">'+esc(c.actor)+' 饰</div></div>'
+              + '<span class="lrow__arrow">›</span></div>';
+          }).join("")
+        : "")
+    + '</div>';
+
+  html += '<div class="disc"><span class="disc__t">说明</span><span class="disc__c">'
+    + '历史人物的生卒、官职与事迹取自通行史料，属公认史实；剧中角色与历史人物的对应关系为观剧延伸阅读，'
+    + '属创作母题类比，非片方官方设定，亦不代表对剧情或史实的论断。</span></div>'
+    + '<div class="divider"><span>❖ ❖ ❖</span></div>'
+    + '<div class="footer"><div class="back" onclick="closeSheet()">返回角色详情</div></div>';
+
+  openSheet(h.name, html);
+}
+
+/* ============ 剧情介绍 / 礼学整理（左右 Tab） ============ */
+const epState = { tab:"plot" };   // plot | ritual
+
+/* 礼学整理：按分类把全部条目归组，并回填所属集 */
+function buildRitualGroups(){
+  return DATA.episodeCategories.map(function(cat){
+    const list = [];
+    DATA.episodes.forEach(function(ep){
+      (ep.rituals||[]).forEach(function(r){
+        if(r.category===cat.key){
+          list.push(Object.assign({},r,{epId:ep.id,epLabel:ep.epLabel,epUnit:!!ep.unit}));
+        }
+      });
+    });
+    return {key:cat.key,name:cat.name,color:cat.color,list:list};
+  }).filter(function(g){return g.list.length;});
+}
+
+function epHTML(ep){
+  const ritcount = ep.ritualCount
+    ? '<div class="ep__ritcount" onclick="goRitualTab()">礼学考究 '+ep.ritualCount+' 条 · 去看 ›</div>'
+    : "";
+  return '<div class="ep" id="ep-'+ep.id+'">'
+    + '<div class="ep__head"><div class="ep__top">'
+    + '<span class="ep__no serif">'+esc(ep.epLabel)+'</span>'
+    + (ep.unit ? '<span class="ep__unit">剧情单元</span>' : "")
+    + '<span class="ep__part">'+esc(ep.partLabel)+'</span></div>'
+    + '<div class="ep__title serif">'+esc(ep.title)+'</div>'
+    + '<div class="ep__arc">'+esc(ep.arc)+'</div>'
+    + '<div class="ep__kw">'+ep.keywords.map(function(k){return '<span class="kw"># '+esc(k)+'</span>';}).join("")+'</div>'
+    + '</div>'
+    + '<div class="ep__body">'+ep.summary.map(function(p){return '<div class="para">'+esc(p)+'</div>';}).join("")+'</div>'
+    + ritcount + '</div>';
+}
+
+function ritualHTML(r,color){
+  const fig = r.image
+    ? '<div class="rit__fig"><img class="rit__img" src="'+ritSrc(r.image)+'" alt="'+esc(r.term)+'" loading="lazy">'
+      + '<div class="rit__cap">AI 生成配图 · 仅作形制示意，非剧中道具</div></div>'
+    : '';
+  return '<div class="rit">'
+    + '<div class="rit__top"><span class="rit__term serif">'+esc(r.term)+'</span>'
+    + '<span class="rit__ep" style="color:'+color+';border-color:'+color+';" onclick="goRitualEp(\''+r.epId+'\')">'+esc(r.epLabel)+' ›</span></div>'
+    + fig
+    + (r.source ? '<div class="rit__src">典籍 · '+esc(r.source)+'</div>' : '')
+    + '<div class="rit__exp">'+esc(r.explain)+'</div>'
+    + '<div class="rit__plot"><span class="rit__plot-k">剧中</span>'
+    + '<span class="rit__plot-c">'+esc(r.inPlot)+'</span></div>'
+    + '</div>';
+}
+
+/** 小程序里的图片绝对路径 → 预览稿内嵌的 key 引用（图片只内嵌一份） */
+function ritSrc(p){
+  const key = String(p).split('/').pop().replace(/\.jpg$/, '');
+  return (DATA.ritualImages && DATA.ritualImages[key]) || '';
+}
+
+function chipsHTML(){
+  if(epState.tab==="plot"){
+    return DATA.episodeChips.map(function(c){
+        return '<div class="echip" data-id="'+c.id+'" onclick="jumpEp(\''+c.id+'\')">'+esc(c.label)+'</div>';
+      }).join("")
+      + '<div class="echip echip--ghost" onclick="jumpEpFirstUnit()">后续单元</div>';
+  }
+  return buildRitualGroups().map(function(g){
+      return '<div class="echip" data-id="'+g.key+'" onclick="jumpCat(\''+g.key+'\')">'+esc(g.name)+' '+g.list.length+'</div>';
+    }).join("");
+}
+
+function epContentHTML(){
+  return epState.tab==="plot"
+    ? '<div class="eps">'+DATA.episodes.map(epHTML).join("")+'</div>'
+    : '<div class="rgroups">'+buildRitualGroups().map(function(g){
+        return '<div class="rgroup" id="cat-'+g.key+'">'
+          + '<div class="rgroup__head"><span class="rgroup__bar" style="background:'+g.color+';"></span>'
+          + '<span class="rgroup__name serif" style="color:'+g.color+';">'+esc(g.name)+'</span>'
+          + '<span class="rgroup__n">'+g.list.length+' 条</span></div>'
+          + g.list.map(function(r){return ritualHTML(r,g.color);}).join("")
+          + '</div>';
+      }).join("")+'</div>';
+}
+
+function openEpisodes(){
+  const st = DATA.episodeStats, nt = DATA.episodeNotes;
+
+  let html = '<div class="epwrap">'
+    /* 合并后的紧凑标题头（原「关于本页」并入这里） */
+    + '<div class="ehero"><div class="ehero__titlerow">'
+    + '<span class="ehero__t serif">剧情介绍</span>'
+    + '<span class="ehero__s serif">礼学考究</span></div>'
+    + '<div class="ehero__meta">上部《兰香如故》31 集 ｜ 下部《香传》16 集 ｜ 共 47 集</div>'
+    + '<div class="ehero__stats">'
+    + '<span class="est"><span class="est__n">'+st.episodeCount+'</span>集详介</span><span class="est__dot">·</span>'
+    + '<span class="est"><span class="est__n">'+st.unitCount+'</span>剧情单元</span><span class="est__dot">·</span>'
+    + '<span class="est"><span class="est__n">'+st.ritualCount+'</span>条礼学</span>'
+    + '</div>'
+    + '<div class="ehero__note">剧情与礼学依据公开报道整理，集数以实际播出为准；考据引《荆楚岁时记》《大明律》等典籍，属观剧延伸阅读，非片方官方解说。</div>'
+    + '</div>'
+
+    /* Tab：分集剧情 / 礼学整理（吸顶） */
+    + '<div class="efrozen">'
+    + '<div class="etabs">'
+    + '<div class="etab '+(epState.tab==="plot"?"etab--on":"")+'" data-tab="plot" onclick="setEpTab(\'plot\')"><span class="etab__t serif">分集剧情</span></div>'
+    + '<div class="etab '+(epState.tab==="ritual"?"etab--on":"")+'" data-tab="ritual" onclick="setEpTab(\'ritual\')"><span class="etab__t serif">礼学整理</span></div>'
+    + '</div>'
+    + '<div class="echips" id="epchips">'+chipsHTML()+'</div>'
+    + '</div>'
+    + '<div id="epcontent">'+epContentHTML()+'</div>';
+
+  html += '<div class="disc"><span class="disc__t">'+esc(nt.title)+'</span>'
+    + nt.parts.map(function(p){return '<span class="disc__c">'+esc(p)+'</span>';}).join("") + '</div>';
+
+  html += '<div class="disc disc--foot"><span class="disc__t">免责</span><span class="disc__c">'
+    + '本页为《兰香如故》公开资料整理，非官方出品。分集剧情、集数与画面细节以上线平台实际播出版本为准；'
+    + '礼学解读属整理者分析，与片方立场无关，亦不代表对史实的论断。引述典籍均已标注出处，如需引用请复核原文。'
+    + '</span></div>'
+    + '<div class="divider"><span>❖ ❖ ❖</span></div>'
+    + '<div class="footer"><div class="back" onclick="closeSheet()">返回角色图谱</div></div>'
+    + '</div>';
+
+  openSheet('剧情介绍 · 礼学考究', html);
+  const body = document.querySelector('#sheet .sheet__body');
+  if(body && !body._epBound){
+    body._epBound = true;
+    body.addEventListener("scroll", onEpScroll);
+  }
+  renderEpChips();
+  setEpChip(firstOfTab());
+}
+
+function firstOfTab(){
+  return epState.tab==="plot"
+    ? (DATA.episodes[0]||{}).id
+    : (buildRitualGroups()[0]||{}).key;
+}
+
+/* chips / 内容随 Tab 重渲染（chips 单独刷新，避免整页重建打断滚动位置） */
+function renderEpChips(){
+  const box = document.getElementById("epchips");
+  if(box) box.innerHTML = chipsHTML();
+}
+function setEpTab(t){
+  if(epState.tab===t) return;
+  epState.tab = t;
+  document.querySelectorAll(".etab").forEach(function(el){
+    el.classList.toggle("etab--on", el.getAttribute("data-tab")===t);
+  });
+  const body = document.querySelector('#sheet .sheet__body');
+  const keep = body ? body.scrollTop : 0;
+  const box = document.getElementById("epcontent");
+  if(box) box.innerHTML = epContentHTML();
+  renderEpChips();
+  setEpChip(firstOfTab());
+  if(body) body.scrollTop = (t==="plot") ? 0 : keep;
+}
+
+/* 在 sheet 内部滚动到指定集 / 分类（不用 scrollIntoView，避免外层页面跟着跳） */
+/** 吸顶栏实测高度：锚点跳转 / 滚动高亮都要给它让位 */
+function epBarH(){
+  const bar = document.querySelector('#sheet .efrozen');
+  return bar ? bar.getBoundingClientRect().height : 0;
+}
+
+function sheetScrollTo(id){
+  const body = document.querySelector('#sheet .sheet__body');
+  const el = document.getElementById(id);
+  if(!body || !el) return;
+  const base = body.getBoundingClientRect().top;
+  const top = el.getBoundingClientRect().top - base + body.scrollTop;
+  body.scrollTop = top - epBarH() - 6;
+}
+function jumpEp(id){ sheetScrollTo('ep-'+id); setEpChip(id); }
+function jumpEpFirstUnit(){
+  const u = DATA.episodes.filter(function(e){return e.unit;})[0];
+  if(!u) return;
+  sheetScrollTo('ep-'+u.id);
+  setEpChip(u.id);
+}
+function jumpCat(key){ sheetScrollTo('cat-'+key); setEpChip(key); }
+function goRitualTab(){ setEpTab("ritual"); }
+function goRitualEp(epId){
+  epState.tab = "plot";
+  document.querySelectorAll(".etab").forEach(function(el){
+    el.classList.toggle("etab--on", el.getAttribute("data-tab")==="plot");
+  });
+  const box = document.getElementById("epcontent");
+  if(box) box.innerHTML = epContentHTML();
+  renderEpChips();
+  setEpChip(epId);
+  sheetScrollTo('ep-'+epId);
+}
+function setEpChip(id){
+  const body = document.querySelector('#sheet .sheet__body');
+  if(!body) return;
+  body.querySelectorAll(".echip").forEach(function(el){
+    el.classList.toggle("echip--on", el.getAttribute("data-id")===id);
+  });
+}
+function onEpScroll(){
+  if(epState.tab!=="plot") return;
+  const body = document.querySelector('#sheet .sheet__body');
+  if(!body) return;
+  const base = body.getBoundingClientRect().top + epBarH() + 34;
+  let cur = "";
+  DATA.episodes.forEach(function(e){
+    const el = document.getElementById("ep-"+e.id);
+    if(el && el.getBoundingClientRect().top <= base) cur = e.id;
+  });
+  if(cur) setEpChip(cur);
+}
+
+/* ============ 启动 ============ */
+renderSearchbar();
+render();
+bindSwipe();
+</script>
+</body>
+</html>
